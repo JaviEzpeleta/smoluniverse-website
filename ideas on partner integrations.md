@@ -1,3 +1,9 @@
+# Autonome ... usar su platform de agents? No fucking clue if that's possible for this case.. gotta find out!
+
+...
+
+...
+
 # EigenLayer
 
 Restaking para recompensas: Si quieres que los clones "trabajen" y generen
