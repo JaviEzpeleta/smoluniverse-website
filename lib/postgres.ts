@@ -221,3 +221,10 @@ export const createWallet = async ({
     [handle, address, privateKey]
   );
 };
+
+export const getRecentClones = async () => {
+  const res = await executeQuery(
+    `SELECT * FROM sim_users ORDER BY created_at DESC LIMIT 10`
+  );
+  return res.rows;
+};

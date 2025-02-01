@@ -8,8 +8,10 @@ import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { ImSpinner8 } from "react-icons/im";
 import { motion, AnimatePresence } from "framer-motion";
+import useStore from "@/lib/zustandStore";
 
 const CreateANewCloneForm = () => {
+  const { fetchPusherIndex, setFetchPusherIndex } = useStore((state) => state);
   const [twitterHandle, setTwitterHandle] = useState("javitoshi");
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -61,8 +63,11 @@ const CreateANewCloneForm = () => {
       });
     }
 
+    setFetchPusherIndex(fetchPusherIndex + 1);
+
     setIsLoading(false);
   };
+
   return (
     <motion.div
       // transition={{
