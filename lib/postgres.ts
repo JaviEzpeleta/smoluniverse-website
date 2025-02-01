@@ -236,3 +236,13 @@ export const getRecentClones = async () => {
   );
   return res.rows;
 };
+
+export const deleteUserByHandle = async (handle: string) => {
+  try {
+    await executeQuery(`DELETE FROM sim_users WHERE handle = $1`, [handle]);
+    await postToDiscord(`💀 User deleted: \`${handle}\``);
+  } catch (error) {
+    console.error("🔴 Error in deleteUserByHandle:", error);
+    await postErrorToDiscord("🔴 Error in deleteUserByHandle: " + handle);
+  }
+};
