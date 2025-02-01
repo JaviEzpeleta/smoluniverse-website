@@ -3,6 +3,7 @@ import "./globals.css";
 
 import { Grandstander } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
+import Header from "@/components/Header";
 
 const grandstander = Grandstander({
   subsets: ["latin"],
@@ -23,7 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${grandstander.className} antialiased`}>
-        <div className="max-w-6xl mx-auto">{children}</div>
+        <div className="max-w-6xl mx-auto">
+          <Header />
+          <div>{children}</div>
+        </div>
         <Toaster />
       </body>
     </html>
