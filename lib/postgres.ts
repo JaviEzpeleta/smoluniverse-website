@@ -125,12 +125,20 @@ export const saveNewUser = async (profile: RawUser): Promise<boolean> => {
   }
 };
 
-export const findUserByHandle = async (handle: string): Promise<any> => {
-  handle = cleanHandle(handle);
-  const res = await executeQuery(`SELECT * FROM sim_users WHERE handle = $1`, [
-    handle,
-  ]);
-  return res.rows[0];
+export const findUserByHandle = async (
+  handle: string
+): Promise<RawUser | null> => {
+  try {
+    handle = cleanHandle(handle);
+    const res = await executeQuery(
+      `SELECT * FROM sim_users WHERE handle = $1`,
+      [handle]
+    );
+    return res.rows[0];
+  } catch (error) {
+    console.error("🔴 Error in findUserByHandle:", error);
+    return null;
+  }
 };
 
 export const getUsers = async (): Promise<any> => {
