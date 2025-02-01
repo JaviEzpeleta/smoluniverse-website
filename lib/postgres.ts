@@ -20,6 +20,13 @@ CREATE TABLE sim_saved_tweets (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE sim_wallets (
+  handle TEXT PRIMARY KEY,
+  address TEXT NOT NULL,
+  private_key TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 */
 
 import { Pool, PoolClient, types } from "pg";
@@ -151,10 +158,6 @@ export const saveIRLTweets = async ({
   // Si no hay publicaciones, salimos temprano
   if (!tweets || tweets.length === 0) return;
 
-  console.log("Tweet i'm going to save: ", tweets[0]);
-
-  // return false;
-
   // Columnas a insertar (ajusta si tu tabla es distinta)
   const columns = [
     "id",
@@ -195,4 +198,27 @@ export const saveIRLTweets = async ({
     // Manejo de error adicional si lo deseas
     console.error("Error inserting clone publications", error);
   }
+};
+
+export const getWalletByHandle = async (handle: string) => {
+  const res = await executeQuery(
+    `SELECT * FROM sim_wallets WHERE handle = $1`,
+    [handle]
+  );
+  return res.rows[0];
+};
+
+export const createWallet = async ({
+  handle,
+  address,
+  privateKey,
+}: {
+  handle: string;
+  address: string;
+  privateKey: string;
+}) => {
+  const res = await executeQuery(
+    `INSERT INTO sim_wallets (handle, address, private_key) VALUES ($1, $2, $3)`,
+    [handle, address, privateKey]
+  );
 };

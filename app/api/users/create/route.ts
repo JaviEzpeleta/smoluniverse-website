@@ -2,6 +2,7 @@ import { postErrorToDiscord, postToDiscord } from "@/lib/discord";
 import {
   findUserByHandle,
   getIRLTweets,
+  getWalletByHandle,
   saveIRLTweets,
   saveNewUser,
 } from "@/lib/postgres";
@@ -9,26 +10,27 @@ import { getTwitterUserInfo } from "@/lib/socialData";
 import { NextResponse } from "next/server";
 import { getTweetsFromUser } from "@/lib/socialData";
 import { FetchedTweet } from "@/lib/types";
+import { createAndSaveNewWallet } from "@/lib/web3functions";
 
 export async function POST(request: Request) {
   try {
     const { handle } = await request.json();
 
-    console.log("  -- - - - - -- - ");
-    console.log(" 💚 💚 💚 💚 💚 💚 💚 READY TO BEGIN!!! ", handle);
+    // console.log("  -- - - - - -- - ");
+    // console.log(" 💚 💚 💚 💚 💚 💚 💚 READY TO BEGIN!!! ", handle);
 
     const userExists = await findUserByHandle(handle);
     if (userExists) {
-      console.log(" 💚 USER EXISTS!!! ", userExists);
-      console.log("  -- - - - - -- - ");
+      //   console.log(" 💚 USER EXISTS!!! ", userExists);
+      //   console.log("  -- - - - - -- - ");
       return NextResponse.json({ data: userExists, success: true });
     } else {
-      console.log(" 💚 READY TO BEGIN Creating the ClOnE!!! LFG!!!!!!", handle);
+      //   console.log(" 💚 READY TO BEGIN Creating the ClOnE!!! LFG!!!!!!", handle);
 
       const profile = await getTwitterUserInfo(handle);
 
       if (!profile) {
-        console.log(" 💚 Twitter user not found", handle);
+        // console.log(" 💚 Twitter user not found", handle);
         return NextResponse.json({
           success: false,
           error: "Twitter user not found",
@@ -39,37 +41,47 @@ export async function POST(request: Request) {
 
       // ! getTweetsFromUser
 
-      console.log("💙  getting tweets from user", handle);
+      //   console.log("💙  getting tweets from user", handle);
 
       const savedTweets = await getIRLTweets({ handle });
 
       if (savedTweets && savedTweets.length > 0) {
-        await postToDiscord("💚 tweets found for " + handle);
-        console.log("💚 tweets found", savedTweets);
-        return NextResponse.json({
-          success: true,
-          profile: profile,
-        });
+        console.log("✅ TWEETS YA EXISTEN PARA EL USER: ", handle);
+      } else {
+        const tweets = await getTweetsFromUser(handle);
+
+        if (!tweets) {
+          console.log("💚 tweets not found", handle);
+          return NextResponse.json({
+            success: false,
+            error: "Tweets not found",
+          });
+        }
+
+        await saveIRLTweets({ handle, tweets: tweets.allTweets });
       }
 
-      const tweets = await getTweetsFromUser(handle);
+      let wallet = await getWalletByHandle(handle);
 
-      if (!tweets) {
-        console.log("💚 tweets not found", handle);
-        return NextResponse.json({
-          success: false,
-          error: "Tweets not found",
-        });
+      if (!wallet) {
+        console.log(" A CREAR WALLET PARA EL USER: ", handle);
+
+        wallet = await createAndSaveNewWallet(handle);
+        // time to create a wallet for the user!!
+        // const newWallet = await createWallet({
+        //   handle,
+        //   address: "0x0000000000000000000000000000000000000000",
+        //   privateKey: "0x0000000000000000000000000000000000000000",
+        // });
+      } else {
+        console.log(" WALLET YA EXISTE PARA EL USER: ", handle);
       }
-
-      await saveIRLTweets({ handle, tweets: tweets.allTweets });
 
       // ! crear wallet. save private_key to db.
 
       // ! transfer funds... and maybe update the db to keep track of the balance? or not? idk..
 
       // ! saveNewUser
-
       return NextResponse.json({
         success: true,
         profile: profile,
