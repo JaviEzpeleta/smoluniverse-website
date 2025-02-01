@@ -24,7 +24,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${grandstander.className} antialiased`}>
+      <body
+        className={`${grandstander.className} antialiased selection:bg-smolGreen/10 selection:text-smolGreen`}
+      >
         <div className="max-w-6xl mx-auto">
           <Header />
           <ClonesSessionController />
