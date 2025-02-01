@@ -47,3 +47,8 @@ export type FetchedTweet = {
   humor_or_sarcasm?: string;
   polarity_intensity?: number;
 };
+
+export type ChatMessage = {
+  role: "user" | "assistant";
+  content: string;
+};

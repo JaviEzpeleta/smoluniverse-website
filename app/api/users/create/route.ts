@@ -11,10 +11,15 @@ import { NextResponse } from "next/server";
 import { getTweetsFromUser } from "@/lib/socialData";
 import { FetchedTweet } from "@/lib/types";
 import { createAndSaveNewWallet } from "@/lib/web3functions";
+import { tellMeAJoke } from "@/lib/prompts";
 
 export async function POST(request: Request) {
   try {
     const { handle } = await request.json();
+
+    const joke = await tellMeAJoke();
+    console.log(" 🤣  JOKE: ", joke);
+    return NextResponse.json({ joke });
 
     // console.log("  -- - - - - -- - ");
     // console.log(" 💚 💚 💚 💚 💚 💚 💚 READY TO BEGIN!!! ", handle);
