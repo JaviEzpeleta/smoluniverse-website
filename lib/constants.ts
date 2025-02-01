@@ -1,5 +1,5 @@
-export const MAX_PUBLICATIONS_WHEN_PARSING_PROFILE = 100;
-export const MAX_TWEET_API_CALL_COUNT = 10;
+export const MAX_PUBLICATIONS_WHEN_PARSING_PROFILE = 92;
+export const MAX_TWEET_API_CALL_COUNT = 8;
 
 export const GEMINI_LATEST = "gemini-2.0-flash-exp";
 

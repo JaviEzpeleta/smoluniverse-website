@@ -26,7 +26,7 @@ import { Pool, PoolClient, types } from "pg";
 
 import { postErrorToDiscord, postToDiscord } from "./discord";
 import { cleanHandle, goodTwitterImage } from "./strings";
-import { FetchedTwitterUser } from "./types";
+import { FetchedTwitterUser, FetchedTweet } from "./types";
 
 export interface ImageEmbedding {
   original_name: string;
@@ -131,4 +131,68 @@ export const findUserByHandle = async (handle: string): Promise<any> => {
 export const getUsers = async (): Promise<any> => {
   const res = await executeQuery(`SELECT * FROM sim_users`);
   return res.rows;
+};
+
+export const getIRLTweets = async ({ handle }: { handle: string }) => {
+  const res = await executeQuery(
+    `SELECT * FROM sim_saved_tweets WHERE handle = $1`,
+    [handle]
+  );
+  return res.rows;
+};
+
+export const saveIRLTweets = async ({
+  handle,
+  tweets,
+}: {
+  handle: string;
+  tweets: FetchedTweet[];
+}) => {
+  // Si no hay publicaciones, salimos temprano
+  if (!tweets || tweets.length === 0) return;
+
+  console.log("Tweet i'm going to save: ", tweets[0]);
+
+  // return false;
+
+  // Columnas a insertar (ajusta si tu tabla es distinta)
+  const columns = [
+    "id",
+    "handle",
+    "content",
+    "posted_at", // Asegúrate de tener esta columna en la tabla
+  ];
+
+  // Generaremos placeholders dinámicos. Ej:
+  // ($1, $2, $3, $4, $5, $6), ($7, $8, $9, ...)
+  const values: any[] = [];
+  const placeholders: string[] = [];
+  let paramIndex = 1;
+
+  for (const tweet of tweets) {
+    placeholders.push(
+      `($${paramIndex++}, $${paramIndex++}, $${paramIndex++}, $${paramIndex++})`
+    );
+    values.push(
+      tweet.id, // id
+      handle, // handle
+      tweet.full_text, // content
+      tweet.tweet_created_at // posted_at
+    );
+  }
+
+  // Armamos la sentencia final
+  const query = `
+    INSERT INTO sim_saved_tweets (${columns.join(", ")})
+    VALUES ${placeholders.join(", ")}
+    ON CONFLICT (id) DO NOTHING
+  `;
+
+  // Ejecutamos la consulta
+  try {
+    await executeQuery(query, values);
+  } catch (error) {
+    // Manejo de error adicional si lo deseas
+    console.error("Error inserting clone publications", error);
+  }
 };

@@ -45,7 +45,9 @@ const CreateANewCloneForm = () => {
     const res = await axios.post("/api/users/create", {
       handle: twitterHandle,
     });
-    if (res.status === 200) {
+    if (res.data.success) {
+      // read all users now again?
+
       toast({
         title: "Clone created successfully",
         description: "You can now start cloning",
@@ -58,6 +60,7 @@ const CreateANewCloneForm = () => {
         variant: "destructive",
       });
     }
+
     setIsLoading(false);
   };
   return (

@@ -1,8 +1,14 @@
-import { postErrorToDiscord } from "@/lib/discord";
-import { findUserByHandle, saveNewUser } from "@/lib/postgres";
+import { postErrorToDiscord, postToDiscord } from "@/lib/discord";
+import {
+  findUserByHandle,
+  getIRLTweets,
+  saveIRLTweets,
+  saveNewUser,
+} from "@/lib/postgres";
 import { getTwitterUserInfo } from "@/lib/socialData";
 import { NextResponse } from "next/server";
 import { getTweetsFromUser } from "@/lib/socialData";
+import { FetchedTweet } from "@/lib/types";
 
 export async function POST(request: Request) {
   try {
@@ -32,6 +38,31 @@ export async function POST(request: Request) {
       // * coming soon:
 
       // ! getTweetsFromUser
+
+      console.log("💙  getting tweets from user", handle);
+
+      const savedTweets = await getIRLTweets({ handle });
+
+      if (savedTweets && savedTweets.length > 0) {
+        await postToDiscord("💚 tweets found for " + handle);
+        console.log("💚 tweets found", savedTweets);
+        return NextResponse.json({
+          success: true,
+          profile: profile,
+        });
+      }
+
+      const tweets = await getTweetsFromUser(handle);
+
+      if (!tweets) {
+        console.log("💚 tweets not found", handle);
+        return NextResponse.json({
+          success: false,
+          error: "Tweets not found",
+        });
+      }
+
+      await saveIRLTweets({ handle, tweets: tweets.allTweets });
 
       // ! crear wallet. save private_key to db.
 
