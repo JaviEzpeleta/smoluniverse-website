@@ -11,8 +11,8 @@ export const linkRenderer = (props: any) => (
   <a
     {...props}
     className={classNames(
-      "text-blue-600",
-      "hover:text-blue-800",
+      "text-blue-400",
+      "hover:text-blue-300",
       "transition-colors"
     )}
     target="_blank"
@@ -24,7 +24,7 @@ export const h1Renderer = (props: any) => (
   <div
     {...props}
     className={classNames(
-      "mb-4 text-xl font-medium tracking-tight text-zinc-800 dark:text-zinc-200 sm:text-3xl"
+      "mb-4 text-xl font-medium tracking-tight text-zinc-200 sm:text-3xl"
     )}
   />
 );
@@ -40,7 +40,7 @@ export const h1RendererMessage = (props: any) => (
   <div
     {...props}
     className={classNames(
-      "mb-4 mt-4 text-lg font-medium tracking-tight text-zinc-800 dark:text-zinc-200 sm:text-xl"
+      "mb-4 mt-4 text-lg font-medium tracking-tight text-zinc-200 sm:text-xl"
     )}
   />
 );
@@ -54,7 +54,7 @@ export const h2Renderer = (props: any) => (
     {...props}
     className={classNames(
       "font-light",
-      "mb-4 text-base uppercase tracking-wider text-zinc-600 dark:text-zinc-300 sm:text-xl"
+      "mb-4 text-base uppercase tracking-wider text-zinc-400 sm:text-xl"
     )}
   />
 );
@@ -73,7 +73,7 @@ export const h2RendererMessage = (props: any) => (
     {...props}
     className={classNames(
       "font-light",
-      "mb-4 pt-6 text-base uppercase tracking-wider text-zinc-600 dark:text-zinc-300"
+      "mb-4 pt-6 text-base uppercase tracking-wider text-zinc-300"
     )}
   />
 );
@@ -83,7 +83,7 @@ export const h3Renderer = (props: any) => (
     className={classNames(
       "",
       "",
-      "py-2 text-lg md:text-xl font-semibold tracking-tight text-zinc-800 dark:text-zinc-200"
+      "py-2 text-lg md:text-xl font-semibold tracking-tight text-zinc-200"
     )}
   />
 );
@@ -130,7 +130,7 @@ export const h3RendererMessage = (props: any) => (
     className={classNames(
       "",
       "",
-      "font-semibold mt-2 py-2 pt-4 text-lg sm:text-xl tracking-tight text-zinc-600"
+      "font-semibold mt-2 py-2 pt-4 text-lg sm:text-xl tracking-tight text-zinc-300"
     )}
   />
 );
@@ -139,7 +139,7 @@ export const h4Renderer = (props: any) => (
   <div
     {...props}
     className={classNames(
-      "mb-4 text-lg font-medium tracking-tight text-zinc-800 dark:text-zinc-200 sm:text-xl"
+      "mb-4 text-lg font-medium tracking-tight text-zinc-200 sm:text-xl"
     )}
   />
 );
@@ -160,7 +160,7 @@ export const pRenderer = (props: any) => (
   <div
     {...props}
     className={classNames(
-      "text-base font-medium lg:text-lg my-2 text-zinc-800"
+      "text-base font-medium lg:text-lg my-2 text-zinc-200"
     )}
   />
 );
@@ -208,8 +208,8 @@ export const ARenderer = (props: any) => {
     <a
       {...props}
       className={classNames(
-        "text-blue-600",
-        "hover:text-blue-800",
+        "text-blue-400",
+        "hover:text-blue-200",
         "transition-colors inline-flex items-center gap-1 hover:bg-indigo-100 px-0.5 rounded-md relative"
       )}
       href={theURL}
@@ -227,7 +227,7 @@ export const ARenderer = (props: any) => {
             animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
             exit={{ opacity: 0, y: 10, scale: 0.95, filter: "blur(4px)" }}
             // transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute z-10 -top-[128px] md:-top-[214px] cursor-pointer bg-white/60 border border-zinc-300/20 shadow-sm shadow-black/30 backdrop-blur-sm text-black p-2 px-4 rounded-md flex-col items-center justify-center"
+            className="absolute z-10 -top-[128px] md:-top-[214px] cursor-pointer bg-white/60 border border-zinc-300/20 shadow-sm shadow-black/30 backdrop-blur-sm text-white p-2 px-4 rounded-md flex-col items-center justify-center"
           >
             <div className="w-full flex items-center">
               <div className="relative">
@@ -259,7 +259,7 @@ export const ulRenderer = (props: any) => (
   <ul
     {...props}
     className={classNames(
-      "text-lg list-disc pl-1.5 sm:pl-4 marker:text-indigo-600 dark:marker:text-indigo-400",
+      "text-lg list-disc pl-1.5 sm:pl-4 marker:text-indigo-400",
       "mb-2 p-0"
     )}
   />
@@ -269,7 +269,7 @@ export const olRendererMessage = (props: any) => (
   <ol
     {...props}
     className={classNames(
-      "text-base list-decimal pl-1.5 sm:pl-4 marker:text-indigo-600 m-2 p-0"
+      "text-base list-decimal pl-1.5 sm:pl-4 marker:text-indigo-400 m-2 p-0"
     )}
   />
 );
@@ -278,13 +278,13 @@ export const olRenderer = (props: any) => (
   <ol
     {...props}
     className={classNames(
-      "text-base list-decimal pl-1.5 sm:pl-4 marker:text-indigo-600 m-2 p-0"
+      "text-base list-decimal pl-1.5 sm:pl-4 marker:text-indigo-400 m-2 p-0"
     )}
   />
 );
 
 export const preRenderer = (props: any) => (
-  <pre {...props} className={classNames("text-xs", "bg-black/80")} />
+  <pre {...props} className={classNames("text-xs", "bg-white/80")} />
 );
 
 export const emRenderer = (props: any) => (

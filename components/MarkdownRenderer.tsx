@@ -14,14 +14,12 @@ export const MarkdownRenderer = ({
   children,
 }: {
   children: React.ReactNode;
-  isWebsite?: boolean;
 }) => {
   return (
     <Markdown
       components={{
         ul: ulRenderer,
         li: liRenderer,
-        // h1: isWebsite ? h1RendererWebsite : h1Renderer,
         h1: h1Renderer,
         h2: h2Renderer,
         h3: h3Renderer,

@@ -1,6 +1,7 @@
 import MiniTitle from "@/components/MiniTitle";
 import BigTitle from "@/components/BigTitle";
 import { findUserByHandle } from "@/lib/postgres";
+import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 
 const UserProfilePage = async ({
   params,
@@ -35,9 +36,9 @@ const UserProfilePage = async ({
         </div>
       </div>
       <div className="flex flex-col md:flex-row gap-4 w-full">
-        <div className="bg-zinc-900 rounded-lg p-4 max-w-sm w-full">
+        <div className="bg-zinc-900 rounded-lg p-4 px-6 max-w-sm w-full">
           <MiniTitle>Skills</MiniTitle>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 pt-2">
             {skills.map(
               (
                 {
@@ -61,9 +62,9 @@ const UserProfilePage = async ({
             )}
           </div>
         </div>
-        <div className="bg-zinc-900 rounded-lg p-4 flex-1">
+        <div className="bg-zinc-900 rounded-lg p-4 px-6 flex-1">
           <MiniTitle>Life Goals</MiniTitle>
-          <div className="flex flex-col gap-2">{user.life_goals}</div>
+          <MarkdownRenderer>{user.life_goals}</MarkdownRenderer>
         </div>
       </div>
 
