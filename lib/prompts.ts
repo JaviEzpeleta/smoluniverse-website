@@ -55,6 +55,54 @@ With ${LIFE_GOALS_DEFAULT_COUNT} total goals is enough. Thanks.`;
   return response;
 };
 
+export const generateUserInitialSkillLevels = async (handle: string) => {
+  const userIRLTweets = await getIRLTweets({ handle });
+
+  const userPrompt =
+    "Let's create a DnD-like character based on the tweets from the user: " +
+    handle +
+    "\n\n" +
+    getListOfIRLTweetsAsString({ handle, userIRLTweets }) +
+    "\n\n" +
+    `Please Return a JSON with the following format:
+    {
+      "skills": [
+            {
+                "emoji": "",
+                "name": "talent or skill name",
+                "level": [from 0 to 100]
+            },
+            ...
+        ]
+    }`;
+
+  const messages: ChatMessage[] = [
+    {
+      role: "user",
+      content: userPrompt,
+    },
+  ];
+
+  //   console.log("CALLING FOR THE SKILL LEVELS!!");
+
+  const response = await askGeminiWithMessagesAndSystemPrompt({
+    messages,
+    systemPrompt:
+      "You are the incredible AI for 'Smol Universe', a simulation proyect with the user's personality. You are given a list of tweets from the user. Please return a list of skills for the user in JSON format.",
+  });
+  //   console.log("💚 response", response);
+
+  const cleanedResponse = response
+    .replace(/```json\n/g, "")
+    .replace(/\n```/g, "");
+
+  //   console.log("💚 cleanedResponse", cleanedResponse);
+  const parsedResponse = JSON.parse(cleanedResponse);
+
+  //   console.log("💚 parsedResponse", parsedResponse);
+  return parsedResponse.skills;
+};
+
 export const getListOfIRLTweetsAsString = ({
   handle,
   userIRLTweets,

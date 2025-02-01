@@ -54,7 +54,7 @@ export const askGeminiWithMessagesAndSystemPrompt = async ({
   });
 
   const lastMessageContent = messages[messages.length - 1].content;
-  console.log(" 👀  MY LAST MESSAGE IS:", lastMessageContent);
+  //   console.log(" 👀  MY LAST MESSAGE IS:", lastMessageContent);
 
   // edit all previous message so if role is assistant, change it to "model":
   const previousMessages = messages.slice(0, -1).map((message) => {

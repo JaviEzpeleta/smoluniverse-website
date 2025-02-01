@@ -14,7 +14,11 @@ import {
   createAndSaveNewWallet,
   sendInitialFundsToWallet,
 } from "@/lib/web3functions";
-import { getLifeGoals, tellMeAJoke } from "@/lib/prompts";
+import {
+  generateUserInitialSkillLevels,
+  getLifeGoals,
+  tellMeAJoke,
+} from "@/lib/prompts";
 
 export async function POST(request: Request) {
   try {
@@ -87,12 +91,25 @@ export async function POST(request: Request) {
 
       // now we get the life goals for the user:
 
-      console.log("💚 getting life goals for the user", handle);
-      const lifeGoals = await getLifeGoals(handle);
+      console.log(
+        "�� getting life goals and skill levels for the user",
+        handle
+      );
+      //   const [lifeGoals, userSkillLevels] = await Promise.all([
+      //     getLifeGoals(handle),
+      //     generateUserInitialSkillLevels(handle),
+      //   ]);
 
-      console.log("💚 lifeGoals", lifeGoals);
+      console.log("profile:", profile);
 
-      const userSkillLevels = await generateUserInitialSkillLevels(handle);
+      //   console.log("💚 lifeGoals", lifeGoals);
+      //   console.log("💚 userSkillLevels", userSkillLevels);
+
+      //   const newUser = {
+      //     handle,
+      //     lifeGoals,
+      //     skills: userSkillLevels,
+      //   };
 
       // ! saveNewUser
       return NextResponse.json({

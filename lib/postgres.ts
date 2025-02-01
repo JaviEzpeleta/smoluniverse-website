@@ -8,7 +8,8 @@ CREATE TABLE sim_users (
   cover_picture TEXT,
   twitter_id TEXT,
   bio TEXT,
-  last_time_tweets_parsed_at TIMESTAMP WITH TIME ZONE,
+  life_goals TEXT NOT NULL,
+  skills TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
