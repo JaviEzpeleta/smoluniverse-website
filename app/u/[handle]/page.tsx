@@ -59,7 +59,7 @@ const UserProfilePage = async ({
         </div>
       </div>
       <div className="flex flex-col md:flex-row gap-4 w-full">
-        <div className="bg-zinc-900 rounded-lg p-4 px-6 max-w-sm w-full">
+        <div className="bg-zinc-900 rounded-lg p-4 px-6 md:max-w-sm w-full">
           <MiniTitle>Skills</MiniTitle>
           <div className="flex flex-col gap-2 pt-2">
             {skills.map(
@@ -73,7 +73,7 @@ const UserProfilePage = async ({
               ) => (
                 <div
                   key={index}
-                  className="bg-zinc-800 rounded-lg p-2 flex items-center gap-2 justify-between"
+                  className="bg-zinc-800 rounded-lg p-2 pb-1 flex items-center gap-2 justify-between"
                 >
                   <div className="flex items-center gap-2">
                     <div>{emoji}</div>

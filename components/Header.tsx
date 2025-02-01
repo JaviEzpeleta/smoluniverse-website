@@ -12,7 +12,10 @@ const Header = () => {
     <div className="flex justify-between items-center p-4">
       <BlurryEntrance>
         <Link href="/">
-          <Button className="flex items-center gap-1 pb-2" variant="ghost">
+          <Button
+            className="flex items-center gap-1 pb-2 active:scale-[98%] active:translate-y-1 duration-75"
+            variant="ghost"
+          >
             <Image src="/logo.png" alt="Smol Universe" width={32} height={32} />
             <div className="text-2xl tracking-tighter translate-y-0.5 font-bold">
               Smol Universe
@@ -25,14 +28,15 @@ const Header = () => {
           href={ERC20TokenContractAddress}
           draggable={false}
           target="_blank"
+          className="active:scale-[98%] active:translate-y-0.5 duration-75 block"
         >
           <div className="bg-zinc-800 hover:bg-zinc-700 hover:text-zinc-50 transition-all duration-150 active:opacity-40 text-zinc-200 font-bold rounded-full p-1.5 pr-3 flex items-center justify-center gap-2">
             <Image
               src="/images/etherscan-logo.png"
               alt="Etherscan"
               className="bg-white rounded-full p-[1px]"
-              width={32}
-              height={32}
+              width={26}
+              height={26}
             />
             <div className="translate-y-0.5">$SMOL Contract</div>
           </div>
