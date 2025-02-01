@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${grandstander.className} antialiased`}>
+      <body className={`${grandstander.className} antialiased leading-none`}>
         {children}
       </body>
     </html>

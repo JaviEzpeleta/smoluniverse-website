@@ -12,3 +12,7 @@ body {
     --radius: 0.5rem;
   }
 }
+
+.hello {
+  border: 1px solid red;
+}
