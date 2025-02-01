@@ -62,9 +62,9 @@ export type SavedTweet = {
 
 export type RawUser = {
   handle: string;
-  name: string;
   profile_picture: string;
   cover_picture: string;
+  display_name: string;
   twitter_id: string;
   bio: string;
   life_goals: string;

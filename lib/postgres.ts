@@ -105,7 +105,7 @@ export const saveNewUser = async (profile: RawUser): Promise<boolean> => {
       `INSERT INTO sim_users (handle, display_name, profile_picture, twitter_id, cover_picture, bio, life_goals, skills) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
       [
         handle,
-        profile.name,
+        profile.display_name,
         goodTwitterImage(profile.profile_picture),
         profile.twitter_id,
         profile.cover_picture,

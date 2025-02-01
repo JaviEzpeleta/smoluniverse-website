@@ -127,7 +127,7 @@ export async function POST(request: Request) {
 
       const newUser = {
         handle,
-        name: profile.name,
+        display_name: profile.name,
         profile_picture: profile.profile_image_url_https,
         cover_picture: profile.profile_banner_url,
         twitter_id: profile.id,
