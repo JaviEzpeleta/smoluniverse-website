@@ -71,7 +71,7 @@ const CreateANewCloneForm = () => {
 
   return (
     <BlurryEntrance delay={0.1}>
-      <div className="border-primary/80 border-2 p-4 py-8 rounded-md flex flex-col items-center justify-center">
+      <div className="border-primary/60 border-2 p-4 py-8 rounded-2xl flex flex-col items-center justify-center">
         <BlurryEntrance delay={0.18}>
           <Title>Create a new Clone</Title>
         </BlurryEntrance>
