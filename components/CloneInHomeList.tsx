@@ -4,6 +4,7 @@ import { RawUser } from "@/lib/types";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { FiTrash2 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const CloneInHomeList = ({
   clone,
@@ -21,6 +22,7 @@ const CloneInHomeList = ({
     ["rgba(239, 68, 68, 0.7)", "rgba(255, 255, 255, 0)"]
   );
   const deleteOpacity = useTransform(x, [-200, -100, -20], [1, 0.5, 0]);
+  const [isDragging, setIsDragging] = useState(false);
 
   console.log(" 💚 💚 💚 💚 💚 💚 💚 CLONE: ", clone);
 
@@ -34,14 +36,16 @@ const CloneInHomeList = ({
       transition={{ delay: index * 0.05 + 0.2 }}
       drag="x"
       dragConstraints={{ left: -200, right: 0 }}
+      onDragStart={() => setIsDragging(true)}
       onDragEnd={(event, info) => {
+        setIsDragging(false);
         if (info.offset.x < -160) {
           onDelete(clone.handle);
         } else {
           x.set(0);
         }
       }}
-      className="relative rounded-xl"
+      className="relative rounded-xl cursor-grab active:cursor-grabbing"
     >
       <motion.div
         className="absolute right-2 text-white pointer-events-none h-full flex items-center"
@@ -54,7 +58,7 @@ const CloneInHomeList = ({
       </motion.div>
 
       <div
-        onClick={() => router.push(`/u/${clone.handle}`)}
+        onClick={() => !isDragging && router.push(`/u/${clone.handle}`)}
         className="active:opacity-50"
       >
         {/* <Link href={`/u/${clone.handle}`} className="active:opacity-50"> */}

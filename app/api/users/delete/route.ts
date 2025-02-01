@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const { handle } = await request.json();
-    // await deleteUserByHandle(handle);
+    await deleteUserByHandle(handle);
     return NextResponse.json({ success: true });
   } catch (error) {
     await postErrorToDiscord("🔴 Error in /api/users/delete");
