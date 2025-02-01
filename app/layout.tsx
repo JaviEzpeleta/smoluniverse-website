@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import { Grandstander } from "next/font/google";
+import { Toaster } from "@/components/ui/toaster";
 
 const grandstander = Grandstander({
   subsets: ["latin"],
@@ -23,6 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${grandstander.className} antialiased`}>
         <div className="max-w-6xl mx-auto">{children}</div>
+        <Toaster />
       </body>
     </html>
   );

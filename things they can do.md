@@ -22,3 +22,9 @@ Any clone in the Smol Universe Simulation can do the following:
 - can get married
 - can have kids
 - can create songs with SUNO unofficial API
+- change their PFP with a recreated version of their previous PFP
+- use an NFT they bought as their PFP
+- anyone from the Real World can buy those NFTs and make the clone rich??
+- a profile page to test all actions
+- build actions progressively... looots of prompts and database stuff i
+  think!!!!
