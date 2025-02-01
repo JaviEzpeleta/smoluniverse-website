@@ -3,15 +3,26 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Title from "@/components/Title";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { ImSpinner8 } from "react-icons/im";
 import { motion, AnimatePresence } from "framer-motion";
 
 const CreateANewCloneForm = () => {
-  const [twitterHandle, setTwitterHandle] = useState("");
+  const [twitterHandle, setTwitterHandle] = useState("javitoshi");
   const [isLoading, setIsLoading] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.setSelectionRange(
+        twitterHandle.length,
+        twitterHandle.length
+      );
+    }
+  }, []);
 
   const { toast } = useToast();
   const submitForm = async () => {
@@ -59,6 +70,7 @@ const CreateANewCloneForm = () => {
       <Title>Create a new Clone</Title>
       <div className="flex items-center gap-2 py-6">
         <Input
+          ref={inputRef}
           disabled={isLoading}
           value={twitterHandle}
           onChange={(e) => setTwitterHandle(e.target.value)}
@@ -68,7 +80,7 @@ const CreateANewCloneForm = () => {
             }
           }}
           placeholder="twitter handle to clone"
-          className="px-3 !text-lg"
+          className="px-5 !text-lg"
         />
         <Button onClick={submitForm}>
           <motion.div

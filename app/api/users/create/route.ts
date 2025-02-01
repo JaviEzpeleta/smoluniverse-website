@@ -22,6 +22,7 @@ export async function POST(request: Request) {
       const profile = await getTwitterUserInfo(handle);
 
       if (!profile) {
+        console.log(" 💚 Twitter user not found", handle);
         return NextResponse.json({
           success: false,
           error: "Twitter user not found",

@@ -125,7 +125,7 @@ export const findUserByHandle = async (handle: string): Promise<any> => {
   const res = await executeQuery(`SELECT * FROM sim_users WHERE handle = $1`, [
     handle,
   ]);
-  return res.rows;
+  return res.rows[0];
 };
 
 export const getUsers = async (): Promise<any> => {
