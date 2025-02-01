@@ -17,10 +17,6 @@ export async function POST(request: Request) {
   try {
     const { handle } = await request.json();
 
-    const joke = await tellMeAJoke();
-    console.log(" 🤣  JOKE: ", joke);
-    return NextResponse.json({ joke });
-
     // console.log("  -- - - - - -- - ");
     // console.log(" 💚 💚 💚 💚 💚 💚 💚 READY TO BEGIN!!! ", handle);
 
@@ -72,19 +68,11 @@ export async function POST(request: Request) {
         console.log(" A CREAR WALLET PARA EL USER: ", handle);
 
         wallet = await createAndSaveNewWallet(handle);
-        // time to create a wallet for the user!!
-        // const newWallet = await createWallet({
-        //   handle,
-        //   address: "0x0000000000000000000000000000000000000000",
-        //   privateKey: "0x0000000000000000000000000000000000000000",
-        // });
+
+        // ! transfer funds... and maybe update the db to keep track of the balance? or not? idk..
       } else {
         console.log(" WALLET YA EXISTE PARA EL USER: ", handle);
       }
-
-      // ! crear wallet. save private_key to db.
-
-      // ! transfer funds... and maybe update the db to keep track of the balance? or not? idk..
 
       // ! saveNewUser
       return NextResponse.json({
