@@ -10,8 +10,11 @@ import { getTwitterUserInfo } from "@/lib/socialData";
 import { NextResponse } from "next/server";
 import { getTweetsFromUser } from "@/lib/socialData";
 import { FetchedTweet } from "@/lib/types";
-import { createAndSaveNewWallet } from "@/lib/web3functions";
-import { tellMeAJoke } from "@/lib/prompts";
+import {
+  createAndSaveNewWallet,
+  sendInitialFundsToWallet,
+} from "@/lib/web3functions";
+import { getLifeGoals, tellMeAJoke } from "@/lib/prompts";
 
 export async function POST(request: Request) {
   try {
@@ -67,12 +70,29 @@ export async function POST(request: Request) {
       if (!wallet) {
         console.log(" A CREAR WALLET PARA EL USER: ", handle);
 
-        wallet = await createAndSaveNewWallet(handle);
+        const walletCreated = await createAndSaveNewWallet(handle);
 
-        // ! transfer funds... and maybe update the db to keep track of the balance? or not? idk..
+        if (!walletCreated) {
+          console.log("🔴 Error in createAndSaveNewWallet", handle);
+          return NextResponse.json({
+            success: false,
+            error: "Error in createAndSaveNewWallet",
+          });
+        }
+        wallet = await getWalletByHandle(handle);
+        await sendInitialFundsToWallet(wallet.address);
       } else {
         console.log(" WALLET YA EXISTE PARA EL USER: ", handle);
       }
+
+      // now we get the life goals for the user:
+
+      console.log("💚 getting life goals for the user", handle);
+      const lifeGoals = await getLifeGoals(handle);
+
+      console.log("💚 lifeGoals", lifeGoals);
+
+      const userSkillLevels = await generateUserInitialSkillLevels(handle);
 
       // ! saveNewUser
       return NextResponse.json({

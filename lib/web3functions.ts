@@ -1,22 +1,30 @@
 import { ethers } from "ethers";
 import { createWallet } from "./postgres";
-import { postToDiscord } from "./discord";
+import { postErrorToDiscord, postToDiscord } from "./discord";
 import { cleanHandle } from "./strings";
 
-export const createAndSaveNewWallet = async (handle: string) => {
-  handle = cleanHandle(handle);
+export const createAndSaveNewWallet = async (
+  handle: string
+): Promise<boolean> => {
+  try {
+    handle = cleanHandle(handle);
 
-  const newWallet = ethers.Wallet.createRandom();
+    const newWallet = ethers.Wallet.createRandom();
 
-  const wallet = await createWallet({
-    handle,
-    address: newWallet.address,
-    privateKey: newWallet.privateKey,
-  });
+    await createWallet({
+      handle,
+      address: newWallet.address,
+      privateKey: newWallet.privateKey,
+    });
 
-  await postToDiscord(`💰 wallet created for ${handle}`);
+    await postToDiscord(`💰 wallet created for ${handle}`);
 
-  return wallet;
+    return true;
+  } catch (error) {
+    await postErrorToDiscord("🔴 Error in createAndSaveNewWallet");
+    console.error("🔴 Error in createAndSaveNewWallet:", error);
+    return false;
+  }
 };
 
 export const sendInitialFundsToWallet = async (address: string) => {

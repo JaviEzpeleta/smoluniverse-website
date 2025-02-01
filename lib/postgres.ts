@@ -33,7 +33,7 @@ import { Pool, PoolClient, types } from "pg";
 
 import { postErrorToDiscord, postToDiscord } from "./discord";
 import { cleanHandle, goodTwitterImage } from "./strings";
-import { FetchedTwitterUser, FetchedTweet } from "./types";
+import { FetchedTwitterUser, FetchedTweet, SavedTweet } from "./types";
 
 export interface ImageEmbedding {
   original_name: string;
@@ -145,7 +145,7 @@ export const getIRLTweets = async ({ handle }: { handle: string }) => {
     `SELECT * FROM sim_saved_tweets WHERE handle = $1`,
     [handle]
   );
-  return res.rows;
+  return res.rows as SavedTweet[];
 };
 
 export const saveIRLTweets = async ({

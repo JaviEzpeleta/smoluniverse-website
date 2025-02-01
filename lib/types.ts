@@ -52,3 +52,10 @@ export type ChatMessage = {
   role: "user" | "assistant";
   content: string;
 };
+
+export type SavedTweet = {
+  id: string;
+  handle: string;
+  content: string;
+  posted_at: string;
+};
