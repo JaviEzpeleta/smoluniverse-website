@@ -59,3 +59,14 @@ export type SavedTweet = {
   content: string;
   posted_at: string;
 };
+
+export type RawUser = {
+  handle: string;
+  name: string;
+  profile_picture: string;
+  cover_picture: string;
+  twitter_id: string;
+  bio: string;
+  life_goals: string;
+  skills: string;
+};

@@ -34,7 +34,7 @@ import { Pool, PoolClient, types } from "pg";
 
 import { postErrorToDiscord, postToDiscord } from "./discord";
 import { cleanHandle, goodTwitterImage } from "./strings";
-import { FetchedTwitterUser, FetchedTweet, SavedTweet } from "./types";
+import { FetchedTwitterUser, FetchedTweet, SavedTweet, RawUser } from "./types";
 
 export interface ImageEmbedding {
   original_name: string;
@@ -97,27 +97,24 @@ process.on("SIGTERM", async () => {
   }
 });
 
-export const saveNewUser = async (
-  profile: FetchedTwitterUser
-): Promise<boolean> => {
+export const saveNewUser = async (profile: RawUser): Promise<boolean> => {
   try {
-    const handle = cleanHandle(profile.screen_name);
+    const handle = cleanHandle(profile.handle);
 
     const res = await executeQuery(
-      `INSERT INTO mj_users (id, social_network, address, handle, display_name, profile_picture, cover_picture, bio, followers) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+      `INSERT INTO sim_users (handle, display_name, profile_picture, twitter_id, cover_picture, bio, life_goals, skills) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
       [
-        profile.id_str,
-        "twitter",
-        "",
         handle,
         profile.name,
-        goodTwitterImage(profile.profile_image_url_https),
-        profile.profile_banner_url,
-        profile.description,
-        profile.followers_count,
+        goodTwitterImage(profile.profile_picture),
+        profile.twitter_id,
+        profile.cover_picture,
+        profile.bio,
+        profile.life_goals,
+        JSON.stringify(profile.skills),
       ]
     );
-    await postToDiscord("🐣 New Clone User: " + handle);
+    await postToDiscord(`🐣 New Clone! https://x.com/${handle}`);
     return res.rows;
   } catch (error) {
     console.error("🔴 Error in saveNewMJUser:", error);
@@ -202,6 +199,7 @@ export const saveIRLTweets = async ({
 };
 
 export const getWalletByHandle = async (handle: string) => {
+  handle = cleanHandle(handle);
   const res = await executeQuery(
     `SELECT * FROM sim_wallets WHERE handle = $1`,
     [handle]

@@ -9,7 +9,7 @@ import {
 import { getTwitterUserInfo } from "@/lib/socialData";
 import { NextResponse } from "next/server";
 import { getTweetsFromUser } from "@/lib/socialData";
-import { FetchedTweet } from "@/lib/types";
+import { FetchedTweet, RawUser } from "@/lib/types";
 import {
   createAndSaveNewWallet,
   sendInitialFundsToWallet,
@@ -84,6 +84,26 @@ export async function POST(request: Request) {
           });
         }
         wallet = await getWalletByHandle(handle);
+        if (!wallet) {
+          console.log("🔴 Error in getWalletByHandle", handle);
+          await postErrorToDiscord(
+            "🔴 Error (1) generating wallet for the user: " + handle
+          );
+          return NextResponse.json({
+            success: false,
+            error: "Error in getWalletByHandle",
+          });
+        }
+        if (!wallet.address) {
+          console.log("🔴 Error in wallet.address", handle);
+          await postErrorToDiscord(
+            "🔴 Error (2) generating wallet for the user: " + handle
+          );
+          return NextResponse.json({
+            success: false,
+            error: "Error in wallet.address",
+          });
+        }
         await sendInitialFundsToWallet(wallet.address);
       } else {
         console.log(" WALLET YA EXISTE PARA EL USER: ", handle);
@@ -95,26 +115,47 @@ export async function POST(request: Request) {
         "�� getting life goals and skill levels for the user",
         handle
       );
-      //   const [lifeGoals, userSkillLevels] = await Promise.all([
-      //     getLifeGoals(handle),
-      //     generateUserInitialSkillLevels(handle),
-      //   ]);
+      const [lifeGoals, userSkillLevels] = await Promise.all([
+        getLifeGoals(handle),
+        generateUserInitialSkillLevels(handle),
+      ]);
 
       console.log("profile:", profile);
 
       //   console.log("💚 lifeGoals", lifeGoals);
       //   console.log("💚 userSkillLevels", userSkillLevels);
 
-      //   const newUser = {
-      //     handle,
-      //     lifeGoals,
-      //     skills: userSkillLevels,
-      //   };
+      const newUser = {
+        handle,
+        name: profile.name,
+        profile_picture: profile.profile_image_url_https,
+        cover_picture: profile.profile_banner_url,
+        twitter_id: profile.id,
+        bio: profile.description,
+        life_goals: lifeGoals,
+        skills: userSkillLevels,
+      } as RawUser;
+
+      await saveNewUser(newUser);
+
+      const user = await findUserByHandle(handle);
+
+      //   CREATE TABLE sim_users (
+      //     handle TEXT PRIMARY KEY,
+      //     display_name TEXT NOT NULL,
+      //     profile_picture TEXT,
+      //     cover_picture TEXT,
+      //     twitter_id TEXT,
+      //     bio TEXT,
+      //     life_goals TEXT NOT NULL,
+      //     skills TEXT NOT NULL,
+      //     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      //   );
 
       // ! saveNewUser
       return NextResponse.json({
         success: true,
-        profile: profile,
+        profile: user,
       });
     }
   } catch (error) {
