@@ -1,7 +1,8 @@
 import { ethers } from "ethers";
-import { createWallet } from "./postgres";
+import { createWallet, getWalletByHandle } from "./postgres";
 import { postErrorToDiscord, postToDiscord } from "./discord";
 import { cleanHandle } from "./strings";
+import { ERC20_TOKEN_CONTRACT_ADDRESS } from "./constants";
 
 export const createAndSaveNewWallet = async (
   handle: string
@@ -29,8 +30,7 @@ export const createAndSaveNewWallet = async (
 
 export const sendInitialFundsToWallet = async (address: string) => {
   const deployerWalletPrivateKey = process.env.DEPLOYER_WALLET_PRIVATE_KEY;
-  const erc20TokenContractAddress =
-    process.env.NEXT_PUBLIC_ERC20_TOKEN_CONTRACT_ADDRESS;
+  const erc20TokenContractAddress = ERC20_TOKEN_CONTRACT_ADDRESS;
 
   // Crear provider y signer
   const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
@@ -56,4 +56,24 @@ export const sendInitialFundsToWallet = async (address: string) => {
   await postToDiscord(`💸 Sent 10K tokens to ${address}`);
 
   return tx;
+};
+
+export const getBalanceByHandle = async (handle: string) => {
+  const wallet = await getWalletByHandle(handle);
+  if (!wallet) {
+    return 0;
+  }
+  const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+
+  // Minimal ABI for balanceOf
+  const minABI = ["function balanceOf(address owner) view returns (uint256)"];
+
+  const tokenContract = new ethers.Contract(
+    ERC20_TOKEN_CONTRACT_ADDRESS!,
+    minABI,
+    provider
+  );
+
+  const balance = await tokenContract.balanceOf(wallet.address);
+  return balance;
 };

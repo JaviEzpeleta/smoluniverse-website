@@ -1,3 +1,7 @@
+// ERC20 token contract address:
+export const ERC20_TOKEN_CONTRACT_ADDRESS =
+  "0xb8e5d6eDf418479aA4CC73def6E4DbB2a07E47E9";
+
 // profile generation:
 export const LIFE_GOALS_DEFAULT_COUNT = 12;
 

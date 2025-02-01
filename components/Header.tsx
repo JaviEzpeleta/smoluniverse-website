@@ -4,9 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import BlurryEntrance from "./BlurryEntrance";
+import { ERC20_TOKEN_CONTRACT_ADDRESS } from "@/lib/constants";
 
 const Header = () => {
-  const ERC20TokenContractAddress = `https://sepolia.basescan.org/token/${process.env.NEXT_PUBLIC_ERC20_TOKEN_CONTRACT_ADDRESS}`;
+  const ERC20TokenContractAddress = `https://sepolia.basescan.org/token/${ERC20_TOKEN_CONTRACT_ADDRESS}`;
   return (
     <div className="flex justify-between items-center p-4">
       <BlurryEntrance>
