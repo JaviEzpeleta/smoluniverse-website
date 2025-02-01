@@ -36,8 +36,8 @@ export const getLifeGoals = async (handle: string) => {
 Try to cover all the aspects of the user's professional and personal life.
 The goal is to create a clone with the user's personality for entertainment and storytelling purposes.
 
-Reply directly with the list of life goals in Markdown format.
-With ${LIFE_GOALS_DEFAULT_COUNT} total goals is enough. Thanks.`;
+With ${LIFE_GOALS_DEFAULT_COUNT} total goals is enough.
+Reply directly with the list of life goals in Markdown format, and nothing else.`;
 
   const messages: ChatMessage[] = [
     {
@@ -49,7 +49,7 @@ With ${LIFE_GOALS_DEFAULT_COUNT} total goals is enough. Thanks.`;
   const response = await askGeminiWithMessagesAndSystemPrompt({
     messages,
     systemPrompt:
-      "You are the incredible AI for 'Smol Universe', a simulation proyect with the user's personality. You are given a list of life goals for the user. Please return a list of life goals for the user in Markdown format.",
+      "You are the incredible AI for 'Smol Universe', a simulation proyect with the user's personality. You are given a list of life goals for the user. Please return a list of life goals for the user in Markdown format. Reply ONLY and directly with the list of life goals in Markdown format.",
   });
 
   return response;
