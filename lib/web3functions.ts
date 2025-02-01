@@ -29,7 +29,8 @@ export const createAndSaveNewWallet = async (
 
 export const sendInitialFundsToWallet = async (address: string) => {
   const deployerWalletPrivateKey = process.env.DEPLOYER_WALLET_PRIVATE_KEY;
-  const erc20TokenContractAddress = process.env.ERC20_TOKEN_CONTRACT_ADDRESS;
+  const erc20TokenContractAddress =
+    process.env.NEXT_PUBLIC_ERC20_TOKEN_CONTRACT_ADDRESS;
 
   // Crear provider y signer
   const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);

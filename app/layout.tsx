@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${grandstander.className} antialiased`}>
         <div className="max-w-6xl mx-auto">
           <Header />
