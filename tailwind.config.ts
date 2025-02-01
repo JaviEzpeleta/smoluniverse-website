@@ -11,9 +11,8 @@ export default {
     extend: {
       colors: {
         primary: "#ffff33",
-        // primary: "#ffdf20",
-        // primary: "#fef08a",
-        favRed: "#fe2c55",
+        smolGreen: "#47ec93",
+        smolRed: "#fe2c55",
         background: "var(--background)",
         foreground: "var(--foreground)",
       },

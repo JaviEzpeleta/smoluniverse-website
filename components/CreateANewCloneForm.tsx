@@ -15,6 +15,7 @@ const CreateANewCloneForm = () => {
     toast({
       title: "Creating a new clone...",
       description: "This may take a while...",
+      variant: "success",
     });
     // await axios.post("/api/users/create", {
     //   name: "test",
