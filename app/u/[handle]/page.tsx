@@ -2,8 +2,12 @@ import MiniTitle from "@/components/MiniTitle";
 import BigTitle from "@/components/BigTitle";
 import { findUserByHandle } from "@/lib/postgres";
 
-const UserProfilePage = async ({ params }: { params: { handle: string } }) => {
-  const { handle } = params;
+const UserProfilePage = async ({
+  params,
+}: {
+  params: Promise<{ handle: string }>;
+}) => {
+  const { handle } = await params;
 
   const user = await findUserByHandle(handle);
 
