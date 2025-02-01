@@ -4,7 +4,7 @@ export const extractDomain = (url: string) => {
 };
 
 export const cleanHandle = (handle: string) => {
-  return handle.replace("lens/", "");
+  return handle.trim().toLowerCase();
 };
 
 export const nl2br = (message: string) => {

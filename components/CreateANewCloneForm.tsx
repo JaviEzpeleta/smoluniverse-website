@@ -10,19 +10,44 @@ import { ImSpinner8 } from "react-icons/im";
 import { motion, AnimatePresence } from "framer-motion";
 
 const CreateANewCloneForm = () => {
+  const [twitterHandle, setTwitterHandle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const { toast } = useToast();
   const submitForm = async () => {
-    setIsLoading(!isLoading);
+    if (isLoading) {
+      return;
+    }
+    if (twitterHandle.trim() === "") {
+      toast({
+        title: "Please enter a twitter handle",
+        variant: "destructive",
+      });
+      return;
+    }
+    setIsLoading(true);
     toast({
       title: "Creating a new clone...",
       description: "This may take a while...",
       variant: "success",
     });
-    // await axios.post("/api/users/create", {
-    //   name: "test",
-    // });
+    const res = await axios.post("/api/users/create", {
+      handle: twitterHandle,
+    });
+    if (res.status === 200) {
+      toast({
+        title: "Clone created successfully",
+        description: "You can now start cloning",
+        variant: "success",
+      });
+    } else {
+      toast({
+        title: "Error creating clone",
+        description: "Please try again",
+        variant: "destructive",
+      });
+    }
+    setIsLoading(false);
   };
   return (
     <motion.div
@@ -34,7 +59,9 @@ const CreateANewCloneForm = () => {
       <Title>Create a new Clone</Title>
       <div className="flex items-center gap-2 py-6">
         <Input
-          // if user presses enter, submit the form
+          disabled={isLoading}
+          value={twitterHandle}
+          onChange={(e) => setTwitterHandle(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               submitForm();

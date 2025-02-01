@@ -1,6 +1,5 @@
 /*
-* 👀 Table Definitions: 
-
+* 👀 Table Definitions:
 
 CREATE TABLE sim_users (
   handle TEXT PRIMARY KEY,
@@ -49,7 +48,7 @@ let pool: Pool | null = null;
 const getPool = (): Pool => {
   if (!pool) {
     pool = new Pool({
-      connectionString: process.env.SUPABASE_DB_URL || "",
+      connectionString: process.env.DATABASE_URL || "",
       ssl: {
         rejectUnauthorized: false,
       },
@@ -94,7 +93,7 @@ export const saveNewUser = async (
   profile: FetchedTwitterUser
 ): Promise<boolean> => {
   try {
-    const handle = profile.screen_name.trim().toLowerCase();
+    const handle = cleanHandle(profile.screen_name);
 
     const res = await executeQuery(
       `INSERT INTO mj_users (id, social_network, address, handle, display_name, profile_picture, cover_picture, bio, followers) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
@@ -110,7 +109,7 @@ export const saveNewUser = async (
         profile.followers_count,
       ]
     );
-    await postToDiscord("🐣 New Clone User: " + cleanHandle(handle));
+    await postToDiscord("🐣 New Clone User: " + handle);
     return res.rows;
   } catch (error) {
     console.error("🔴 Error in saveNewMJUser:", error);
@@ -122,8 +121,14 @@ export const saveNewUser = async (
 };
 
 export const findUserByHandle = async (handle: string): Promise<any> => {
+  handle = cleanHandle(handle);
   const res = await executeQuery(`SELECT * FROM sim_users WHERE handle = $1`, [
     handle,
   ]);
+  return res.rows;
+};
+
+export const getUsers = async (): Promise<any> => {
+  const res = await executeQuery(`SELECT * FROM sim_users`);
   return res.rows;
 };
