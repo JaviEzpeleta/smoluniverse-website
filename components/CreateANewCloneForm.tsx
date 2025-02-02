@@ -13,6 +13,7 @@ import BlurryEntrance from "./BlurryEntrance";
 
 const CreateANewCloneForm = () => {
   const { fetchPusherIndex, setFetchPusherIndex } = useStore((state) => state);
+  // const [twitterHandle, setTwitterHandle] = useState("danitome24");
   const [twitterHandle, setTwitterHandle] = useState("javitoshi");
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);

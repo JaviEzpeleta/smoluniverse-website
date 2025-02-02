@@ -33,6 +33,7 @@ const EventsList = () => {
       title: "New Event Created!",
     });
     setIsCreatingNewEvent(false);
+    setTweetsFetcherIndex(tweetsFetcherIndex + 1);
   };
 
   return (
@@ -41,7 +42,7 @@ const EventsList = () => {
         <div className="flex justify-between w-full items-center">
           <div className="text-2xl font-bold">Recent Events</div>
           <Button disabled={isCreatingNewEvent} onClick={callToCreateANewEvent}>
-            {isCreatingNewEvent ? "Creating..." : "New Event"}
+            {isCreatingNewEvent ? "Calling..." : "New Event"}
           </Button>
         </div>
       </BlurryEntrance>
