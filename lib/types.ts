@@ -81,3 +81,11 @@ export type ActionEvent = {
   extra_data: string | null;
   created_at: Date;
 };
+
+export type SmolTweet = {
+  handle: string;
+  content: string;
+  link: string | null;
+  image_url: string | null;
+  created_at: Date;
+};

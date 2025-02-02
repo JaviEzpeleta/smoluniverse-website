@@ -1,8 +1,13 @@
 import { INDIVIDUAL_ACTIONS } from "./actions-catalog";
-import { GEMINI_LATEST, GEMINI_THINKING } from "./constants";
+import { GEMINI_THINKING } from "./constants";
 import { postErrorToDiscord } from "./discord";
-import { readIRLTweets, getRandomClone, saveNewActionEvent } from "./postgres";
-import { ActionEvent, RawUser } from "./types";
+import {
+  readIRLTweets,
+  getRandomClone,
+  saveNewActionEvent,
+  saveNewSmolTweet,
+} from "./postgres";
+import { ActionEvent, RawUser, SmolTweet } from "./types";
 import { SavedTweet } from "./types";
 
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
@@ -154,6 +159,16 @@ ${JSON.stringify(tweets)}
   } as ActionEvent;
 
   await saveNewActionEvent(newActionEvent);
+
+  const newSmolTweet = {
+    handle: user.handle,
+    content: theTweet,
+    link: null,
+    image_url: null,
+    created_at: new Date(),
+  } as SmolTweet;
+
+  await saveNewSmolTweet(newSmolTweet);
 
   console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 

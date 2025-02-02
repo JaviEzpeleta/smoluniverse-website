@@ -25,6 +25,15 @@ CREATE TABLE sim_action_events (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE sim_smol_tweets (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid(),
+  handle TEXT NOT NULL,
+  content TEXT NOT NULL,
+  link TEXT,
+  image_url TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 
 CREATE TABLE sim_saved_tweets (
   id TEXT PRIMARY KEY,
@@ -43,7 +52,7 @@ CREATE TABLE sim_wallets (
 
 */
 
-import { Pool, PoolClient, types } from "pg";
+import { Pool, SmolTweet, PoolClient, types } from "pg";
 
 import { postErrorToDiscord, postToDiscord } from "./discord";
 import { cleanHandle, goodTwitterImage } from "./strings";
@@ -302,4 +311,28 @@ export const getActionEventsByHandle = async (handle: string) => {
     [handle]
   );
   return res.rows;
+};
+
+export const saveNewSmolTweet = async (smolTweet: SmolTweet) => {
+  try {
+    const res = await executeQuery(
+      `INSERT INTO sim_smol_tweets (handle, content, link, image_url, created_at) VALUES ($1, $2, $3, $4, $5)`,
+      [
+        smolTweet.handle,
+        smolTweet.content,
+        smolTweet.link,
+        smolTweet.image_url,
+        smolTweet.created_at,
+      ]
+    );
+
+    return res.rows[0];
+  } catch (error) {
+    console.error(
+      "🔴 Error in saveNewSmolTweet():",
+      JSON.stringify(smolTweet, null, 2)
+    );
+    await postErrorToDiscord("🔴 Error in saveNewSmolTweet()");
+    return null;
+  }
 };
