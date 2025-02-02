@@ -1,8 +1,12 @@
 import { INDIVIDUAL_ACTIONS } from "./actions-catalog";
+import { GEMINI_LATEST, GEMINI_THINKING } from "./constants";
 import { postErrorToDiscord } from "./discord";
 import { readIRLTweets, getRandomClone } from "./postgres";
 import { RawUser } from "./types";
 import { SavedTweet } from "./types";
+
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { generateText } from "ai";
 
 export const createNewRandomEvent = async () => {
   // ! RANDOMNESS DISABLED FOR NOW!
@@ -82,4 +86,51 @@ const executeTweetAnIdea = async ({
   tweets: SavedTweet[];
 }) => {
   console.log("🔴 executeTweetAnIdea", user, tweets);
+
+  const keys = [
+    process.env.GOOGLE_GEMINI_API_KEY_1!,
+    process.env.GOOGLE_GEMINI_API_KEY_2!,
+    process.env.GOOGLE_GEMINI_API_KEY_3!,
+  ];
+
+  const RANDOM_GEMINI_API_KEY = keys[Math.floor(Math.random() * keys.length)];
+
+  const google = createGoogleGenerativeAI({
+    apiKey: RANDOM_GEMINI_API_KEY,
+  });
+
+  const { reasoning, text } = await generateText({
+    temperature: 0.8,
+    model: google(GEMINI_THINKING, {
+      //   safetySettings: [
+      //     {
+      //       category: "HARM_CATEGORY_HARASSMENT",
+      //       threshold: "BLOCK_NONE",
+      //     },
+      //   ],
+    }),
+    messages: [
+      {
+        role: "system",
+        content: `You are a story teller for an AI clone emulation universe. Based on this character profile and recent tweets, now in this moment of the story, the charactar will write a tweet about a idea that just had.
+          
+Reply in JSON format: 
+{
+content: "the tweet content about the idea the user had", // can be in markdown format
+}`,
+      },
+      {
+        role: "user",
+        content: `Character profile: ${JSON.stringify(user)}
+
+Recent tweets: ${JSON.stringify(tweets)}
+
+
+<Important>Do not use hashtags or emojis in the tweet. Try to be creative and innovative, and also try to use the same tone and style of the user's previous tweets.</Important>`,
+      },
+    ],
+  });
+  console.log("🔴 reasoning", reasoning);
+  console.log("🔴 text", text);
+  return text;
 };

@@ -12,7 +12,7 @@ export async function GET() {
     await postErrorToDiscord("🔴 Error in /api/events/create");
     console.error("🔴 Error in /api/events/create:", error);
     return NextResponse.json(
-      { error: "Failed to delete user" },
+      { error: "Failed to create new event" },
       { status: 500 }
     );
   }
