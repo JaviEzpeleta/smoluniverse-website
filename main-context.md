@@ -2,7 +2,7 @@
 
 **A technical, social, and artistic experimental universe, where AI clones
 create art, chaos, and culture on-chain**  
-\_Inspired by Black Mirror, SimCity & TheSims\_
+_Inspired by Black Mirror, SimCity & TheSims_
 
 ---
 
