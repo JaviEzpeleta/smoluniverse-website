@@ -1,6 +1,8 @@
 import { INDIVIDUAL_ACTIONS } from "./actions-catalog";
 import { postErrorToDiscord } from "./discord";
 import { readIRLTweets, getRandomClone } from "./postgres";
+import { RawUser } from "./types";
+import { SavedTweet } from "./types";
 
 export const createNewRandomEvent = async () => {
   // ! RANDOMNESS DISABLED FOR NOW!
@@ -34,12 +36,50 @@ export const createNewRandomEvent = async () => {
     const randomCloneTweets = await readIRLTweets({
       handle: randomClone.handle,
     });
-    // await executeIndividualAction(randomClone, randomAction);
+    await executeIndividualAction({
+      user: randomClone,
+      action_type: randomAction,
+      tweets: randomCloneTweets,
+    });
 
     return { top_level_type: "individual", action: randomAction };
-  } else {
-    return "unsupported main type: " + mainType;
   }
 
-  return mainType;
+  return "unsupported main type: " + mainType;
+};
+
+const executeIndividualAction = async ({
+  user,
+  action_type,
+  tweets,
+}: {
+  user: RawUser;
+  action_type: string;
+  tweets: SavedTweet[];
+}) => {
+  console.log("🔴 executeIndividualAction", user, action_type, tweets);
+
+  // ! Huge switch case here!!!
+
+  switch (action_type) {
+    case "tweet_an_idea":
+      await executeTweetAnIdea({ user, tweets });
+      break;
+    default:
+      console.log(
+        "🔴 Error in executeIndividualAction: unsupported action type" +
+          action_type
+      );
+    //   await postErrorToDiscord("🔴 Error in executeIndividualAction: unsupported action type" + action_type);
+  }
+};
+
+const executeTweetAnIdea = async ({
+  user,
+  tweets,
+}: {
+  user: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  console.log("🔴 executeTweetAnIdea", user, tweets);
 };
