@@ -6,6 +6,7 @@ import { getBalanceByHandle } from "@/lib/web3functions";
 import { ethers } from "ethers";
 import { friendlyNumber } from "@/lib/numbers";
 import { BsWallet2 } from "react-icons/bs";
+import ToolTipped from "@/components/ToolTipped";
 
 const UserProfilePage = async ({
   params,
@@ -68,19 +69,25 @@ const UserProfilePage = async ({
                   emoji,
                   name,
                   level,
-                }: { emoji: string; name: string; level: string },
+                  description,
+                }: {
+                  emoji: string;
+                  name: string;
+                  level: string;
+                  description: string;
+                },
                 index: number
               ) => (
-                <div
-                  key={index}
-                  className="bg-zinc-800 rounded-lg p-2 pb-1 flex items-center gap-2 justify-between"
-                >
-                  <div className="flex items-center gap-2">
-                    <div>{emoji}</div>
-                    <div>{name}</div>
+                <ToolTipped text={description} key={index}>
+                  <div className="bg-zinc-800 rounded-lg p-2 pb-1 flex items-center gap-2 justify-between">
+                    <div className="flex items-center gap-2">
+                      <div>{emoji}</div>
+                      <div>{name}</div>
+                      {/* <div className="text-sm text-zinc-400">{description}</div> */}
+                    </div>
+                    <div>{level}</div>
                   </div>
-                  <div>{level}</div>
-                </div>
+                </ToolTipped>
               )
             )}
           </div>

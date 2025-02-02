@@ -93,17 +93,14 @@ Rules:
 - 8-12 total skills
 - Short, funny descriptions
 - Prioritize fun over realism!`,
-    temperature: 0, // Más creatividad
+    temperature: 0.7,
   });
 
   const cleanedResponse = response
     .replace(/```json\n/g, "")
     .replace(/\n```/g, "");
 
-  //   console.log("💚 cleanedResponse", cleanedResponse);
   const parsedResponse = JSON.parse(cleanedResponse);
-
-  //   console.log("💚 parsedResponse", parsedResponse);
   return parsedResponse.skills;
 };
 

@@ -49,11 +49,8 @@ const CreateANewCloneForm = () => {
       handle: twitterHandle,
     });
     if (res.data.success) {
-      // read all users now again?
-
       toast({
-        title: "Clone created successfully",
-        description: "You can now start cloning",
+        title: "🐣 Clone created!!",
         variant: "success",
       });
     } else {
