@@ -41,15 +41,13 @@ const EventsList = () => {
     <div className="flex flex-col gap-4 py-12">
       <BlurryEntrance delay={0.15}>
         <div className="flex justify-between w-full items-center">
-          <div className="text-2xl font-bold">Recent Events</div>
+          <div className="text-2xl font-bold">Recent Tweets</div>
           <Button disabled={isCreatingNewEvent} onClick={callToCreateANewEvent}>
             {isCreatingNewEvent ? "Calling..." : "New Event"}
           </Button>
         </div>
       </BlurryEntrance>
       <div className="space-y-4">
-        <MiniTitle>{smolTweets.length} Recent Tweets</MiniTitle>
-        {/* <pre>{JSON.stringify(smolTweets, null, 2)}</pre> */}
         <div className="flex flex-col gap-4">
           {smolTweets.map((tweet: any) => (
             <TweetCard key={tweet.id} twitterProfile={tweet}>
