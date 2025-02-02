@@ -52,7 +52,7 @@ CREATE TABLE sim_wallets (
 
 */
 
-import { Pool, SmolTweet, PoolClient, types } from "pg";
+import { Pool, PoolClient, types } from "pg";
 
 import { postErrorToDiscord, postToDiscord } from "./discord";
 import { cleanHandle, goodTwitterImage } from "./strings";
@@ -62,6 +62,7 @@ import {
   SavedTweet,
   RawUser,
   ActionEvent,
+  SmolTweet,
 } from "./types";
 
 export interface ImageEmbedding {
