@@ -1,12 +1,12 @@
 import { INDIVIDUAL_ACTIONS } from "./actions-catalog";
 import { GEMINI_LATEST, GEMINI_THINKING } from "./constants";
 import { postErrorToDiscord } from "./discord";
-import { readIRLTweets, getRandomClone } from "./postgres";
-import { RawUser } from "./types";
+import { readIRLTweets, getRandomClone, saveNewActionEvent } from "./postgres";
+import { ActionEvent, RawUser } from "./types";
 import { SavedTweet } from "./types";
 
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import { generateText } from "ai";
+import { CoreMessage, generateText } from "ai";
 
 export const createNewRandomEvent = async () => {
   // ! RANDOMNESS DISABLED FOR NOW!
@@ -61,7 +61,7 @@ const executeIndividualAction = async ({
   action_type: string;
   tweets: SavedTweet[];
 }) => {
-  console.log("🔴 executeIndividualAction", user, action_type, tweets);
+  console.log("🚀 executeIndividualAction() begins!!");
 
   // ! Huge switch case here!!!
 
@@ -85,7 +85,28 @@ const executeTweetAnIdea = async ({
   user: RawUser;
   tweets: SavedTweet[];
 }) => {
-  console.log("🔴 executeTweetAnIdea", user, tweets);
+  const theMessages = [
+    {
+      role: "system",
+      content: `You are a story teller for an AI clone emulation universe. Based on this character profile and recent tweets, now in this moment of the story, the charactar will write a tweet about a idea that just had.
+        
+Reply in JSON format: 
+{
+  "content": "the tweet content about the idea the user had", // can be in markdown format
+  "reasoning": "the reasoning behind the game character's feelings and thoughts that caused that idea"
+}`,
+    },
+    {
+      role: "user",
+      content: `Full character profile:
+${JSON.stringify(user)}
+
+Recent tweets:
+${JSON.stringify(tweets)}
+
+<Important>Do not use hashtags or emojis in the tweet. Try to be creative and innovative, and also try to use the same tone and style of the user's previous tweets.</Important>`,
+    },
+  ] as CoreMessage[];
 
   const keys = [
     process.env.GOOGLE_GEMINI_API_KEY_1!,
@@ -99,7 +120,7 @@ const executeTweetAnIdea = async ({
     apiKey: RANDOM_GEMINI_API_KEY,
   });
 
-  const { reasoning, text } = await generateText({
+  const { text } = await generateText({
     temperature: 0.8,
     model: google(GEMINI_THINKING, {
       //   safetySettings: [
@@ -109,28 +130,32 @@ const executeTweetAnIdea = async ({
       //     },
       //   ],
     }),
-    messages: [
-      {
-        role: "system",
-        content: `You are a story teller for an AI clone emulation universe. Based on this character profile and recent tweets, now in this moment of the story, the charactar will write a tweet about a idea that just had.
-          
-Reply in JSON format: 
-{
-content: "the tweet content about the idea the user had", // can be in markdown format
-}`,
-      },
-      {
-        role: "user",
-        content: `Character profile: ${JSON.stringify(user)}
-
-Recent tweets: ${JSON.stringify(tweets)}
-
-
-<Important>Do not use hashtags or emojis in the tweet. Try to be creative and innovative, and also try to use the same tone and style of the user's previous tweets.</Important>`,
-      },
-    ],
+    messages: theMessages,
   });
-  console.log("🔴 reasoning", reasoning);
   console.log("🔴 text", text);
-  return text;
+
+  const cleanedResponse = text.replace(/```json\n/g, "").replace(/\n```/g, "");
+
+  const theTweet = JSON.parse(cleanedResponse).content;
+  console.log("🔴 theTweet", theTweet);
+  const reasoning = JSON.parse(cleanedResponse).reasoning;
+  console.log("🔴 reasoning", reasoning);
+
+  // create the action_event
+  const newActionEvent = {
+    top_level_type: "individual",
+    action_type: "tweet_an_idea",
+    from_handle: user.handle,
+    main_output: theTweet,
+    story_context: reasoning,
+    to_handle: null,
+    extra_data: null,
+    created_at: new Date(),
+  } as ActionEvent;
+
+  await saveNewActionEvent(newActionEvent);
+
+  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  return theTweet;
 };

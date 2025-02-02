@@ -54,12 +54,12 @@ export async function POST(request: Request) {
       const savedTweets = await readIRLTweets({ handle });
 
       if (savedTweets && savedTweets.length > 0) {
-        console.log("✅ TWEETS YA EXISTEN PARA EL USER: ", handle);
+        // console.log("✅ TWEETS YA EXISTEN PARA EL USER: ", handle);
       } else {
         const tweets = await getTweetsFromUser(handle);
 
         if (!tweets) {
-          console.log("💚 tweets not found", handle);
+          //   console.log("💚 tweets not found", handle);
           return NextResponse.json({
             success: false,
             error: "Tweets not found",
@@ -72,12 +72,12 @@ export async function POST(request: Request) {
       let wallet = await getWalletByHandle(handle);
 
       if (!wallet) {
-        console.log(" A CREAR WALLET PARA EL USER: ", handle);
+        // console.log(" A CREAR WALLET PARA EL USER: ", handle);
 
         const walletCreated = await createAndSaveNewWallet(handle);
 
         if (!walletCreated) {
-          console.log("🔴 Error in createAndSaveNewWallet", handle);
+          //   console.log("🔴 Error in createAndSaveNewWallet", handle);
           return NextResponse.json({
             success: false,
             error: "Error in createAndSaveNewWallet",
@@ -85,7 +85,7 @@ export async function POST(request: Request) {
         }
         wallet = await getWalletByHandle(handle);
         if (!wallet) {
-          console.log("🔴 Error in getWalletByHandle", handle);
+          //   console.log("🔴 Error in getWalletByHandle", handle);
           await postErrorToDiscord(
             "🔴 Error (1) generating wallet for the user: " + handle
           );
@@ -95,7 +95,7 @@ export async function POST(request: Request) {
           });
         }
         if (!wallet.address) {
-          console.log("🔴 Error in wallet.address", handle);
+          //   console.log("🔴 Error in wallet.address", handle);
           await postErrorToDiscord(
             "🔴 Error (2) generating wallet for the user: " + handle
           );
@@ -106,22 +106,22 @@ export async function POST(request: Request) {
         }
         await sendInitialFundsToWallet(wallet.address);
       } else {
-        console.log(" WALLET YA EXISTE PARA EL USER: ", handle);
+        // console.log(" WALLET YA EXISTE PARA EL USER: ", handle);
       }
 
       // now we get the life goals for the user:
 
-      console.log(
-        "�� getting life goals and skill levels for the user",
-        handle
-      );
+      //   console.log(
+      //     "...getting life goals and skill levels for the user",
+      //     handle
+      //   );
       const [lifeGoals, userSkillLevels, userLifeContext] = await Promise.all([
         getLifeGoals(handle),
         generateUserInitialSkillLevels(handle),
         generateUserInitialLifeAdditionalContext(handle, profile),
       ]);
 
-      console.log("userLifeContext:", userLifeContext);
+      //   console.log("userLifeContext:", userLifeContext);
 
       //   console.log("💚 lifeGoals", lifeGoals);
       //   console.log("💚 userSkillLevels", userSkillLevels);
@@ -140,18 +140,6 @@ export async function POST(request: Request) {
       await saveNewUser(newUser);
 
       const user = await findUserByHandle(handle);
-
-      //   CREATE TABLE sim_users (
-      //     handle TEXT PRIMARY KEY,
-      //     display_name TEXT NOT NULL,
-      //     profile_picture TEXT,
-      //     cover_picture TEXT,
-      //     twitter_id TEXT,
-      //     bio TEXT,
-      //     life_goals TEXT NOT NULL,
-      //     skills TEXT NOT NULL,
-      //     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-      //   );
 
       // ! saveNewUser
       return NextResponse.json({

@@ -14,7 +14,7 @@ const ClonesSessionController = () => {
       await Promise.all([
         (async () => {
           const { data } = await axios.post("/api/users/get");
-          console.log(" 💚 💚 💚 💚 💚 💚 💚 DATA: ", data);
+          // console.log(" 💚 💚 💚 💚 💚 💚 💚 DATA: ", data);
           setClones(data.users);
           return data;
         })(),

@@ -13,6 +13,19 @@ CREATE TABLE sim_users (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE sim_action_events (
+  id SERIAL PRIMARY KEY,
+  from_handle TEXT,
+  action_type TEXT NOT NULL,
+  main_output TEXT NOT NULL,
+  to_handle TEXT,
+  story_context TEXT,
+  extra_data TEXT,
+  top_level_type TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+
 CREATE TABLE sim_saved_tweets (
   id TEXT PRIMARY KEY,
   handle TEXT NOT NULL,
@@ -34,7 +47,13 @@ import { Pool, PoolClient, types } from "pg";
 
 import { postErrorToDiscord, postToDiscord } from "./discord";
 import { cleanHandle, goodTwitterImage } from "./strings";
-import { FetchedTwitterUser, FetchedTweet, SavedTweet, RawUser } from "./types";
+import {
+  FetchedTwitterUser,
+  FetchedTweet,
+  SavedTweet,
+  RawUser,
+  ActionEvent,
+} from "./types";
 
 export interface ImageEmbedding {
   original_name: string;
@@ -252,4 +271,35 @@ export const getRandomClone = async () => {
     `SELECT * FROM sim_users ORDER BY RANDOM() LIMIT 1`
   );
   return res.rows[0];
+};
+
+export const saveNewActionEvent = async (actionEvent: ActionEvent) => {
+  const res = await executeQuery(
+    `INSERT INTO sim_action_events (from_handle, action_type, main_output, story_context, to_handle, extra_data, top_level_type) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+    [
+      actionEvent.from_handle,
+      actionEvent.action_type,
+      actionEvent.main_output,
+      actionEvent.story_context,
+      actionEvent.to_handle,
+      actionEvent.extra_data,
+      actionEvent.top_level_type,
+    ]
+  );
+  return res.rows[0];
+};
+
+export const getRecentActionEvents = async () => {
+  const res = await executeQuery(
+    `SELECT * FROM sim_action_events ORDER BY created_at DESC LIMIT 10`
+  );
+  return res.rows;
+};
+
+export const getActionEventsByHandle = async (handle: string) => {
+  const res = await executeQuery(
+    `SELECT * FROM sim_action_events WHERE from_handle = $1`,
+    [handle]
+  );
+  return res.rows;
 };

@@ -70,3 +70,14 @@ export type RawUser = {
   life_goals: string;
   skills: string;
 };
+
+export type ActionEvent = {
+  top_level_type: "individual" | "duet" | "world_event";
+  action_type: string;
+  main_output: string;
+  from_handle: string | null;
+  story_context: string | null;
+  to_handle: string | null;
+  extra_data: string | null;
+  created_at: Date;
+};

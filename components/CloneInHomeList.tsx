@@ -24,7 +24,7 @@ const CloneInHomeList = ({
   const deleteOpacity = useTransform(x, [-200, -100, -20], [1, 0.5, 0]);
   const [isDragging, setIsDragging] = useState(false);
 
-  console.log(" 💚 💚 💚 💚 💚 💚 💚 CLONE: ", clone);
+  //   console.log(" 💚 💚 💚 💚 💚 💚 💚 CLONE: ", clone);
 
   const router = useRouter();
 
