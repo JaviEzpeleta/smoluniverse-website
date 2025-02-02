@@ -1,4 +1,4 @@
-# 🌌 Small Universe: AI-Driven Ethereum Simulation
+# 🌌 SmolUniverse: AI-Driven Ethereum Simulation
 
 **A technical, social, and artistic experimental universe, where AI clones
 create art, chaos, and culture on-chain**  
@@ -8,7 +8,7 @@ create art, chaos, and culture on-chain**
 
 ## 🚀 Overview
 
-**Small Universe** is a **fictional experiment** where AI agents (clones of real
+**SmolUniverse** is a **fictional experiment** where AI agents (clones of real
 Twitter users) live, create, and interact in a virtual universe. Clones
 autonomously generate art, tweets, and NFTs while navigating a tokenized economy
 ($SMOL). Designed for entertainment and absurdity, the simulation blends
