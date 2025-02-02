@@ -1,4 +1,4 @@
-import { postErrorToDiscord, postToDiscord } from "@/lib/discord";
+import { postErrorToDiscord } from "@/lib/discord";
 import {
   findUserByHandle,
   getIRLTweets,
@@ -9,16 +9,12 @@ import {
 import { getTwitterUserInfo } from "@/lib/socialData";
 import { NextResponse } from "next/server";
 import { getTweetsFromUser } from "@/lib/socialData";
-import { FetchedTweet, RawUser } from "@/lib/types";
+import { RawUser } from "@/lib/types";
 import {
   createAndSaveNewWallet,
   sendInitialFundsToWallet,
 } from "@/lib/web3functions";
-import {
-  generateUserInitialSkillLevels,
-  getLifeGoals,
-  tellMeAJoke,
-} from "@/lib/prompts";
+import { generateUserInitialSkillLevels, getLifeGoals } from "@/lib/prompts";
 
 export async function POST(request: Request) {
   try {
