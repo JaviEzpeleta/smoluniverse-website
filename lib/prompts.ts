@@ -39,23 +39,36 @@ Please return a list of life goals for the user in Markdown format. Reply ONLY a
 export const generateUserInitialSkillLevels = async (handle: string) => {
   const userIRLTweets = await getIRLTweets({ handle });
 
-  const userPrompt =
-    "Let's create a DnD-like character based on the tweets from the user: " +
-    handle +
-    "\n\n" +
-    getListOfIRLTweetsAsString({ handle, userIRLTweets }) +
-    "\n\n" +
-    `Please Return a JSON with the following format:
-    {
-      "skills": [
-            {
-                "emoji": "",
-                "name": "talent or skill name",
-                "level": [from 0 to 100]
-            },
-            ...
-        ]
-    }`;
+  const userPrompt = `List of tweets from ${handle}:
+  ${getListOfIRLTweetsAsString({ handle, userIRLTweets })}
+  
+  Create a DnD-like character with UNIQUE skills based on these tweets. Mix real skills with 3-5 invented ones. Include 2-4 weaknesses (low level skills).
+  
+  Return JSON format:
+  {
+    "skills": [
+      {
+        "emoji": "🎮",
+        "name": "Retro Gaming Mastery",
+        "level": 75,
+        "description": "Skill for classic game challenges"
+      },
+      ...
+    ]
+  }
+  
+  Include these categories:
+  - 40% skills related to tweets
+  - 30% invented funny/weird skills
+  - 20% life management skills
+  - 10% random weaknesses
+  
+  Level ranges:
+  - Strengths: 60-100
+  - Neutral: 30-70
+  - Weaknesses: 0-40
+  
+  Reply ONLY with valid JSON.`;
 
   const messages: ChatMessage[] = [
     {
@@ -64,14 +77,24 @@ export const generateUserInitialSkillLevels = async (handle: string) => {
     },
   ];
 
-  //   console.log("CALLING FOR THE SKILL LEVELS!!");
-
   const response = await askGeminiWithMessagesAndSystemPrompt({
     messages,
-    systemPrompt:
-      "You are the incredible AI for 'Smol Universe', a simulation proyect with the user's personality. You are given a list of tweets from the user. Please return a list of skills for the user in JSON format.",
+    systemPrompt: `You are the core of 'Smol Universe', a game that converts real personalities into RPG stats. Analyze tweets and generate:
+
+1. REAL skills (e.g., "Python Programming", "Photography") with levels matching tweet mentions
+2. INVENTED skills (e.g., "Memefuism", "Wi-Fi Detection") based on patterns
+3. FUNNY weaknesses (e.g., "Deadly Cooking", "Plant Assassination") with low levels
+4. SOCIAL skills (e.g., "Sarcastic Persuasion", "Pet Seduction")
+
+Rules:
+- Varied levels (some high, medium, and low)
+- Creative emojis for each skill
+- Tangible and concise skill names
+- 8-12 total skills
+- Short, funny descriptions
+- Prioritize fun over realism!`,
+    temperature: 0, // Más creatividad
   });
-  //   console.log("💚 response", response);
 
   const cleanedResponse = response
     .replace(/```json\n/g, "")
