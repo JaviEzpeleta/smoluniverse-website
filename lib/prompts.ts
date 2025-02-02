@@ -1,7 +1,7 @@
 import { LIFE_GOALS_DEFAULT_COUNT } from "./constants";
 import { askGeminiWithMessagesAndSystemPrompt } from "./gemini";
 import { getIRLTweets } from "./postgres";
-import { ChatMessage, SavedTweet } from "./types";
+import { ChatMessage, FetchedTwitterUser, SavedTweet } from "./types";
 
 export const getLifeGoals = async (handle: string) => {
   const userIRLTweets = await getIRLTweets({ handle });
@@ -102,6 +102,61 @@ Rules:
 
   const parsedResponse = JSON.parse(cleanedResponse);
   return parsedResponse.skills;
+};
+
+export const generateUserInitialLifeAdditionalContext = async (
+  handle: string,
+  profile: FetchedTwitterUser
+) => {
+  console.log("📙 📙 📙 📙  DEBUG: the bio is: ", profile.description);
+
+  const userIRLTweets = await getIRLTweets({ handle });
+
+  const userPrompt = `# Context on the user @${handle} (name: ${profile.name}):
+
+## Bio on their twitter profile:
+
+${profile.description}
+
+## List of tweets from the user:
+  ${getListOfIRLTweetsAsString({ handle, userIRLTweets })}
+  
+Analyze these tweets and generate a fictional life context for a parody character. Invent any missing details in a way that makes sense for the character.
+
+Return JSON format:
+{
+"relationship_status_code": "", // "single", "married", "married_with_kids"...
+"current_job_title": "", // can be "Unemployed" or a full job title + name of the company. Examples: "Web developer for OpenAI", "CTO of Gumroad", "Illustrator for Marvel Comics", "Freelancer", "Unemployed"
+"weekly_job_income": 0, // Fictional salary, between 0-5000 $SMOL (unemployed=0)
+"weekly_life_expenses": 0 // Between 200-1000 $SMOL (fictional sum of paying rent and lifestyle personal avg expenses)
+}
+
+Rules:
+- If info isn't in tweets, make up something that would make sense for the character
+
+Return ONLY valid JSON. No explanations.`;
+
+  const messages: ChatMessage[] = [
+    {
+      role: "user",
+      content: userPrompt,
+    },
+  ];
+
+  const response = await askGeminiWithMessagesAndSystemPrompt({
+    messages,
+    systemPrompt: `You're the core of "SmolUniverse", an artistic and experimental universe where ai agents live, create and interact in a virtual universe. 
+    
+Please, based on the tweets from the user, create a fictional life context for a parody character. Invent any missing details in the most entertaining way possible!`,
+    temperature: 0.75, // Higher temp for more chaos
+  });
+
+  const cleanedResponse = response
+    .replace(/```json\n?/g, "")
+    .replace(/```/g, "")
+    .trim();
+
+  return JSON.parse(cleanedResponse);
 };
 
 export const getListOfIRLTweetsAsString = ({

@@ -14,7 +14,11 @@ import {
   createAndSaveNewWallet,
   sendInitialFundsToWallet,
 } from "@/lib/web3functions";
-import { generateUserInitialSkillLevels, getLifeGoals } from "@/lib/prompts";
+import {
+  generateUserInitialLifeAdditionalContext,
+  generateUserInitialSkillLevels,
+  getLifeGoals,
+} from "@/lib/prompts";
 
 export async function POST(request: Request) {
   try {
@@ -111,12 +115,13 @@ export async function POST(request: Request) {
         "�� getting life goals and skill levels for the user",
         handle
       );
-      const [lifeGoals, userSkillLevels] = await Promise.all([
+      const [lifeGoals, userSkillLevels, userLifeContext] = await Promise.all([
         getLifeGoals(handle),
         generateUserInitialSkillLevels(handle),
+        generateUserInitialLifeAdditionalContext(handle, profile),
       ]);
 
-      console.log("profile:", profile);
+      console.log("userLifeContext:", userLifeContext);
 
       //   console.log("💚 lifeGoals", lifeGoals);
       //   console.log("💚 userSkillLevels", userSkillLevels);
