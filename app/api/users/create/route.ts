@@ -135,6 +135,7 @@ export async function POST(request: Request) {
         bio: profile.description,
         life_goals: lifeGoals,
         skills: userSkillLevels,
+        life_context: userLifeContext,
       } as RawUser;
 
       await saveNewUser(newUser);

@@ -5,11 +5,14 @@ import useStore from "@/lib/zustandStore";
 import CloneInHomeList from "./CloneInHomeList";
 import BlurryEntrance from "./BlurryEntrance";
 import axios from "axios";
+import { useToast } from "@/hooks/use-toast";
 
 const RecentClones = () => {
   const { clones, setClones, fetchPusherIndex, setFetchPusherIndex } = useStore(
     (state) => state
   );
+
+  const { toast } = useToast();
 
   const onDelete = async (handle: string) => {
     const newClones = clones.filter((clone) => clone.handle !== handle);
@@ -17,6 +20,10 @@ const RecentClones = () => {
     console.log(" 💚 💚 💚 💚 💚 💚 💚 DELETE: ", handle);
     await axios.post("/api/users/delete", { handle });
     setFetchPusherIndex(fetchPusherIndex + 1);
+    toast({
+      title: `Clone of ${handle} deleted!`,
+      variant: "success",
+    });
   };
 
   return (

@@ -3,7 +3,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "@/components/ui/tooltip";
 
 const ToolTipped = ({
   text,
@@ -11,41 +11,28 @@ const ToolTipped = ({
   side = "top",
   disabled,
 }: {
-  text: string
-  children: React.ReactNode
-  side?: "top" | "right" | "bottom" | "left"
-  disabled?: boolean
+  text: string;
+  children: React.ReactNode;
+  side?: "top" | "right" | "bottom" | "left";
+  disabled?: boolean;
 }) => {
-  const textMap = {
-    // translate ad_manager to Ad Manager
-    admin: "Admin",
-    editor: "Editor",
-    viewer: "Viewer",
-    ad_manager: "Ad Manager",
-    client: "Client",
-    basic: "Basic",
-  } as Record<string, string>
-
-  if (disabled) return <>{children}</>
+  if (disabled) return <>{children}</>;
 
   return (
     <TooltipProvider delayDuration={120}>
       <Tooltip disableHoverableContent={true}>
-        <TooltipTrigger asChild>
-          {children}
-          {/* <Button variant="outline">Hover</Button> */}
-        </TooltipTrigger>
+        <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipContent
-          className="bg-white/40 backdrop-blur-md border-2 border-black/30"
+          className="bg-black/15 backdrop-blur-lg border-2 border-white/30"
           side={side}
         >
-          <p className="text-lg max-w-xs text-bbBlack/90 px-2 font-shantellSans font-semibold">
-            {textMap[text] || text}
+          <p className="text-sm max-w-xs text-white py-1 px-2 font-shantellSans font-medium">
+            {text}
           </p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
-  )
-}
+  );
+};
 
-export default ToolTipped
+export default ToolTipped;

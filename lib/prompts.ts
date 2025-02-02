@@ -123,12 +123,18 @@ ${profile.description}
   
 Analyze these tweets and generate a fictional life context for a parody character. Invent any missing details in a way that makes sense for the character.
 
+
 Return JSON format:
 {
-"relationship_status_code": "", // "single", "married", "married_with_kids"...
-"current_job_title": "", // can be "Unemployed" or a full job title + name of the company. Examples: "Web developer for OpenAI", "CTO of Gumroad", "Illustrator for Marvel Comics", "Freelancer", "Unemployed"
-"weekly_job_income": 0, // Fictional salary, between 0-5000 $SMOL (unemployed=0)
-"weekly_life_expenses": 0 // Between 200-1000 $SMOL (fictional sum of paying rent and lifestyle personal avg expenses)
+"one_liner": "", A short description of the character's life. Like Bio. ((Current user's bio is: ${
+    profile.description
+  }. Feel free to adapt it. DO NOT include URLs, just names.)) Max 12 words.
+"relationship_status_code": "", // "single", "married", "married_with_kids"... or other states you feel like it's appropiated
+"current_job_title": "", // Can be a full job title + company name. Examples: "💻  Web developer for OpenAI", "🚀 CTO of Gumroad", "🎨 Illustrator for Marvel Comics", "🏗️ Freelancer", or "🫠 Unemployed" if the character doesn't have a job at the moment.
+"weekly_jobs_income": 0, // Fictional salary or sum of all incom sources... maybe between 0-5000 $SMOL (unemployed=0)
+"weekly_jobs_income_explained": "" // Reasoning that explanis the background for the weekly_jobs_income value
+"weekly_life_expenses": 0 // ...maybe between 200-1000 $SMOL (fictional sum of paying rent and lifestyle personal avg expenses)
+"weekly_life_expenses_explained": "" // Reasoning that explanis the background for the weekly_jobs_income value
 }
 
 Rules:
