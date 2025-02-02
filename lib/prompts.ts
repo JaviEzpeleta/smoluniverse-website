@@ -1,10 +1,10 @@
 import { LIFE_GOALS_DEFAULT_COUNT } from "./constants";
 import { askGeminiWithMessagesAndSystemPrompt } from "./gemini";
-import { getIRLTweets } from "./postgres";
+import { readIRLTweets } from "./postgres";
 import { ChatMessage, FetchedTwitterUser, SavedTweet } from "./types";
 
 export const getLifeGoals = async (handle: string) => {
-  const userIRLTweets = await getIRLTweets({ handle });
+  const userIRLTweets = await readIRLTweets({ handle });
 
   const userPrompt = `List of tweets from ${handle}:
 ${getListOfIRLTweetsAsString({ handle, userIRLTweets })}
@@ -37,7 +37,7 @@ Please return a list of life goals for the user in Markdown format. Reply ONLY a
 };
 
 export const generateUserInitialSkillLevels = async (handle: string) => {
-  const userIRLTweets = await getIRLTweets({ handle });
+  const userIRLTweets = await readIRLTweets({ handle });
 
   const userPrompt = `List of tweets from ${handle}:
   ${getListOfIRLTweetsAsString({ handle, userIRLTweets })}
@@ -110,7 +110,7 @@ export const generateUserInitialLifeAdditionalContext = async (
 ) => {
   console.log("📙 📙 📙 📙  DEBUG: the bio is: ", profile.description);
 
-  const userIRLTweets = await getIRLTweets({ handle });
+  const userIRLTweets = await readIRLTweets({ handle });
 
   const userPrompt = `# Context on the user @${handle} (name: ${profile.name}):
 

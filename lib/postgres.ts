@@ -146,7 +146,7 @@ export const getUsers = async (): Promise<any> => {
   return res.rows;
 };
 
-export const getIRLTweets = async ({ handle }: { handle: string }) => {
+export const readIRLTweets = async ({ handle }: { handle: string }) => {
   const res = await executeQuery(
     `SELECT * FROM sim_saved_tweets WHERE handle = $1`,
     [handle]
@@ -245,4 +245,11 @@ export const deleteUserByHandle = async (handle: string) => {
     console.error("🔴 Error in deleteUserByHandle:", error);
     await postErrorToDiscord("🔴 Error in deleteUserByHandle: " + handle);
   }
+};
+
+export const getRandomClone = async () => {
+  const res = await executeQuery(
+    `SELECT * FROM sim_users ORDER BY RANDOM() LIMIT 1`
+  );
+  return res.rows[0];
 };

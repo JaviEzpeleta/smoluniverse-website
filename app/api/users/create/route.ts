@@ -1,7 +1,7 @@
 import { postErrorToDiscord } from "@/lib/discord";
 import {
   findUserByHandle,
-  getIRLTweets,
+  readIRLTweets,
   getWalletByHandle,
   saveIRLTweets,
   saveNewUser,
@@ -51,7 +51,7 @@ export async function POST(request: Request) {
 
       //   console.log("💙  getting tweets from user", handle);
 
-      const savedTweets = await getIRLTweets({ handle });
+      const savedTweets = await readIRLTweets({ handle });
 
       if (savedTweets && savedTweets.length > 0) {
         console.log("✅ TWEETS YA EXISTEN PARA EL USER: ", handle);
