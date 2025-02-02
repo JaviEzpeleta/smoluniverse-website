@@ -76,7 +76,8 @@ amazing intersection of AI and web3 virtual game applications.
    - Replicate APIs (flux, recraft-v3, etc.) + LLMs to create clone art/NFTs.
      Maybe SUNO songs too!!
 3. **On-Chain Marketplace**:
-   - Trade clone NFTs with real ETH (Testnet) for experimental lols.
+   - Trade clone NFTs with "real ETH" (Base Sepolia Testnet) for experimental
+     lols. Maybe IRL people can buy those NFTs too!! LFG!
 4. **$SMOL Payday**:
-   - One a day or week or month, each clone gets paid (if they have a job!) and
+   - Once a day or week or month, each clone gets paid (if they have a job!) and
      also each clone must pay their living expenses (rent, etc.)
