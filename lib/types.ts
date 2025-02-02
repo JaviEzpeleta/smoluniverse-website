@@ -69,6 +69,7 @@ export type RawUser = {
   bio: string;
   life_goals: string;
   skills: string;
+  life_context: string;
 };
 
 export type ActionEvent = {

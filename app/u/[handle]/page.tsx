@@ -24,6 +24,7 @@ const UserProfilePage = async ({
   const balanceInWei = await getBalanceByHandle(handle);
   const balance = ethers.formatEther(balanceInWei);
   const skills = JSON.parse(user.skills);
+  const lifeContext = JSON.parse(user.life_context);
 
   return (
     <div className="p-4 space-y-4">
@@ -61,6 +62,10 @@ const UserProfilePage = async ({
       </div>
       <div className="flex flex-col md:flex-row gap-4 w-full">
         <div className="bg-zinc-900 rounded-lg p-4 px-6 md:max-w-sm w-full">
+          <div className="hello">
+            <div>Life stuff here</div>
+            <pre>{JSON.stringify(lifeContext, null, 2)}</pre>
+          </div>
           <MiniTitle>Skills</MiniTitle>
           <div className="flex flex-col gap-2 pt-2">
             {skills.map(

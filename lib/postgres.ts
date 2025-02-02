@@ -10,6 +10,7 @@ CREATE TABLE sim_users (
   bio TEXT,
   life_goals TEXT NOT NULL,
   skills TEXT NOT NULL,
+  life_context TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -131,7 +132,7 @@ export const saveNewUser = async (profile: RawUser): Promise<boolean> => {
     const handle = cleanHandle(profile.handle);
 
     const res = await executeQuery(
-      `INSERT INTO sim_users (handle, display_name, profile_picture, twitter_id, cover_picture, bio, life_goals, skills) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      `INSERT INTO sim_users (handle, display_name, profile_picture, twitter_id, cover_picture, bio, life_goals, skills, life_context) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
       [
         handle,
         profile.display_name,
@@ -141,6 +142,7 @@ export const saveNewUser = async (profile: RawUser): Promise<boolean> => {
         profile.bio,
         profile.life_goals,
         JSON.stringify(profile.skills),
+        JSON.stringify(profile.life_context),
       ]
     );
     await postToDiscord(`🐣 New Clone! https://x.com/${handle}`);
@@ -268,6 +270,23 @@ export const getRecentClones = async () => {
 
 export const deleteUserByHandle = async (handle: string) => {
   try {
+    handle = cleanHandle(handle);
+
+    // primero borramos los smol tweets de este clon:
+    await executeQuery(`DELETE FROM sim_smol_tweets WHERE handle = $1`, [
+      handle,
+    ]);
+
+    // luego borramos los action events del "from" este clon:
+    await executeQuery(`DELETE FROM sim_action_events WHERE from_handle = $1`, [
+      handle,
+    ]);
+
+    // luego borramos los action events del "to" este clon:
+    await executeQuery(`DELETE FROM sim_action_events WHERE to_handle = $1`, [
+      handle,
+    ]);
+
     await executeQuery(`DELETE FROM sim_users WHERE handle = $1`, [handle]);
     await postToDiscord(`💀 User deleted: \`${handle}\``);
   } catch (error) {
