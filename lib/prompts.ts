@@ -3,40 +3,16 @@ import { askGeminiWithMessagesAndSystemPrompt } from "./gemini";
 import { getIRLTweets } from "./postgres";
 import { ChatMessage, SavedTweet } from "./types";
 
-export const tellMeAJoke = async () => {
-  const prompt = `
-    Tell me a joke
-    `;
-
-  const messages: ChatMessage[] = [
-    {
-      role: "user",
-      content: prompt,
-    },
-  ];
-
-  const response = await askGeminiWithMessagesAndSystemPrompt({
-    messages,
-    systemPrompt: "You are a joke teller",
-  });
-
-  return response;
-};
-
 export const getLifeGoals = async (handle: string) => {
   const userIRLTweets = await getIRLTweets({ handle });
 
-  const userPrompt =
-    "Based on the following tweets, please generate a list of life goals for the user: " +
-    handle +
-    "\n\n" +
-    getListOfIRLTweetsAsString({ handle, userIRLTweets }) +
-    "\n\n" +
-    `Please Return a in Markdown, using bullet lists and sublists. 
-Try to cover all the aspects of the user's professional and personal life.
-The goal is to create a clone with the user's personality for entertainment and storytelling purposes.
+  const userPrompt = `List of tweets from ${handle}:
+${getListOfIRLTweetsAsString({ handle, userIRLTweets })}
 
-With ${LIFE_GOALS_DEFAULT_COUNT} total goals is enough.
+Please Return a list of life goals in Markdown format, using bullet points that can begin with an emoji if you feel it.
+
+Something like ${LIFE_GOALS_DEFAULT_COUNT} total goals is enough.
+
 Reply directly with the list of life goals in Markdown format, and nothing else.`;
 
   const messages: ChatMessage[] = [
@@ -48,8 +24,13 @@ Reply directly with the list of life goals in Markdown format, and nothing else.
 
   const response = await askGeminiWithMessagesAndSystemPrompt({
     messages,
-    systemPrompt:
-      "You are the incredible AI for 'Smol Universe', a simulation proyect with the user's personality. You are given a list of life goals for the user. Please return a list of life goals for the user in Markdown format. Reply ONLY and directly with the list of life goals in Markdown format.",
+    systemPrompt: `You are the brain behind 'Smol Universe', an art and storytelling simulation experiment project.
+Based on the tweets from this user (${handle}), help me create a fictional character for a videogame story. 
+Please give me a list of life goals this character could have in the videogame, that are somehow related to the tweets, but make it as "gamificationable" as possible. 
+Ideally the goals are concise, practical, achievable and fun. 
+
+Please return a list of life goals for the user in Markdown format. Reply ONLY and directly with the list of life goals in Markdown format.`,
+    temperature: 0.9,
   });
 
   return response;

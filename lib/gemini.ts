@@ -34,9 +34,11 @@ export const askGemini = async ({
 export const askGeminiWithMessagesAndSystemPrompt = async ({
   messages,
   systemPrompt,
+  temperature = 0.2,
 }: {
   messages: ChatMessage[];
   systemPrompt: string;
+  temperature?: number;
 }) => {
   const keys = [
     process.env.GOOGLE_GEMINI_API_KEY_1!,
@@ -51,6 +53,9 @@ export const askGeminiWithMessagesAndSystemPrompt = async ({
   const model = genAI.getGenerativeModel({
     model: GEMINI_LATEST,
     systemInstruction: systemPrompt,
+    generationConfig: {
+      temperature: temperature, // Set your desired temperature here (e.g., 0.9 for more creativity)
+    },
   });
 
   const lastMessageContent = messages[messages.length - 1].content;
