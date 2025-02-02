@@ -337,3 +337,10 @@ export const saveNewSmolTweet = async (smolTweet: SmolTweet) => {
     return null;
   }
 };
+
+export const getRecentSmolTweets = async () => {
+  const res = await executeQuery(
+    `SELECT * FROM sim_smol_tweets ORDER BY created_at DESC LIMIT 10`
+  );
+  return res.rows;
+};
