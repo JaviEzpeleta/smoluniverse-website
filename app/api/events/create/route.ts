@@ -1,4 +1,4 @@
-import { createNewRandomEvent } from "@/lib/chaos-machine";
+import { createNewRandomEvent } from "@/lib/chaos-factory";
 import { postErrorToDiscord } from "@/lib/discord";
 // import { createEvent } from "@/lib/postgres";
 import { NextResponse } from "next/server";
