@@ -1,10 +1,13 @@
 import { postErrorToDiscord } from "@/lib/discord";
-import { getRecentSmolTweets } from "@/lib/postgres";
+import {
+  getRecentSmolTweets,
+  getRecentSmolTweetsWithUserInfo,
+} from "@/lib/postgres";
 import { NextResponse } from "next/server";
 
 export async function POST() {
   try {
-    const recentSmolTweets = await getRecentSmolTweets();
+    const recentSmolTweets = await getRecentSmolTweetsWithUserInfo();
     return NextResponse.json({
       success: true,
       smolTweets: recentSmolTweets,

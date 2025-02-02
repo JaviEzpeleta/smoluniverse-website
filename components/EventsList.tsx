@@ -7,6 +7,7 @@ import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import MiniTitle from "./MiniTitle";
 import SmolTweetCard from "./SmolTweetCard";
+import TweetCard from "./TweetCard";
 
 const EventsList = () => {
   const [events, setEvents] = useState([]);
@@ -46,11 +47,14 @@ const EventsList = () => {
           </Button>
         </div>
       </BlurryEntrance>
-      <div className="p-2 hello">
+      <div className="space-y-4">
         <MiniTitle>{smolTweets.length} Recent Tweets</MiniTitle>
-        <div className="flex flex-col gap-2">
+        {/* <pre>{JSON.stringify(smolTweets, null, 2)}</pre> */}
+        <div className="flex flex-col gap-4">
           {smolTweets.map((tweet: any) => (
-            <SmolTweetCard key={tweet.id} tweet={tweet} />
+            <TweetCard key={tweet.id} twitterProfile={tweet}>
+              {tweet.content}
+            </TweetCard>
           ))}
         </div>
       </div>

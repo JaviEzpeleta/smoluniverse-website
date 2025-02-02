@@ -363,3 +363,17 @@ export const getRecentSmolTweets = async () => {
   );
   return res.rows;
 };
+
+export const getRecentSmolTweetsWithUserInfo = async () => {
+  const res = await executeQuery(
+    `SELECT 
+      t.*,
+      u.display_name,
+      u.profile_picture
+    FROM sim_smol_tweets t
+    LEFT JOIN sim_users u ON t.handle = u.handle
+    ORDER BY t.created_at DESC 
+    LIMIT 10`
+  );
+  return res.rows;
+};
