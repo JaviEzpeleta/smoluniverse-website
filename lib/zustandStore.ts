@@ -10,6 +10,9 @@ interface AppState {
 
   clones: RawUser[];
   setClones: (agents: RawUser[]) => void;
+
+  showWaitlistModal: boolean;
+  setShowWaitlistModal: (showWaitlistModal: boolean) => void;
 }
 
 const useStore = create<AppState>((set) => ({
@@ -21,6 +24,9 @@ const useStore = create<AppState>((set) => ({
 
   clones: [],
   setClones: (agents) => set({ clones: agents }),
+
+  showWaitlistModal: false,
+  setShowWaitlistModal: (showWaitlistModal) => set({ showWaitlistModal }),
 }));
 
 export default useStore;

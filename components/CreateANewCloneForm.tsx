@@ -10,10 +10,12 @@ import { ImSpinner8 } from "react-icons/im";
 import { motion, AnimatePresence } from "framer-motion";
 import useStore from "@/lib/zustandStore";
 import BlurryEntrance from "./BlurryEntrance";
+import { IS_LOCALHOST } from "@/lib/constants";
 
 const CreateANewCloneForm = () => {
-  const { fetchPusherIndex, setFetchPusherIndex } = useStore((state) => state);
-  // const [twitterHandle, setTwitterHandle] = useState("danitome24");
+  const { fetchPusherIndex, setFetchPusherIndex, setShowWaitlistModal } =
+    useStore((state) => state);
+
   const [twitterHandle, setTwitterHandle] = useState("javitoshi");
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -30,6 +32,10 @@ const CreateANewCloneForm = () => {
 
   const { toast } = useToast();
   const submitForm = async () => {
+    if (IS_LOCALHOST) {
+      setShowWaitlistModal(true);
+      return;
+    }
     if (isLoading) {
       return;
     }

@@ -336,8 +336,9 @@ export const deleteUserByHandle = async (handle: string) => {
 
 export const getRandomClone = async () => {
   const res = await executeQuery(
-    `SELECT * FROM sim_users ORDER BY RANDOM() LIMIT 1`
+    // `SELECT * FROM sim_users ORDER BY RANDOM() LIMIT 1`
     // `SELECT * FROM sim_users where handle = 'danitome24'`
+    `SELECT * FROM sim_users where handle = 'alberduris'`
     // `SELECT * FROM sim_users where handle = 'javitoshi'`
   );
   return res.rows[0];
