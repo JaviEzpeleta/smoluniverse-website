@@ -1,3 +1,9 @@
 {
-  "regions": ["cdg1"]
+  "regions": ["cdg1"],
+  "crons": [
+    {
+      "path": "/api/cronjob",
+      "schedule": "*/2 * * * *"
+    }
+  ]
 }
