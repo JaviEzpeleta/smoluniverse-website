@@ -8,6 +8,7 @@ import { friendlyNumber } from "@/lib/numbers";
 import { BsWallet2 } from "react-icons/bs";
 import ToolTipped from "@/components/ToolTipped";
 import Title from "@/components/Title";
+import Link from "next/link";
 
 const UserProfilePage = async ({
   params,
@@ -43,7 +44,19 @@ const UserProfilePage = async ({
             />
             <div>
               <Title>{user.display_name}</Title>
-              <div>@{user.handle}</div>
+              <Link
+                href={`https://twitter.com/${user.handle}`}
+                target="_blank"
+                className="text-indigo-400 hover:text-indigo-300 transition-all active:opacity-60"
+              >
+                <div>@{user.handle}</div>
+              </Link>
+              <div>
+                {lifeContext.location}{" "}
+                <span className="pl-1 opacity-70">
+                  {lifeContext.relationship_status_code}
+                </span>
+              </div>
             </div>
           </div>
           <div className="space-y-2 flex flex-col items-end justify-end">
@@ -60,15 +73,14 @@ const UserProfilePage = async ({
                 <span className="text-xl pl-1">SMOL</span>
               </MiniTitle>
             </div>
-            <div className="flex flex-col items-end gap-2 text-xs">
+            <div className="flex flex-col items-end gap-2 text-base">
               <ToolTipped text={lifeContext.weekly_jobs_income_explained}>
-                <div className="flex items-center gap-2 bg-smolGreen/15 text-smolGreen p-1 pb-0.5 rounded-full px-3">
+                <div className="flex items-center gap-2 bg-smolGreen/15 text-smolGreen p-1 pb-0.5 rounded-full px-2 pl-3">
                   {/* <div>{lifeContext.relationship_status_code}</div> */}
                   <div>
-                    +{" "}
-                    <span className="font-mono text-[9px] font-medium">$</span>
+                    + <span className="font-mono text-sm font-medium">$</span>
                     {lifeContext.weekly_jobs_income.toLocaleString()}{" "}
-                    <span className="text-[9px]">SMOL/week</span>
+                    <span className="text-sm">SMOL/week</span>
                   </div>
                   <div>
                     <div></div>
@@ -76,13 +88,12 @@ const UserProfilePage = async ({
                 </div>
               </ToolTipped>
               <ToolTipped text={lifeContext.weekly_life_expenses_explained}>
-                <div className="flex items-center gap-2 bg-smolRed/15 text-smolRed p-1 pb-0.5 rounded-full px-3">
+                <div className="flex items-center gap-2 bg-smolRed/15 text-smolRed p-1 pb-0.5 rounded-full px-2 pl-3">
                   {/* <div>{lifeContext.relationship_status_code}</div> */}
                   <div>
-                    -{" "}
-                    <span className="font-mono text-[9px] font-medium">$</span>
+                    - <span className="font-mono text-sm font-medium">$</span>
                     {lifeContext.weekly_life_expenses.toLocaleString()}{" "}
-                    <span className="text-[9px]">SMOL/week</span>
+                    <span className="text-sm">SMOL/week</span>
                   </div>
                   <div>
                     <div></div>
