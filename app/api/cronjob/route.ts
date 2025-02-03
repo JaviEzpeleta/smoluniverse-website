@@ -5,6 +5,9 @@ import { postErrorToDiscord } from "@/lib/discord";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
+  // nothing to do!
+  return NextResponse.json({ message: "Nothing to do!" });
+
   const token = request.nextUrl.searchParams.get("token");
 
   if (token !== process.env.CRON_SECRET) {
