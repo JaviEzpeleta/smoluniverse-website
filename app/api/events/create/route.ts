@@ -6,19 +6,12 @@ import { postErrorToDiscord } from "@/lib/discord";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const token = searchParams.get("token");
-
-  if (!token) {
+  const authHeader = request.headers.get("authorization");
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     await postErrorToDiscord(
       "🔴 Error in /api/events/create: No token provided"
     );
     return NextResponse.json({ error: "No token provided" }, { status: 400 });
-  }
-
-  if (token !== process.env.CRON_TOKEN) {
-    await postErrorToDiscord("🔴 Error in /api/events/create: Invalid token");
-    return NextResponse.json({ error: "Invalid token" }, { status: 401 });
   }
 
   try {
