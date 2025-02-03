@@ -108,3 +108,11 @@ export type LifeGoalsChange = {
   summary_of_the_changes: string;
   created_at: string;
 };
+
+export type SkillsChange = {
+  handle: string;
+  previous_skills: string;
+  new_skills: string;
+  summary_of_the_changes: string;
+  created_at: string;
+};

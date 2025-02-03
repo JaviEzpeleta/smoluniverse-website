@@ -9,9 +9,17 @@ import {
   saveNewSmolTweet,
   saveNewLifeGoalsChange,
   updateUserLifeGoals,
+  saveNewSkillsChange,
+  updateUserSkills,
 } from "./postgres";
 import { getListOfIRLTweetsAsString } from "./prompts";
-import { ActionEvent, LifeGoalsChange, RawUser, SmolTweet } from "./types";
+import {
+  ActionEvent,
+  LifeGoalsChange,
+  RawUser,
+  SkillsChange,
+  SmolTweet,
+} from "./types";
 import { SavedTweet } from "./types";
 
 import { CoreMessage } from "ai";
@@ -430,7 +438,7 @@ ${getListOfIRLTweetsAsString({
 
   console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
-  await actionImpactLifeGoals({
+  await actionImpactSkills({
     action: newActionEvent,
     profile: user,
     tweets: tweets,
@@ -555,6 +563,111 @@ ${JSON.stringify(action)}
 
     // now we update the user's life goals
     await updateUserLifeGoals(profile.handle, newLifeGoals);
+  }
+
+  return;
+};
+
+const actionImpactSkills = async ({
+  action,
+  profile,
+  tweets,
+}: {
+  action: ActionEvent;
+  profile: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  // ! the goal here is to see if the action can alter the user's skills.
+
+  const messages = [
+    {
+      role: "system",
+      content: `You are a story teller for an AI clone emulation universe. Based on this character profile and an action that just happened on the story (${action.action_type}),
+you have to determine if that action can somehow impact and alter the user's list of skills. 
+
+The user will provide you with some previous context, the description of the action, and the current list of skills. 
+
+
+<Important>
+  - if you consider that the action should alter the user's skills, you should return a JSON object with this structure: 
+{
+  "new_skills": "" // the complete list of updated skills, in the same JSON format as the current skills.
+  "summary_of_the_changes": "" // the reasoning behind what changed in the user's skills list, in markdown format.
+}  
+  - but, if you consider that the action does not alter the user's skills, please simply reply with the word "NO".
+</Important>`,
+    },
+    {
+      role: "user",
+      content: `
+
+Full context on the user: 
+- Name: ${profile.display_name}
+- Handle: ${profile.handle}
+
+- Current life goals: 
+${profile.life_goals}
+
+- Current skills: 
+${JSON.stringify(profile.skills)}
+
+- Current life context: 
+${JSON.stringify(profile.life_context)}
+
+- Recent publications:
+${getListOfIRLTweetsAsString({
+  handle: profile.handle,
+  userIRLTweets: tweets,
+})}
+
+## Recent action that just happened:
+${JSON.stringify(action)}
+
+<Important>
+  - if you consider that the action should alter the user's skills or skill levels, you should return a the complete list of updated skills, in the same JSON format as the current skills.
+  - but, if you consider that the action does not alter the user's skills or skill levels, please simply reply with the word "NO".
+</Important>`,
+    },
+  ] as CoreMessage[];
+
+  const responseFromGemini = await askGeminiThinking({
+    messages,
+    temperature: 0.8,
+  });
+
+  console.log("🔴 responseFromGemini", responseFromGemini);
+
+  const cleanedResponse = responseFromGemini
+    .replace(/```json\n/g, "")
+    .replace(/\n```/g, "");
+
+  if (cleanedResponse.trim() === "NO" || cleanedResponse.trim().length < 30) {
+    await postToDiscord(
+      `🔴 ${profile.handle} did not alter their skills with the action: ${action.action_type}`
+    );
+    return;
+  } else {
+    await postToDiscord(
+      `✅ ${profile.handle} altered their skills with the action: ${action.action_type}`
+    );
+
+    const newSkills = JSON.parse(cleanedResponse).new_skills;
+    const summaryOfTheChanges =
+      JSON.parse(cleanedResponse).summary_of_the_changes;
+    // now it's time to update the user's skills
+    // but first, we react the change:
+    const skillsChange = {
+      handle: profile.handle,
+      previous_skills: profile.skills,
+      new_skills: newSkills,
+      summary_of_the_changes: summaryOfTheChanges,
+      created_at: new Date().toISOString(),
+    } as SkillsChange;
+
+    await saveNewSkillsChange(skillsChange);
+
+    // now we update the user's skills
+    await updateUserSkills(profile.handle, newSkills);
   }
 
   return;

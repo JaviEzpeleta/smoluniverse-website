@@ -35,6 +35,15 @@ CREATE TABLE sim_smol_tweets (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE sim_updates_skills (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  handle TEXT NOT NULL,
+  previous_skills TEXT NOT NULL,
+  new_skills TEXT NOT NULL,
+  summary_of_the_changes TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE sim_updates_life_goals (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   handle TEXT NOT NULL,
@@ -73,6 +82,7 @@ import {
   ActionEvent,
   SmolTweet,
   LifeGoalsChange,
+  SkillsChange,
 } from "./types";
 
 export interface ImageEmbedding {
@@ -412,5 +422,26 @@ export const updateUserLifeGoals = async (
     [newLifeGoals, handle]
   );
   await postToDiscord(`✅ user profile updated: \`${handle}\``);
+  return res.rows[0];
+};
+
+export const saveNewSkillsChange = async (skillsChange: SkillsChange) => {
+  const res = await executeQuery(
+    `INSERT INTO sim_updates_skills (handle, previous_skills, new_skills, summary_of_the_changes) VALUES ($1, $2, $3, $4)`,
+    [
+      skillsChange.handle,
+      skillsChange.previous_skills,
+      skillsChange.new_skills,
+      skillsChange.summary_of_the_changes,
+    ]
+  );
+  return res.rows[0];
+};
+
+export const updateUserSkills = async (handle: string, newSkills: string) => {
+  const res = await executeQuery(
+    `UPDATE sim_users SET skills = $1 WHERE handle = $2`,
+    [newSkills, handle]
+  );
   return res.rows[0];
 };
