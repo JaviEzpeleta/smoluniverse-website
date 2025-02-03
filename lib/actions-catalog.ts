@@ -4,7 +4,9 @@ export const INDIVIDUAL_ACTIONS = [
   // "tweet_a_feeling",
   // "learn_something_new",
   // "release_a_side_hustle",
-  "travel_to_a_new_place",
+  // "travel_to_a_new_place",
+  "create_art_nft",
+
   //   "tweet_a_random_thought",
   //   "buy_a_service_from_the_marketplace",
   //   "put_a_service_on_the_marketplace",
@@ -18,6 +20,5 @@ export const INDIVIDUAL_ACTIONS = [
   //   "have_kids",
   //   "create_songs_with_suno",
   //   "create_a_new_pfp",
-  //   "create_a_new_nft",
   //   "buy_an_nft_from_someone_else",
 ];
