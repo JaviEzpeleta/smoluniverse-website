@@ -7,13 +7,13 @@ import {
 import axios from "axios";
 
 export const postErrorToDiscord = async (message: string) => {
-  if (IS_LOCALHOST) {
-    console.log(
-      "🟪 Discord message (not posted because it's localhost):\n",
-      message
-    );
-    return;
-  }
+  // if (IS_LOCALHOST) {
+  // console.log(
+  //   "🟪 Discord message (not posted because it's localhost):\n",
+  //   message
+  // );
+  // return;
+  // }
 
   if (
     !DISCORD_WEBHOOK_ERRORS_URL ||
@@ -36,13 +36,13 @@ export const postErrorToDiscord = async (message: string) => {
 };
 
 export const postToDiscord = async (message: string) => {
-  if (IS_LOCALHOST) {
-    console.log(
-      "🟪 Discord message (not posted because it's localhost):\n",
-      message
-    );
-    return;
-  }
+  // if (IS_LOCALHOST) {
+  //   console.log(
+  //     "🟪 Discord message (not posted because it's localhost):\n",
+  //     message
+  //   );
+  //   return;
+  // }
 
   if (!DISCORD_WEBHOOK_URL || !DISCORD_WEBHOOK_URL.trim().length) {
     console.log("🛑 No Discord webhook URL found. The message is: ", message);
