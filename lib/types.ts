@@ -90,3 +90,13 @@ export type SmolTweet = {
   image_url: string | null;
   created_at: Date;
 };
+
+export type SmolTweetWithUserData = {
+  handle: string;
+  content: string;
+  link: string | null;
+  image_url: string | null;
+  profile_picture: string;
+  display_name: string;
+  created_at: string;
+};

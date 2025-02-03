@@ -1,14 +1,15 @@
-import { RawUser } from "@/lib/types";
+import { RawUser, SmolTweetWithUserData } from "@/lib/types";
 import React from "react";
 import CheckMark from "./svg/CheckMark";
 import Link from "next/link";
+import { timeSinceShorter } from "@/lib/time";
 
 function TweetCard({
   children,
-  twitterProfile,
+  theTweet,
 }: {
   children: React.ReactNode;
-  twitterProfile: RawUser;
+  theTweet: SmolTweetWithUserData;
 }) {
   return (
     <div className="bg-gradient-to-br from-zinc-600/40 to-zinc-800/70 p-[1.5px] rounded-[13.5px]">
@@ -22,7 +23,7 @@ function TweetCard({
               <img
                 draggable="false"
                 className="w-12 rounded-full aspect-square"
-                src={twitterProfile.profile_picture}
+                src={theTweet.profile_picture}
                 alt="profile"
               />
             </div>
@@ -31,20 +32,22 @@ function TweetCard({
             <div className="flex items-center gap-1.5">
               <div className="flex items-center gap-0.5">
                 <Link
-                  href={`/u/${twitterProfile.handle}`}
+                  href={`/u/${theTweet.handle}`}
                   className="active:opacity-60"
                 >
                   <div className="font-bold hover:underline">
-                    {twitterProfile.display_name}
+                    {theTweet.display_name}
                   </div>
                 </Link>
                 <CheckMark />
               </div>
               <div className="font-medium opacity-70 text-sm">
-                @{twitterProfile.handle}
+                @{theTweet.handle}
               </div>
               <div className="opacity-70 text-sm">·</div>
-              <div className="opacity-70 text-sm">3m ago</div>
+              <div className="opacity-70 text-sm">
+                {timeSinceShorter(new Date(theTweet.created_at).getTime())}
+              </div>
             </div>
             <div className="pt-0">{children}</div>
           </div>
