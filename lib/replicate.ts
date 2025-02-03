@@ -16,7 +16,7 @@ export const generateRecraftImage = async ({
 
   const modelToUse = "recraft-ai/recraft-v3";
   const input = {
-    size: portraitMode ? "1024x1536" : "1365x1024",
+    size: portraitMode ? "1024x1365" : "1365x1024",
     prompt,
   };
 
