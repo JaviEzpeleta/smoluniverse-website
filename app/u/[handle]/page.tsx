@@ -1,20 +1,12 @@
-import MiniTitle from "@/components/MiniTitle";
-import BigTitle from "@/components/BigTitle";
 import { findUserByHandle } from "@/lib/postgres";
-import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { getBalanceByHandle } from "@/lib/web3functions";
 import { ethers } from "ethers";
-import { friendlyNumber } from "@/lib/numbers";
-import { BsWallet2 } from "react-icons/bs";
-import ToolTipped from "@/components/ToolTipped";
-import Title from "@/components/Title";
-import Link from "next/link";
-import BlurryEntrance from "@/components/BlurryEntrance";
 import ProfileHeaderBlock from "@/components/ProfileHeaderBlock";
 import ProfileHeaderMoneyBlock from "@/components/ProfileHeaderMoneyBlock";
 import ProfilePageSkillsBlock from "@/components/ProfilePageSkillsBlock";
 import ProfilePageJobAndOneLinerBlock from "@/components/ProfilePageJobAndOneLinerBlock";
 import ProfilePageLifeGoalsBlock from "@/components/ProfilePageLifeGoalsBlock";
+
 const UserProfilePage = async ({
   params,
 }: {
