@@ -15,14 +15,17 @@ const ProfileHeaderBlock = ({
   return (
     <div className="flex gap-4 items-center">
       <BlurryEntrance>
-        <div
-          className="rounded-full w-24 h-24 bg-zinc-900"
-          style={{
-            backgroundImage: `url(${user.profile_picture})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
+        <Link href={`https://twitter.com/${user.handle}`} target="_blank">
+          <div
+            className="rounded-full w-24 h-24 bg-zinc-900 scale-x-[-1] hover:rotate-[3600deg] hover:hue-rotate-180 hover:scale-[103%]"
+            style={{
+              backgroundImage: `url(${user.profile_picture})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              transitionDuration: "3s",
+            }}
+          />
+        </Link>
       </BlurryEntrance>
       <div>
         <BlurryEntrance delay={0.1}>

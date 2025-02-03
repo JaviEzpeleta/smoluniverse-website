@@ -65,11 +65,12 @@ const CloneInHomeList = ({
         <div className="bg-zinc-900 border border-zinc-900 hover:border-zinc-700 transition-all duration-150 py-2 px-4 rounded-lg flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div
-              className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center border-2 border-zinc-700"
+              className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center border-2 border-zinc-700 scale-x-[-1] hover:rotate-[3600deg] hover:scale-105 hover:hue-rotate-180"
               style={{
                 backgroundImage: `url(${clone.profile_picture})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
+                transitionDuration: "3s",
               }}
             />
             <div>
