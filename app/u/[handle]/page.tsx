@@ -60,14 +60,15 @@ const UserProfilePage = async ({
                 <span className="text-xl pl-1">SMOL</span>
               </MiniTitle>
             </div>
-            <div className="flex items-center gap-2 text-xs">
+            <div className="flex flex-col items-end gap-2 text-xs">
               <ToolTipped text={lifeContext.weekly_jobs_income_explained}>
                 <div className="flex items-center gap-2 bg-smolGreen/15 text-smolGreen p-1 pb-0.5 rounded-full px-3">
                   {/* <div>{lifeContext.relationship_status_code}</div> */}
                   <div>
                     +{" "}
                     <span className="font-mono text-[9px] font-medium">$</span>
-                    {lifeContext.weekly_jobs_income} SMOL
+                    {lifeContext.weekly_jobs_income.toLocaleString()}{" "}
+                    <span className="text-[9px]">SMOL/week</span>
                   </div>
                   <div>
                     <div></div>
@@ -80,7 +81,8 @@ const UserProfilePage = async ({
                   <div>
                     -{" "}
                     <span className="font-mono text-[9px] font-medium">$</span>
-                    {lifeContext.weekly_life_expenses} SMOL
+                    {lifeContext.weekly_life_expenses.toLocaleString()}{" "}
+                    <span className="text-[9px]">SMOL/week</span>
                   </div>
                   <div>
                     <div></div>
