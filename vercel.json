@@ -4,10 +4,6 @@
     {
       "path": "/api/cronjob",
       "schedule": "*/2 * * * *"
-    },
-    {
-      "path": "/api/events/create",
-      "schedule": "*/2 * * * *"
     }
   ]
 }
