@@ -15,6 +15,7 @@ import {
   updateUserLifeContext,
 } from "./postgres";
 import { getListOfIRLTweetsAsString } from "./prompts";
+import { generateArtwork } from "./replicate";
 import {
   ActionEvent,
   LifeContextChange,
@@ -105,6 +106,9 @@ const executeIndividualAction = async ({
       break;
     case "create_art_nft":
       await executeCreateArtNft({ user, tweets });
+      break;
+    case "take_a_selfie":
+      await executeTakeASelfie({ user, tweets });
       break;
     default:
       console.log(
@@ -733,42 +737,162 @@ ${getListOfIRLTweetsAsString({
 
   await postToDiscord(`Prompt for art: ${artPrompt}`);
 
-  // // // create the action_event
-  // const newActionEvent = {
-  //   top_level_type: "individual",
-  //   action_type: "create_art_nft",
-  //   from_handle: user.handle,
-  //   main_output: JSON.stringify({
-  //     tweet: theTweet,
-  //     art_prompt: artPrompt,
-  //   }),
-  //   story_context: reasoning,
-  //   to_handle: null, // ! igual quito esto?
-  //   extra_data: null, // ! igual quito esto?
-  //   created_at: new Date(),
-  // } as ActionEvent;
+  const artworkUrl = await generateArtwork(artPrompt, user.handle);
 
-  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  if (!artworkUrl) {
+    await postToDiscord(`💥 Error generating artwork for ${user.handle}`);
+    return;
+  }
 
-  // await processActionImpact({
-  //   action: newActionEvent,
-  //   profile: user,
-  //   tweets: tweets,
-  // });
+  // create the action_event
+  const newActionEvent = {
+    top_level_type: "individual",
+    action_type: "create_art_nft",
+    from_handle: user.handle,
+    main_output: JSON.stringify({
+      tweet: theTweet,
+      artwork_url: artworkUrl,
+      art_prompt: artPrompt,
+    }),
+    story_context: reasoning,
+    to_handle: null, // ! igual quito esto?
+    extra_data: null, // ! igual quito esto?
+    created_at: new Date(),
+  } as ActionEvent;
 
-  // await saveNewActionEvent(newActionEvent);
+  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
-  // const newSmolTweet = {
-  //   handle: user.handle,
-  //   content: theTweet,
-  //   link: null,
-  //   image_url: null,
-  //   created_at: new Date(),
-  // } as SmolTweet;
+  await processActionImpact({
+    action: newActionEvent,
+    profile: user,
+    tweets: tweets,
+  });
 
-  // await saveNewSmolTweet(newSmolTweet);
+  await saveNewActionEvent(newActionEvent);
 
-  // return theTweet;
+  const newSmolTweet = {
+    handle: user.handle,
+    content: theTweet,
+    link: null,
+    image_url: artworkUrl,
+    created_at: new Date(),
+  } as SmolTweet;
+
+  await saveNewSmolTweet(newSmolTweet);
+
+  return theTweet;
+};
+
+const executeTakeASelfie = async ({
+  user,
+  tweets,
+}: {
+  user: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  const theMessages = [
+    {
+      role: "system",
+      content: `You are an amazing storyteller for an AI clone emulation universe, where the "users" are ai clones based on twitter profiles, and have money in web3 and do things onchain.
+
+Based on this character profile and recent tweets, now in this moment of the story, the character decides to create a piece of art and launch it as an NFT.
+
+So please come up with some creative original prompt for a new piece of art for the clone to create and launch as an NFT.
+
+We will use that prompt with another AI model to create the art.
+
+The user will tweet something about the art they will create and launch as an NFT, so give me the tweet content too.
+
+Reply in JSON format: 
+{
+  "art_prompt": "", // the prompt for the artwork. If you feel it, it can contain specific locations, and text too, but try to avoid including people. Make it be very artistic and deep.
+  "content": "", // the tweet content about the new art the user will create and launch as an NFT, can be in markdown format
+  "reasoning": "" // the reasoning behind the game character's situation that caused them to create this art
+}`,
+    },
+    {
+      role: "user",
+      content: `Full character profile:
+${JSON.stringify(user)}
+
+## Recent publications:
+${getListOfIRLTweetsAsString({
+  handle: user.handle,
+  userIRLTweets: tweets,
+})}
+
+<Important>Do not use hashtags or emojis in the tweet. Try to be creative, original and a bit random. Also try to use the same tone and style of the user's previous tweets.</Important>`,
+    },
+  ] as CoreMessage[];
+
+  const responseFromGemini = await askGeminiThinking({
+    messages: theMessages,
+    temperature: 0.8,
+  });
+
+  console.log("🔴 responseFromGemini", responseFromGemini);
+
+  const cleanedResponse = responseFromGemini
+    .replace(/```json\n/g, "")
+    .replace(/\n```/g, "");
+
+  const theTweet = JSON.parse(cleanedResponse).content;
+  console.log("🔴 theTweet", theTweet);
+  const reasoning = JSON.parse(cleanedResponse).reasoning;
+  console.log("🔴 reasoning", reasoning);
+  const artPrompt = JSON.parse(cleanedResponse).art_prompt;
+  console.log("🔴 artPrompt", artPrompt);
+
+  await postToDiscord(`Prompt for art: ${artPrompt}`);
+
+  const artworkUrl = await generateArtwork(artPrompt, user.handle);
+
+  if (!artworkUrl) {
+    await postToDiscord(`💥 Error generating artwork for ${user.handle}`);
+    return;
+  } else {
+    await postToDiscord(
+      `✅ ${user.handle} created art: ${artworkUrl} with the prompt: ${artPrompt}`
+    );
+  }
+
+  // create the action_event
+  const newActionEvent = {
+    top_level_type: "individual",
+    action_type: "create_art_nft",
+    from_handle: user.handle,
+    main_output: JSON.stringify({
+      tweet: theTweet,
+      artwork_url: artworkUrl,
+      art_prompt: artPrompt,
+    }),
+    story_context: reasoning,
+    to_handle: null, // ! igual quito esto?
+    extra_data: null, // ! igual quito esto?
+    created_at: new Date(),
+  } as ActionEvent;
+
+  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  await processActionImpact({
+    action: newActionEvent,
+    profile: user,
+    tweets: tweets,
+  });
+
+  await saveNewActionEvent(newActionEvent);
+
+  const newSmolTweet = {
+    handle: user.handle,
+    content: theTweet,
+    link: null,
+    image_url: artworkUrl,
+    created_at: new Date(),
+  } as SmolTweet;
+
+  await saveNewSmolTweet(newSmolTweet);
+
+  return theTweet;
 };
 
 const actionImpactLifeGoals = async ({
