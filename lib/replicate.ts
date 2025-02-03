@@ -3,12 +3,20 @@ import Replicate from "replicate";
 import { uploadWebpFromURLToAWSS3 } from "./aws";
 import { postToDiscord } from "./discord";
 
-export const generateArtwork = async (prompt: string, handle: string) => {
+export const generateRecraftImage = async ({
+  prompt,
+  handle,
+  portraitMode = false,
+}: {
+  prompt: string;
+  handle: string;
+  portraitMode?: boolean;
+}) => {
   const replicate = new Replicate();
 
   const modelToUse = "recraft-ai/recraft-v3";
   const input = {
-    size: "1365x1024",
+    size: portraitMode ? "1024x1536" : "1365x1024",
     prompt,
   };
 

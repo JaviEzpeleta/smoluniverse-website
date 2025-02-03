@@ -15,7 +15,7 @@ import {
   updateUserLifeContext,
 } from "./postgres";
 import { getListOfIRLTweetsAsString } from "./prompts";
-import { generateArtwork } from "./replicate";
+import { generateRecraftImage } from "./replicate";
 import {
   ActionEvent,
   LifeContextChange,
@@ -737,7 +737,10 @@ ${getListOfIRLTweetsAsString({
 
   await postToDiscord(`Prompt for art: ${artPrompt}`);
 
-  const artworkUrl = await generateArtwork(artPrompt, user.handle);
+  const artworkUrl = await generateRecraftImage({
+    prompt: artPrompt,
+    handle: user.handle,
+  });
 
   if (!artworkUrl) {
     await postToDiscord(`💥 Error generating artwork for ${user.handle}`);
@@ -795,19 +798,17 @@ const executeTakeASelfie = async ({
       role: "system",
       content: `You are an amazing storyteller for an AI clone emulation universe, where the "users" are ai clones based on twitter profiles, and have money in web3 and do things onchain.
 
-Based on this character profile and recent tweets, now in this moment of the story, the character decides to create a piece of art and launch it as an NFT.
+Based on this character profile and recent tweets, now in this moment of the story, the character decides to take a selfie.
 
-So please come up with some creative original prompt for a new piece of art for the clone to create and launch as an NFT.
+So please come up with some creative original prompt for a selfie realsitic picture for the clone to take.
 
-We will use that prompt with another AI model to create the art.
-
-The user will tweet something about the art they will create and launch as an NFT, so give me the tweet content too.
+The user will tweet something about the selfie they will take, so give me the tweet content too.
 
 Reply in JSON format: 
 {
-  "art_prompt": "", // the prompt for the artwork. If you feel it, it can contain specific locations, and text too, but try to avoid including people. Make it be very artistic and deep.
-  "content": "", // the tweet content about the new art the user will create and launch as an NFT, can be in markdown format
-  "reasoning": "" // the reasoning behind the game character's situation that caused them to create this art
+  "selfie_prompt": "", // the prompt for the selfie image. If you feel it, it can contain specific locations, and text too. Make it very realistic. Please include in the prompt that is a "Facebook selfie from 2015, raw.". Please do not include names.
+  "content": "", // the tweet content about the new selfie the user will take, can be in markdown format
+  "reasoning": "" // the reasoning behind the game character's situation that caused them to take this selfie
 }`,
     },
     {
@@ -840,45 +841,46 @@ ${getListOfIRLTweetsAsString({
   console.log("🔴 theTweet", theTweet);
   const reasoning = JSON.parse(cleanedResponse).reasoning;
   console.log("🔴 reasoning", reasoning);
-  const artPrompt = JSON.parse(cleanedResponse).art_prompt;
-  console.log("🔴 artPrompt", artPrompt);
+  const selfiePrompt = JSON.parse(cleanedResponse).selfie_prompt;
+  console.log("🔴 selfiePrompt", selfiePrompt);
 
-  await postToDiscord(`Prompt for art: ${artPrompt}`);
+  await postToDiscord(`Prompt for selfie: ${selfiePrompt}`);
 
-  const artworkUrl = await generateArtwork(artPrompt, user.handle);
+  const selfieUrl = await generateRecraftImage({
+    prompt: selfiePrompt,
+    handle: user.handle,
+    portraitMode: true,
+  });
 
-  if (!artworkUrl) {
-    await postToDiscord(`💥 Error generating artwork for ${user.handle}`);
+  if (!selfieUrl) {
+    await postToDiscord(`💥 Error generating selfie for ${user.handle}`);
     return;
-  } else {
-    await postToDiscord(
-      `✅ ${user.handle} created art: ${artworkUrl} with the prompt: ${artPrompt}`
-    );
   }
 
   // create the action_event
   const newActionEvent = {
     top_level_type: "individual",
-    action_type: "create_art_nft",
+    action_type: "take_a_selfie",
     from_handle: user.handle,
     main_output: JSON.stringify({
       tweet: theTweet,
-      artwork_url: artworkUrl,
-      art_prompt: artPrompt,
+      selfie_url: selfieUrl,
+      selfie_prompt: selfiePrompt,
     }),
     story_context: reasoning,
-    to_handle: null, // ! igual quito esto?
-    extra_data: null, // ! igual quito esto?
+    to_handle: null,
+    extra_data: null,
     created_at: new Date(),
   } as ActionEvent;
 
   console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
-  await processActionImpact({
-    action: newActionEvent,
-    profile: user,
-    tweets: tweets,
-  });
+  // ! Not needed, I think!!
+  // await processActionImpact({
+  //   action: newActionEvent,
+  //   profile: user,
+  //   tweets: tweets,
+  // });
 
   await saveNewActionEvent(newActionEvent);
 
@@ -886,7 +888,7 @@ ${getListOfIRLTweetsAsString({
     handle: user.handle,
     content: theTweet,
     link: null,
-    image_url: artworkUrl,
+    image_url: selfieUrl,
     created_at: new Date(),
   } as SmolTweet;
 

@@ -5,8 +5,8 @@ export const INDIVIDUAL_ACTIONS = [
   // "learn_something_new", // * ✅
   // "release_a_side_hustle", // * ✅
   // "travel_to_a_new_place", // * ✅
-  "create_art_nft", // * ✅
-  // "take_a_selfie",
+  // "create_art_nft", // * ✅
+  "take_a_selfie",
 
   //   "tweet_a_random_thought",
   //   "buy_a_service_from_the_marketplace",
