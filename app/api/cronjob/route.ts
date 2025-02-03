@@ -5,15 +5,15 @@ import { postErrorToDiscord } from "@/lib/discord";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const authHeader = request.headers.get("authorization");
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  const token = request.nextUrl.searchParams.get("token");
+
+  if (token !== process.env.CRON_SECRET) {
     await postErrorToDiscord("🔴 Error in /api/cronjob: No token provided");
     return NextResponse.json({ error: "No token provided" }, { status: 400 });
   }
 
   try {
     const actionResponse = await createNewRandomEvent();
-
     return NextResponse.json({ actionResponse });
   } catch (error) {
     await postErrorToDiscord("🔴 Error in /api/events/create");
