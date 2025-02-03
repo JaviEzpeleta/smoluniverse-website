@@ -13,10 +13,17 @@ const Header = () => {
       <BlurryEntrance>
         <Link href="/">
           <Button
-            className="flex items-center gap-1 pb-2 active:scale-[98%] active:translate-y-1 duration-75"
+            className="group flex items-center gap-1 pb-2 active:scale-[98%] active:translate-y-1 duration-75"
             variant="ghost"
           >
-            <Image src="/logo.png" alt="Smol Universe" width={32} height={32} />
+            <div className="group-hover:rotate-[360deg] transition-all duration-300 ease-in-out group-hover:scale-[1.1] group-active:scale-[0.9] group-active:rotate-[180deg]">
+              <Image
+                src="/logo.png"
+                alt="Smol Universe"
+                width={32}
+                height={32}
+              />
+            </div>
             <div className="text-2xl tracking-tighter translate-y-0.5 font-bold">
               Smol Universe
             </div>
