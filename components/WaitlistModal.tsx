@@ -7,28 +7,17 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import useStore from "@/lib/zustandStore";
-import { useState } from "react";
 import BigTitle from "./BigTitle";
 import BlurryEntrance from "./BlurryEntrance";
 import Title from "./Title";
 import Link from "next/link";
+import { BsTwitterX } from "react-icons/bs";
 
 const WaitlistModal = () => {
   const { showWaitlistModal, setShowWaitlistModal } = useStore(
     (state) => state
   );
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Add your waitlist submission logic here
-    console.log("Submitted:", { email, name });
-    setShowWaitlistModal(false);
-  };
 
   return (
     <Dialog open={showWaitlistModal} onOpenChange={setShowWaitlistModal}>
@@ -63,12 +52,17 @@ const WaitlistModal = () => {
 
         <BlurryEntrance delay={0.24}>
           <div className="max-w-72 mx-auto">
-            <Link href="https://twitter.com/SmolUniverse" target="_blank">
+            <Link href="https://twitter.com/_smoluniverse" target="_blank">
               <Button
                 variant="outline"
-                className="bg-primary/10 hover:bg-primary/20 border-primary"
+                className="bg-smolGreen/10 hover:bg-smolGreen/20 border-smolGreen"
               >
-                <div className="font-bold px-4">Follow @SmolUniverse</div>
+                <div className="font-bold text-smolGreen px-4 flex items-center gap-2">
+                  <div className="-translate-y-[2px]">
+                    <BsTwitterX className="w-4 h-4" />
+                  </div>
+                  <div>Follow @_smoluniverse</div>
+                </div>
               </Button>
             </Link>
           </div>
