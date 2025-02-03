@@ -51,12 +51,14 @@ function TweetCard({
             </div>
             <div className="pt-0">{children}</div>
             {theTweet.image_url && (
-              <div className="pt-2">
-                <img
-                  className="rounded-md border-2 hover:border-primary transition-all duration-150 ease-in-out cursor-pointer active:opacity-50"
-                  src={theTweet.image_url}
-                  alt={theTweet.content}
-                />
+              <div className="py-2 pt-3">
+                <Link href={theTweet.image_url} target="_blank">
+                  <img
+                    className="rounded-md border-2 hover:border-primary transition-all duration-150 ease-in-out cursor-pointer active:opacity-50"
+                    src={theTweet.image_url}
+                    alt={theTweet.content}
+                  />
+                </Link>
               </div>
             )}
           </div>
