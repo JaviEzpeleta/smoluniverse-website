@@ -6,15 +6,22 @@ import CloneInHomeList from "./CloneInHomeList";
 import BlurryEntrance from "./BlurryEntrance";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
+import { IS_LOCALHOST } from "@/lib/constants";
 
 const RecentClones = () => {
   const { clones, setClones, fetchPusherIndex, setFetchPusherIndex } = useStore(
     (state) => state
   );
 
+  const { setShowWaitlistModal } = useStore((state) => state);
+
   const { toast } = useToast();
 
   const onDelete = async (handle: string) => {
+    if (!IS_LOCALHOST) {
+      setShowWaitlistModal(true);
+      return;
+    }
     const newClones = clones.filter((clone) => clone.handle !== handle);
     setClones(newClones);
     console.log(" 💚 💚 💚 💚 💚 💚 💚 DELETE: ", handle);

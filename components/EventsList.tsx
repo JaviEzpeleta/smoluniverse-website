@@ -5,12 +5,13 @@ import BlurryEntrance from "./BlurryEntrance";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
-import MiniTitle from "./MiniTitle";
-import SmolTweetCard from "./SmolTweetCard";
 import TweetCard from "./TweetCard";
+import { IS_LOCALHOST } from "@/lib/constants";
+import useStore from "@/lib/zustandStore";
 
 const EventsList = () => {
-  const [events, setEvents] = useState([]);
+  const { setShowWaitlistModal } = useStore((state) => state);
+
   const [smolTweets, setSmolTweets] = useState([]);
 
   const [tweetsFetcherIndex, setTweetsFetcherIndex] = useState(0);
@@ -27,6 +28,11 @@ const EventsList = () => {
   const { toast } = useToast();
 
   const callToCreateANewEvent = async () => {
+    if (!IS_LOCALHOST) {
+      setShowWaitlistModal(true);
+      return;
+    }
+
     setIsCreatingNewEvent(true);
     const res = await axios.get("/api/events/create");
     console.log("callToCreateANewEvent", res);
