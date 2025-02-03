@@ -13,7 +13,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "No token provided" }, { status: 400 });
   }
 
-  if (token !== process.env.API_TOKEN) {
+  if (token !== process.env.CRON_TOKEN) {
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });
   }
 

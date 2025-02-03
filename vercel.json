@@ -1,0 +1,9 @@
+{
+  "regions": ["cdg1"],
+  "crons": [
+    {
+      "path": "/api/events/create?token=${API_TOKEN}",
+      "schedule": "*/2 * * * *"
+    }
+  ]
+}
