@@ -10,10 +10,14 @@ export async function GET(request: Request) {
   const token = searchParams.get("token");
 
   if (!token) {
+    await postErrorToDiscord(
+      "🔴 Error in /api/events/create: No token provided"
+    );
     return NextResponse.json({ error: "No token provided" }, { status: 400 });
   }
 
   if (token !== process.env.CRON_TOKEN) {
+    await postErrorToDiscord("🔴 Error in /api/events/create: Invalid token");
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });
   }
 
