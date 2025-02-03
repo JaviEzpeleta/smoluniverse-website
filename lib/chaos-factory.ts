@@ -113,9 +113,9 @@ const executeIndividualAction = async ({
     case "something_amazing_happens":
       await executeSomethingAmazingHappens({ user, tweets });
       break;
-    // case "something_terrible_happens":
-    //   await executeSomethingTerribleHappens({ user, tweets });
-    //   break;
+    case "something_terrible_happens":
+      await executeSomethingTerribleHappens({ user, tweets });
+      break;
     default:
       console.log(
         "🔴 Error in executeIndividualAction: unsupported action type" +
@@ -700,7 +700,7 @@ The character will compose a tweet to publicly announce the big news with joy!
 Reply in JSON format: 
 {
   "amazing_thing": "", // the amazing thing that happened to the user.
-  "content": "", // the tweet content about the amazing thing that happened to the user, can be in markdown format
+  "content": "", // the tweet content about the amazing thing that happened to the user, can be in markdown format, but make it just 2 short sentences, in a super friendly casual tone.
   "reasoning": "" // the reasoning behind the game character's situation that caused them to travel to this new place
 }`,
     },
@@ -721,7 +721,7 @@ ${getListOfIRLTweetsAsString({
 
   const responseFromGemini = await askGeminiThinking({
     messages: theMessages,
-    temperature: 0.8,
+    temperature: 0.44,
   });
 
   console.log("🔴 responseFromGemini", responseFromGemini);
@@ -793,8 +793,8 @@ The character will compose a tweet to publicly announce the big news with joy!
 
 Reply in JSON format: 
 {
-  "amazing_thing": "", // the amazing thing that happened to the user.
-  "content": "", // the tweet content about the amazing thing that happened to the user, can be in markdown format
+  "terrible_thing": "", // the terrible thing that happened to the user.
+  "content": "", // the tweet content about the terrible thing that happened to the user, can be in markdown format, but make it just 2 short sentences, in a super friendly casual tone.
   "reasoning": "" // the reasoning behind the game character's situation that caused them to travel to this new place
 }`,
     },
@@ -815,7 +815,7 @@ ${getListOfIRLTweetsAsString({
 
   const responseFromGemini = await askGeminiThinking({
     messages: theMessages,
-    temperature: 0.8,
+    temperature: 0.33,
   });
 
   console.log("🔴 responseFromGemini", responseFromGemini);

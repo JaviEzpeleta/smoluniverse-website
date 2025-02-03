@@ -1,9 +1,18 @@
+export const maxDuration = 60;
+
 import { createNewRandomEvent } from "@/lib/chaos-factory";
 import { postErrorToDiscord } from "@/lib/discord";
 // import { createEvent } from "@/lib/postgres";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const token = searchParams.get("token");
+
+  if (!token) {
+    return NextResponse.json({ error: "No token provided" }, { status: 400 });
+  }
+
   try {
     const actionResponse = await createNewRandomEvent();
 
