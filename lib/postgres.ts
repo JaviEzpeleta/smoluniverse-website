@@ -306,6 +306,16 @@ export const deleteUserByHandle = async (handle: string) => {
       handle,
     ]);
 
+    // borramos los updates de skills de este clon:
+    await executeQuery(`DELETE FROM sim_updates_skills WHERE handle = $1`, [
+      handle,
+    ]);
+
+    // borramos los updates de life goals de este clon:
+    await executeQuery(`DELETE FROM sim_updates_life_goals WHERE handle = $1`, [
+      handle,
+    ]);
+
     await executeQuery(`DELETE FROM sim_users WHERE handle = $1`, [handle]);
     await postToDiscord(`💀 User deleted: \`${handle}\``);
   } catch (error) {
