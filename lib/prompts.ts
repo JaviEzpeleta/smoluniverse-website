@@ -24,13 +24,16 @@ Reply directly with the list of life goals in Markdown format, and nothing else.
 
   const response = await askGeminiWithMessagesAndSystemPrompt({
     messages,
-    systemPrompt: `You are the brain behind 'Smol Universe', an art and storytelling simulation experiment project.
+    systemPrompt: `You are an storyteller, expert in game character creation.
+
 Based on the tweets from this user (${handle}), help me create a fictional character for a videogame story. 
+
 Please give me a list of life goals this character could have in the videogame, that are somehow related to the tweets, but make it as "gamificationable" as possible. 
+
 Ideally the goals are concise, practical, achievable and fun. 
 
 Please return a list of life goals for the user in Markdown format. Reply ONLY and directly with the list of life goals in Markdown format.`,
-    temperature: 0.9,
+    temperature: 0.6,
   });
 
   return response;
