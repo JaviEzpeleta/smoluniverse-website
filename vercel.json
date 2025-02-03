@@ -2,7 +2,7 @@
   "regions": ["cdg1"],
   "crons": [
     {
-      "path": "/api/events/create?token=${API_TOKEN}",
+      "path": "/api/events/create?token=${CRON_TOKEN}",
       "schedule": "*/2 * * * *"
     }
   ]
