@@ -2,10 +2,10 @@ export const INDIVIDUAL_ACTIONS = [
   // "tweet_an_idea", // * ✅
   // "tweet_a_wojak_meme", // * ✅
   // "tweet_a_feeling",
-  "learn_something_new",
+  // "learn_something_new",
+  // "release_a_side_hustle",
+  "travel_to_a_new_place",
   //   "tweet_a_random_thought",
-  //   "release_a_side_project",
-  //   "travel_to_a_new_place",
   //   "buy_a_service_from_the_marketplace",
   //   "put_a_service_on_the_marketplace",
   //   "quote_a_tweet_from_someone_else",

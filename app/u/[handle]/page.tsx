@@ -112,8 +112,7 @@ const UserProfilePage = async ({
       <div className="flex flex-col md:flex-row gap-4 w-full mt-4">
         <div className="bg-zinc-900 rounded-lg p-4 px-6 md:max-w-sm w-full">
           <MiniTitle>Skills</MiniTitle>
-          <pre>{JSON.stringify(skills, null, 2)}</pre>
-          {/* <div className="flex flex-col gap-2 pt-2">
+          <div className="flex flex-col gap-2 pt-2">
             {skills.map(
               (
                 {
@@ -140,7 +139,7 @@ const UserProfilePage = async ({
                 </ToolTipped>
               )
             )}
-          </div> */}
+          </div>
         </div>
         <div className="bg-zinc-900 rounded-lg p-4 px-6 flex-1">
           <MiniTitle>Life Goals</MiniTitle>

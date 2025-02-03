@@ -100,6 +100,9 @@ const executeIndividualAction = async ({
     case "release_a_side_hustle":
       await executeReleaseASideHustle({ user, tweets });
       break;
+    case "travel_to_a_new_place":
+      await executeTravelToANewPlace({ user, tweets });
+      break;
     default:
       console.log(
         "🔴 Error in executeIndividualAction: unsupported action type" +
@@ -539,6 +542,102 @@ ${getListOfIRLTweetsAsString({
     main_output: JSON.stringify({
       tweet: theTweet,
       side_hustle: sideHustle,
+    }),
+    story_context: reasoning,
+    to_handle: null, // ! igual quito esto?
+    extra_data: null, // ! igual quito esto?
+    created_at: new Date(),
+  } as ActionEvent;
+
+  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  await processActionImpact({
+    action: newActionEvent,
+    profile: user,
+    tweets: tweets,
+  });
+
+  await saveNewActionEvent(newActionEvent);
+
+  const newSmolTweet = {
+    handle: user.handle,
+    content: theTweet,
+    link: null,
+    image_url: null,
+    created_at: new Date(),
+  } as SmolTweet;
+
+  await saveNewSmolTweet(newSmolTweet);
+
+  return theTweet;
+};
+
+const executeTravelToANewPlace = async ({
+  user,
+  tweets,
+}: {
+  user: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  const theMessages = [
+    {
+      role: "system",
+      content: `You are an amazing storyteller for an AI clone emulation universe, where the "users" are ai clones based on twitter profiles, and have money in web3 and do things onchain.
+
+Based on this character profile and recent tweets, now in this moment of the story, the character will decide to travel to a new place.
+
+So please come up with some creative original new idea for a new place for the clone to travel to in this virtual universe.
+
+The character will compose a tweet to publicly announce the new place they will travel to.
+
+Reply in JSON format: 
+{
+  "new_place": "", // the new place the user will travel. Please Include the city and an emoji for the country flag.
+  "content": "", // the tweet content about the new place the user will travel to, can be in markdown format
+  "reasoning": "" // the reasoning behind the game character's situation that caused them to travel to this new place
+}`,
+    },
+    {
+      role: "user",
+      content: `Full character profile:
+${JSON.stringify(user)}
+
+## Recent publications:
+${getListOfIRLTweetsAsString({
+  handle: user.handle,
+  userIRLTweets: tweets,
+})}
+
+<Important>Do not use hashtags or emojis in the tweet. Try to be creative, original and a bit random. Also try to use the same tone and style of the user's previous tweets.</Important>`,
+    },
+  ] as CoreMessage[];
+
+  const responseFromGemini = await askGeminiThinking({
+    messages: theMessages,
+    temperature: 0.8,
+  });
+
+  console.log("🔴 responseFromGemini", responseFromGemini);
+
+  const cleanedResponse = responseFromGemini
+    .replace(/```json\n/g, "")
+    .replace(/\n```/g, "");
+
+  const theTweet = JSON.parse(cleanedResponse).content;
+  console.log("🔴 theTweet", theTweet);
+  const reasoning = JSON.parse(cleanedResponse).reasoning;
+  console.log("🔴 reasoning", reasoning);
+  const newPlace = JSON.parse(cleanedResponse).new_place;
+  console.log("🔴 newPlace", newPlace);
+
+  // // create the action_event
+  const newActionEvent = {
+    top_level_type: "individual",
+    action_type: "travel_to_a_new_place",
+    from_handle: user.handle,
+    main_output: JSON.stringify({
+      tweet: theTweet,
+      new_place: newPlace,
     }),
     story_context: reasoning,
     to_handle: null, // ! igual quito esto?
