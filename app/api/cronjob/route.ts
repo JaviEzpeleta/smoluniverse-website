@@ -7,9 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get("authorization");
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    await postErrorToDiscord(
-      "🔴 Error in /api/events/create: No token provided"
-    );
+    await postErrorToDiscord("🔴 Error in /api/cronjob: No token provided");
     return NextResponse.json({ error: "No token provided" }, { status: 400 });
   }
 

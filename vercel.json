@@ -3,11 +3,11 @@
   "crons": [
     {
       "path": "/api/cronjob",
-      "schedule": "*/1 * * * *"
+      "schedule": "*/2 * * * *"
     },
     {
-      "path": "/events/create",
-      "schedule": "*/1 * * * *"
+      "path": "/api/events/create",
+      "schedule": "*/2 * * * *"
     }
   ]
 }
