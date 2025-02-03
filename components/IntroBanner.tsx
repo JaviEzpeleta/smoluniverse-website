@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import BigTitle from "./BigTitle";
 import BlurryEntrance from "./BlurryEntrance";
 import Title from "./Title";
+import MagneticZone from "./MagneticZone";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { LucidePopcorn } from "lucide-react";
@@ -15,19 +16,25 @@ const IntroBanner = () => {
     <div className="overflow-hidden">
       <BlurryEntrance delay={0.1}>
         <div className="border-zinc-400 bg-black min-h-60 border-2 overflow-hidden p-4 py-8 rounded-2xl flex flex-col items-center justify-center relative">
-          <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0">
             <motion.div
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -100 }}
               transition={{ duration: 1.5, delay: 0.62, ease: "easeOut" }}
               className="w-full h-full rounded-2xl"
-              style={{
-                backgroundImage: "url(/images/intro-banner.png)",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            ></motion.div>
+            >
+              <MagneticZone hfull factor={90.5}>
+                <div
+                  className="w-full h-full rounded-2xl scale-105 origin-center"
+                  style={{
+                    backgroundImage: "url(/images/intro-banner.png)",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                />
+              </MagneticZone>
+            </motion.div>
           </div>
 
           <div className="absolute flex justify-end items-end right-4 bottom-4">
