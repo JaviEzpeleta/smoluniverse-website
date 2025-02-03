@@ -386,6 +386,11 @@ export const saveNewSmolTweet = async (smolTweet: SmolTweet) => {
       ]
     );
 
+    await postToDiscord(
+      `✨ new tweet by **${smolTweet.handle}**:
+\`${smolTweet.content}\``
+    );
+
     return res.rows[0];
   } catch (error) {
     console.error(
@@ -441,7 +446,6 @@ export const updateUserLifeGoals = async (
     `UPDATE sim_users SET life_goals = $1 WHERE handle = $2`,
     [newLifeGoals, handle]
   );
-  await postToDiscord(`✅ user profile updated: \`${handle}\``);
   return res.rows[0];
 };
 
