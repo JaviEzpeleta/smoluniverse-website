@@ -11,10 +11,13 @@ import {
   updateUserLifeGoals,
   saveNewSkillsChange,
   updateUserSkills,
+  saveNewLifeContextChange,
+  updateUserLifeContext,
 } from "./postgres";
 import { getListOfIRLTweetsAsString } from "./prompts";
 import {
   ActionEvent,
+  LifeContextChange,
   LifeGoalsChange,
   RawUser,
   SkillsChange,
@@ -169,6 +172,16 @@ ${getListOfIRLTweetsAsString({
   await saveNewActionEvent(newActionEvent);
 
   await actionImpactLifeGoals({
+    action: newActionEvent,
+    profile: user,
+    tweets: tweets,
+  });
+  await actionImpactSkills({
+    action: newActionEvent,
+    profile: user,
+    tweets: tweets,
+  });
+  await actionImpactLifeContext({
     action: newActionEvent,
     profile: user,
     tweets: tweets,
@@ -438,7 +451,17 @@ ${getListOfIRLTweetsAsString({
 
   console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
+  await actionImpactLifeGoals({
+    action: newActionEvent,
+    profile: user,
+    tweets: tweets,
+  });
   await actionImpactSkills({
+    action: newActionEvent,
+    profile: user,
+    tweets: tweets,
+  });
+  await actionImpactLifeContext({
     action: newActionEvent,
     profile: user,
     tweets: tweets,
@@ -542,10 +565,6 @@ ${JSON.stringify(action)}
     );
     return;
   } else {
-    await postToDiscord(
-      `✅ ${profile.handle} altered their life goals with the action: ${action.action_type}`
-    );
-
     const newLifeGoals = JSON.parse(cleanedResponse).new_life_goals;
     const summaryOfTheChanges =
       JSON.parse(cleanedResponse).summary_of_the_changes;
@@ -558,6 +577,13 @@ ${JSON.stringify(action)}
       summary_of_the_changes: summaryOfTheChanges,
       created_at: new Date().toISOString(),
     } as LifeGoalsChange;
+
+    await postToDiscord(
+      `✅ ${profile.handle} altered their life goals with the action: ${action.action_type}:` +
+        `\n\n${summaryOfTheChanges}`
+    );
+
+    await saveNewLifeGoalsChange(lifeGoalsChange);
 
     await saveNewLifeGoalsChange(lifeGoalsChange);
 
@@ -647,10 +673,6 @@ ${JSON.stringify(action)}
     );
     return;
   } else {
-    await postToDiscord(
-      `✅ ${profile.handle} altered their skills with the action: ${action.action_type}`
-    );
-
     const newSkills = JSON.parse(cleanedResponse).new_skills;
     const summaryOfTheChanges =
       JSON.parse(cleanedResponse).summary_of_the_changes;
@@ -664,10 +686,121 @@ ${JSON.stringify(action)}
       created_at: new Date().toISOString(),
     } as SkillsChange;
 
+    await postToDiscord(
+      `✅ ${profile.handle} altered their skills with the action: ${action.action_type}:` +
+        `\n\n${summaryOfTheChanges}`
+    );
+
     await saveNewSkillsChange(skillsChange);
 
     // now we update the user's skills
-    await updateUserSkills(profile.handle, newSkills);
+    await updateUserSkills(profile.handle, JSON.stringify(newSkills));
+  }
+
+  return;
+};
+
+const actionImpactLifeContext = async ({
+  action,
+  profile,
+  tweets,
+}: {
+  action: ActionEvent;
+  profile: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  // ! the goal here is to see if the action can alter the user's life context: relationship status, location, salary and incomes, and expenses...
+
+  const messages = [
+    {
+      role: "system",
+      content: `You are a story teller for an AI clone emulation universe. Based on this character profile and an action that just happened on the story (${action.action_type}),
+you have to determine if that action can somehow impact and alter the user's ife context (relationship status, location, salary and incomes, and expenses)
+
+The user will provide you with some previous context, the description of the action, and the current life context. 
+
+<Important>
+  - if you consider that the action should alter the user's life context in a significant way, you should return a JSON object with this structure: 
+{
+  "new_life_context": "" // the complete new life context object, in the same JSON format as the current life context.
+  "summary_of_the_changes": "" // the reasoning behind what changed in the user's life context, in markdown format.
+}  
+  - but, if you consider that the action does not alter the user's life context, please simply reply with the word "NO".
+</Important>`,
+    },
+    {
+      role: "user",
+      content: `
+
+Full context on the user: 
+- Name: ${profile.display_name}
+- Handle: ${profile.handle}
+
+- Current life goals: 
+${profile.life_goals}
+
+- Current skills: 
+${JSON.stringify(profile.skills)}
+
+- Current life context: 
+${JSON.stringify(profile.life_context)}
+
+- Recent publications:
+${getListOfIRLTweetsAsString({
+  handle: profile.handle,
+  userIRLTweets: tweets,
+})}
+
+## Recent action that just happened:
+${JSON.stringify(action)}
+
+<Important>
+  - if you consider that the action should alter the user's life context in a significant way, you should return a the complete new life context object, in the same JSON format as the current life context.
+  - but, if you consider that the action does not alter the user's life context, please simply reply with the word "NO".
+</Important>`,
+    },
+  ] as CoreMessage[];
+
+  const responseFromGemini = await askGeminiThinking({
+    messages,
+    temperature: 0.8,
+  });
+
+  console.log("🔴 responseFromGemini", responseFromGemini);
+
+  const cleanedResponse = responseFromGemini
+    .replace(/```json\n/g, "")
+    .replace(/\n```/g, "");
+
+  if (cleanedResponse.trim() === "NO" || cleanedResponse.trim().length < 30) {
+    await postToDiscord(
+      `🔴 ${profile.handle} did not alter their life context with the action: ${action.action_type}`
+    );
+    return;
+  } else {
+    const newLifeContext = JSON.parse(cleanedResponse).new_life_context;
+    const summaryOfTheChanges =
+      JSON.parse(cleanedResponse).summary_of_the_changes;
+    // now it's time to update the user's life context
+    // but first, we react the change:
+
+    await postToDiscord(
+      `✅ ${profile.handle} altered their life context with the action: ${action.action_type}:` +
+        `\n\n${summaryOfTheChanges}`
+    );
+
+    const lifeContextChange = {
+      handle: profile.handle,
+      previous_life_context: profile.life_context,
+      new_life_context: newLifeContext,
+      summary_of_the_changes: summaryOfTheChanges,
+      created_at: new Date().toISOString(),
+    } as LifeContextChange;
+
+    await saveNewLifeContextChange(lifeContextChange);
+
+    // now we update the user's life context
+    await updateUserLifeContext(profile.handle, JSON.stringify(newLifeContext));
   }
 
   return;

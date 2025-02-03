@@ -35,6 +35,15 @@ CREATE TABLE sim_smol_tweets (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE sim_updates_life_context (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  handle TEXT NOT NULL,
+  previous_life_context TEXT NOT NULL,
+  new_life_context TEXT NOT NULL,
+  summary_of_the_changes TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE sim_updates_skills (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   handle TEXT NOT NULL,
@@ -83,6 +92,7 @@ import {
   SmolTweet,
   LifeGoalsChange,
   SkillsChange,
+  LifeContextChange,
 } from "./types";
 
 export interface ImageEmbedding {
@@ -452,6 +462,32 @@ export const updateUserSkills = async (handle: string, newSkills: string) => {
   const res = await executeQuery(
     `UPDATE sim_users SET skills = $1 WHERE handle = $2`,
     [newSkills, handle]
+  );
+  return res.rows[0];
+};
+
+export const saveNewLifeContextChange = async (
+  lifeContextChange: LifeContextChange
+) => {
+  const res = await executeQuery(
+    `INSERT INTO sim_updates_life_context (handle, previous_life_context, new_life_context, summary_of_the_changes) VALUES ($1, $2, $3, $4)`,
+    [
+      lifeContextChange.handle,
+      lifeContextChange.previous_life_context,
+      lifeContextChange.new_life_context,
+      lifeContextChange.summary_of_the_changes,
+    ]
+  );
+  return res.rows[0];
+};
+
+export const updateUserLifeContext = async (
+  handle: string,
+  newLifeContext: string
+) => {
+  const res = await executeQuery(
+    `UPDATE sim_users SET life_context = $1 WHERE handle = $2`,
+    [newLifeContext, handle]
   );
   return res.rows[0];
 };

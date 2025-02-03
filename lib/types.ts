@@ -116,3 +116,11 @@ export type SkillsChange = {
   summary_of_the_changes: string;
   created_at: string;
 };
+
+export type LifeContextChange = {
+  handle: string;
+  previous_life_context: string;
+  new_life_context: string;
+  summary_of_the_changes: string;
+  created_at: string;
+};
