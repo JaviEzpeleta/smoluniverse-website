@@ -24,20 +24,25 @@ const IntroBanner = () => {
               }}
             ></motion.div>
           </div>
-          <div className="absolute inset-0 flex justify-end items-end pointer-events-none">
+
+          {/* // Rainbow disabled for now, i think */}
+          {/* <div className="absolute inset-0 flex justify-end items-end pointer-events-none">
             <motion.div
               initial={{ opacity: 0, y: 100, x: 100, scale: 0.5, rotate: 0 }}
               animate={{ opacity: 1, y: 60, x: 30, scale: 1, rotate: -20 }}
               exit={{ opacity: 0, y: -100 }}
               transition={{ duration: 3.2, delay: 0.2, ease: "easeOut" }}
-              className="w-60 h-60 rounded-2xl"
-              style={{
-                backgroundImage: "url(/images/rainbow-sticker.png)",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            ></motion.div>
-          </div>
+            >
+              <div
+                className="w-44 h-44 lg:w-60 lg:h-60 transition-all duration-1000"
+                style={{
+                  backgroundImage: "url(/images/rainbow-sticker.png)",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              />
+            </motion.div>
+          </div> */}
           <BlurryEntrance delay={0.18}>
             <div className="flex flex-col items-center justify-center">
               <BigTitle>
