@@ -60,3 +60,31 @@ export const postToDiscord = async (message: string) => {
     console.log("🛑 Error posting to Discord (2)", error);
   }
 };
+
+export const postWebVisitToDiscord = async (message: string) => {
+  const theURL = process.env.DISCORD_WEBHOOK_SITE_VISITS_URL;
+
+  if (!theURL || !theURL.trim().length) {
+    console.log("🛑 No Discord webhook URL found. The message is: ", message);
+    return;
+  }
+
+  if (IS_LOCALHOST) {
+    console.log(
+      "🟪 Discord message (not posted because it's localhost):\n",
+      message
+    );
+    return;
+  }
+
+  const params = {
+    username: "visit-tracker",
+    content: message,
+  };
+
+  try {
+    await axios.post(theURL, params);
+  } catch (error) {
+    console.log("🛑 Error posting to Discord (3)", error);
+  }
+};

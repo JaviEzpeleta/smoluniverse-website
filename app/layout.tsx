@@ -6,6 +6,8 @@ import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/Header";
 import ClonesSessionController from "@/components/ClonesSessionController";
 import WaitlistModal from "@/components/WaitlistModal";
+import { Suspense } from "react";
+import VisitTracker from "@/components/VisitTracker";
 
 const grandstander = Grandstander({
   subsets: ["latin"],
@@ -29,6 +31,9 @@ export default function RootLayout({
         className={`${grandstander.className} antialiased selection:bg-smolGreen/10 selection:text-smolGreen`}
       >
         <div className="max-w-6xl mx-auto">
+          <Suspense fallback={null}>
+            <VisitTracker />
+          </Suspense>
           <Header />
           <WaitlistModal />
           <ClonesSessionController />
