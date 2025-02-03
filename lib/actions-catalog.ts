@@ -6,8 +6,9 @@ export const INDIVIDUAL_ACTIONS = [
   // "release_a_side_hustle", // * ✅
   // "travel_to_a_new_place", // * ✅
   // "create_art_nft", // * ✅
-  "take_a_selfie",
-
+  // "take_a_selfie", // * ✅
+  "something_amazing_happens",
+  // "something_terrible_happens",
   //   "tweet_a_random_thought",
   //   "buy_a_service_from_the_marketplace",
   //   "put_a_service_on_the_marketplace",

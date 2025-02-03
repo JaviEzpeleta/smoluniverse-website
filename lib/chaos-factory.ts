@@ -110,6 +110,12 @@ const executeIndividualAction = async ({
     case "take_a_selfie":
       await executeTakeASelfie({ user, tweets });
       break;
+    case "something_amazing_happens":
+      await executeSomethingAmazingHappens({ user, tweets });
+      break;
+    // case "something_terrible_happens":
+    //   await executeSomethingTerribleHappens({ user, tweets });
+    //   break;
     default:
       console.log(
         "🔴 Error in executeIndividualAction: unsupported action type" +
@@ -649,6 +655,194 @@ ${getListOfIRLTweetsAsString({
     story_context: reasoning,
     to_handle: null, // ! igual quito esto?
     extra_data: null, // ! igual quito esto?
+    created_at: new Date(),
+  } as ActionEvent;
+
+  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  await processActionImpact({
+    action: newActionEvent,
+    profile: user,
+    tweets: tweets,
+  });
+
+  await saveNewActionEvent(newActionEvent);
+
+  const newSmolTweet = {
+    handle: user.handle,
+    content: theTweet,
+    link: null,
+    image_url: null,
+    created_at: new Date(),
+  } as SmolTweet;
+
+  await saveNewSmolTweet(newSmolTweet);
+
+  return theTweet;
+};
+
+const executeSomethingAmazingHappens = async ({
+  user,
+  tweets,
+}: {
+  user: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  const theMessages = [
+    {
+      role: "system",
+      content: `You are an amazing storyteller for an AI clone emulation universe, where the "users" are ai clones based on twitter profiles, and have money in web3 and do things onchain.
+
+Based on this character profile and recent tweets, now in this moment of the story, something amazing happens to the character. Something that is not normal or expected. Something that changes the user's storyline in a huge possitive way.
+
+The character will compose a tweet to publicly announce the big news with joy!
+
+Reply in JSON format: 
+{
+  "amazing_thing": "", // the amazing thing that happened to the user.
+  "content": "", // the tweet content about the amazing thing that happened to the user, can be in markdown format
+  "reasoning": "" // the reasoning behind the game character's situation that caused them to travel to this new place
+}`,
+    },
+    {
+      role: "user",
+      content: `Full character profile:
+${JSON.stringify(user)}
+
+## Recent publications:
+${getListOfIRLTweetsAsString({
+  handle: user.handle,
+  userIRLTweets: tweets,
+})}
+
+<Important>Do not use hashtags or emojis in the tweet. Try to be creative, and original. Don't repeat things from the past. Bring something new. Also try to use the same tone and style of the user's previous tweets.</Important>`,
+    },
+  ] as CoreMessage[];
+
+  const responseFromGemini = await askGeminiThinking({
+    messages: theMessages,
+    temperature: 0.8,
+  });
+
+  console.log("🔴 responseFromGemini", responseFromGemini);
+
+  const cleanedResponse = responseFromGemini
+    .replace(/```json\n/g, "")
+    .replace(/\n```/g, "");
+
+  const theTweet = JSON.parse(cleanedResponse).content;
+  console.log("🔴 theTweet", theTweet);
+  const reasoning = JSON.parse(cleanedResponse).reasoning;
+  console.log("🔴 reasoning", reasoning);
+  const amazingThing = JSON.parse(cleanedResponse).amazing_thing;
+  console.log("🔴 amazingThing", amazingThing);
+
+  // // create the action_event
+  const newActionEvent = {
+    top_level_type: "individual",
+    action_type: "something_amazing_happens",
+    from_handle: user.handle,
+    main_output: JSON.stringify({
+      tweet: theTweet,
+      amazing_thing: amazingThing,
+    }),
+    story_context: reasoning,
+    to_handle: null,
+    extra_data: null,
+    created_at: new Date(),
+  } as ActionEvent;
+
+  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  await processActionImpact({
+    action: newActionEvent,
+    profile: user,
+    tweets: tweets,
+  });
+
+  await saveNewActionEvent(newActionEvent);
+
+  const newSmolTweet = {
+    handle: user.handle,
+    content: theTweet,
+    link: null,
+    image_url: null,
+    created_at: new Date(),
+  } as SmolTweet;
+
+  await saveNewSmolTweet(newSmolTweet);
+
+  return theTweet;
+};
+
+const executeSomethingTerribleHappens = async ({
+  user,
+  tweets,
+}: {
+  user: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  const theMessages = [
+    {
+      role: "system",
+      content: `You are an amazing storyteller for an AI clone emulation universe, where the "users" are ai clones based on twitter profiles, and have money in web3 and do things onchain.
+
+Based on this character profile and recent tweets, now in this moment of the story, something terrible happens to the character. Something that is not normal or expected. Something that changes the user's storyline in a huge negative way.
+
+The character will compose a tweet to publicly announce the big news with joy!
+
+Reply in JSON format: 
+{
+  "amazing_thing": "", // the amazing thing that happened to the user.
+  "content": "", // the tweet content about the amazing thing that happened to the user, can be in markdown format
+  "reasoning": "" // the reasoning behind the game character's situation that caused them to travel to this new place
+}`,
+    },
+    {
+      role: "user",
+      content: `Full character profile:
+${JSON.stringify(user)}
+
+## Recent publications:
+${getListOfIRLTweetsAsString({
+  handle: user.handle,
+  userIRLTweets: tweets,
+})}
+
+<Important>Do not use hashtags or emojis in the tweet. Try to be creative, and original. Don't repeat things from the past. Bring something new. Also try to use the same tone and style of the user's previous tweets.</Important>`,
+    },
+  ] as CoreMessage[];
+
+  const responseFromGemini = await askGeminiThinking({
+    messages: theMessages,
+    temperature: 0.8,
+  });
+
+  console.log("🔴 responseFromGemini", responseFromGemini);
+
+  const cleanedResponse = responseFromGemini
+    .replace(/```json\n/g, "")
+    .replace(/\n```/g, "");
+
+  const theTweet = JSON.parse(cleanedResponse).content;
+  console.log("🔴 theTweet", theTweet);
+  const reasoning = JSON.parse(cleanedResponse).reasoning;
+  console.log("🔴 reasoning", reasoning);
+  const terribleThing = JSON.parse(cleanedResponse).terrible_thing;
+  console.log("🔴 terribleThing", terribleThing);
+
+  // // create the action_event
+  const newActionEvent = {
+    top_level_type: "individual",
+    action_type: "something_terrible_happens",
+    from_handle: user.handle,
+    main_output: JSON.stringify({
+      tweet: theTweet,
+      terrible_thing: terribleThing,
+    }),
+    story_context: reasoning,
+    to_handle: null,
+    extra_data: null,
     created_at: new Date(),
   } as ActionEvent;
 
