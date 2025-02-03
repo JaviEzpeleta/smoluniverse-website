@@ -50,6 +50,15 @@ function TweetCard({
               </div>
             </div>
             <div className="pt-0">{children}</div>
+            {theTweet.image_url && (
+              <div className="pt-2">
+                <img
+                  className="rounded-md border-2 hover:border-primary transition-all duration-150 ease-in-out cursor-pointer active:opacity-50"
+                  src={theTweet.image_url}
+                  alt={theTweet.content}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

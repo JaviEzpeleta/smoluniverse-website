@@ -1,7 +1,9 @@
-import { GEMINI_LATEST } from "./constants";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { GEMINI_LATEST, GEMINI_THINKING } from "./constants";
 import { ChatMessage } from "./types";
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { CoreMessage, generateText } from "ai";
 
 export const askGemini = async ({
   prompt,
@@ -79,4 +81,34 @@ export const askGeminiWithMessagesAndSystemPrompt = async ({
   const result = await chat.sendMessage(lastMessageContent);
   const responseText = result.response.text();
   return responseText;
+};
+
+export const askGeminiThinking = async ({
+  messages,
+  temperature = 0.8,
+  useCase = "default",
+}: {
+  messages: CoreMessage[];
+  temperature?: number;
+  useCase?: string;
+}) => {
+  const keys = [
+    process.env.GOOGLE_GEMINI_API_KEY_1!,
+    process.env.GOOGLE_GEMINI_API_KEY_2!,
+    process.env.GOOGLE_GEMINI_API_KEY_3!,
+  ];
+
+  const RANDOM_GEMINI_API_KEY = keys[Math.floor(Math.random() * keys.length)];
+
+  const google = createGoogleGenerativeAI({
+    apiKey: RANDOM_GEMINI_API_KEY,
+  });
+
+  const { text } = await generateText({
+    temperature,
+    model: google(GEMINI_THINKING, {}),
+    messages,
+  });
+
+  return text;
 };

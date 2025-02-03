@@ -1,5 +1,6 @@
 export const INDIVIDUAL_ACTIONS = [
-  "tweet_an_idea",
+  // "tweet_an_idea", // ! This is the only one that is currently working
+  "tweet_a_wojak_meme", // * next one on the list...
   //   "tweet_a_feeling",
   //   "tweet_a_random_thought",
   //   "learn_something_new",
