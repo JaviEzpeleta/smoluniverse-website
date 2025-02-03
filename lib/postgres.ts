@@ -263,7 +263,7 @@ export const createWallet = async ({
 
 export const getRecentClones = async () => {
   const res = await executeQuery(
-    `SELECT * FROM sim_users ORDER BY created_at DESC LIMIT 10`
+    `SELECT * FROM sim_users ORDER BY created_at DESC LIMIT 30`
   );
   return res.rows;
 };
