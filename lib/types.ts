@@ -100,3 +100,11 @@ export type SmolTweetWithUserData = {
   display_name: string;
   created_at: string;
 };
+
+export type LifeGoalsChange = {
+  handle: string;
+  previous_life_goals: string;
+  new_life_goals: string;
+  summary_of_the_changes: string;
+  created_at: string;
+};

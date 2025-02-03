@@ -35,6 +35,14 @@ CREATE TABLE sim_smol_tweets (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE sim_updates_life_goals (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  handle TEXT NOT NULL,
+  previous_life_goals TEXT NOT NULL,
+  new_life_goals TEXT NOT NULL,
+  summary_of_the_changes TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
 
 CREATE TABLE sim_saved_tweets (
   id TEXT PRIMARY KEY,
@@ -64,6 +72,7 @@ import {
   RawUser,
   ActionEvent,
   SmolTweet,
+  LifeGoalsChange,
 } from "./types";
 
 export interface ImageEmbedding {
@@ -297,7 +306,8 @@ export const deleteUserByHandle = async (handle: string) => {
 
 export const getRandomClone = async () => {
   const res = await executeQuery(
-    `SELECT * FROM sim_users ORDER BY RANDOM() LIMIT 1`
+    // `SELECT * FROM sim_users ORDER BY RANDOM() LIMIT 1`
+    `SELECT * FROM sim_users where handle = 'javitoshi'`
   );
   return res.rows[0];
 };
@@ -376,4 +386,31 @@ export const getRecentSmolTweetsWithUserInfo = async () => {
     LIMIT 50`
   );
   return res.rows;
+};
+
+export const saveNewLifeGoalsChange = async (
+  lifeGoalsChange: LifeGoalsChange
+) => {
+  const res = await executeQuery(
+    `INSERT INTO sim_updates_life_goals (handle, previous_life_goals, new_life_goals, summary_of_the_changes) VALUES ($1, $2, $3, $4)`,
+    [
+      lifeGoalsChange.handle,
+      lifeGoalsChange.previous_life_goals,
+      lifeGoalsChange.new_life_goals,
+      lifeGoalsChange.summary_of_the_changes,
+    ]
+  );
+  return res.rows[0];
+};
+
+export const updateUserLifeGoals = async (
+  handle: string,
+  newLifeGoals: string
+) => {
+  const res = await executeQuery(
+    `UPDATE sim_users SET life_goals = $1 WHERE handle = $2`,
+    [newLifeGoals, handle]
+  );
+  await postToDiscord(`✅ user profile updated: \`${handle}\``);
+  return res.rows[0];
 };

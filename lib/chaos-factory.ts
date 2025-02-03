@@ -1,6 +1,5 @@
 import { INDIVIDUAL_ACTIONS } from "./actions-catalog";
-import { GEMINI_THINKING } from "./constants";
-import { postErrorToDiscord } from "./discord";
+import { postErrorToDiscord, postToDiscord } from "./discord";
 import { askGeminiThinking } from "./gemini";
 import { generateGliffWojakMeme } from "./gliff";
 import {
@@ -8,12 +7,14 @@ import {
   getRandomClone,
   saveNewActionEvent,
   saveNewSmolTweet,
+  saveNewLifeGoalsChange,
+  updateUserLifeGoals,
 } from "./postgres";
-import { ActionEvent, RawUser, SmolTweet } from "./types";
+import { getListOfIRLTweetsAsString } from "./prompts";
+import { ActionEvent, LifeGoalsChange, RawUser, SmolTweet } from "./types";
 import { SavedTweet } from "./types";
 
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import { CoreMessage, generateText } from "ai";
+import { CoreMessage } from "ai";
 
 export const createNewRandomEvent = async () => {
   // ! RANDOMNESS DISABLED FOR NOW!
@@ -82,6 +83,9 @@ const executeIndividualAction = async ({
     case "tweet_a_wojak_meme":
       await executeTweetAWojakMeme({ user, tweets });
       break;
+    case "learn_something_new":
+      await executeLearnSomethingNew({ user, tweets });
+      break;
     default:
       console.log(
         "🔴 Error in executeIndividualAction: unsupported action type" +
@@ -101,7 +105,7 @@ const executeTweetAnIdea = async ({
   const theMessages = [
     {
       role: "system",
-      content: `You are a story teller for an AI clone emulation universe. Based on this character profile and recent tweets, now in this moment of the story, the charactar will write a tweet about a idea that just had.
+      content: `You are a story teller for an AI clone emulation universe. Based on this character profile and recent tweets, now in this moment of the story, the character will write a tweet about a idea that just had.
         
 Reply in JSON format: 
 {
@@ -114,8 +118,11 @@ Reply in JSON format:
       content: `Full character profile:
 ${JSON.stringify(user)}
 
-Recent tweets:
-${JSON.stringify(tweets)}
+## Recent publications:
+${getListOfIRLTweetsAsString({
+  handle: user.handle,
+  userIRLTweets: tweets,
+})}
 
 <Important>Do not use hashtags or emojis in the tweet. Try to be creative, original and a bit random. Also try to use the same tone and style of the user's previous tweets.</Important>`,
     },
@@ -142,7 +149,9 @@ ${JSON.stringify(tweets)}
     top_level_type: "individual",
     action_type: "tweet_an_idea",
     from_handle: user.handle,
-    main_output: theTweet,
+    main_output: JSON.stringify({
+      tweet: theTweet,
+    }),
     story_context: reasoning,
     to_handle: null,
     extra_data: null,
@@ -150,6 +159,12 @@ ${JSON.stringify(tweets)}
   } as ActionEvent;
 
   await saveNewActionEvent(newActionEvent);
+
+  await actionImpactLifeGoals({
+    action: newActionEvent,
+    profile: user,
+    tweets: tweets,
+  });
 
   const newSmolTweet = {
     handle: user.handle,
@@ -176,7 +191,7 @@ const executeTweetAFelling = async ({
   const theMessages = [
     {
       role: "system",
-      content: `You are a story teller for an AI clone emulation universe. Based on this character profile and recent tweets, now in this moment of the story, the charactar will write a tweet about a feeling they're feeling.
+      content: `You are a story teller for an AI clone emulation universe. Based on this character profile and recent tweets, now in this moment of the story, the character will write a tweet about a feeling they're feeling.
 
 It can be a feeling of love, sadness, happiness, anger, etc...
 
@@ -193,8 +208,11 @@ Reply in JSON format:
       content: `Full character profile:
 ${JSON.stringify(user)}
 
-Recent tweets:
-${JSON.stringify(tweets)}
+## Recent publications:
+${getListOfIRLTweetsAsString({
+  handle: user.handle,
+  userIRLTweets: tweets,
+})}
 
 <Important>Do not use hashtags or emojis in the tweet. Try to be creative, original and a bit random. Also try to use the same tone and style of the user's previous tweets.</Important>`,
     },
@@ -221,7 +239,9 @@ ${JSON.stringify(tweets)}
     top_level_type: "individual",
     action_type: "tweet_a_feeling",
     from_handle: user.handle,
-    main_output: theTweet,
+    main_output: JSON.stringify({
+      tweet: theTweet,
+    }),
     story_context: reasoning,
     to_handle: null,
     extra_data: null,
@@ -270,8 +290,11 @@ Reply in JSON format:
       content: `Full character profile:
 ${JSON.stringify(user)}
 
-Recent tweets:
-${JSON.stringify(tweets)}
+## Recent publications:
+${getListOfIRLTweetsAsString({
+  handle: user.handle,
+  userIRLTweets: tweets,
+})}
 
 <Important>Reply directly with the theme in plain text format, no markdown or other formatting.</Important>`,
     },
@@ -305,7 +328,7 @@ ${JSON.stringify(tweets)}
     action_type: "tweet_a_wojak_meme",
     from_handle: user.handle,
     main_output: JSON.stringify({
-      content: tweetContent,
+      tweet: tweetContent,
       image_url: gliffImage,
     }),
     story_context: reasoning,
@@ -329,4 +352,210 @@ ${JSON.stringify(tweets)}
   // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   return responseFromGemini;
+};
+
+const executeLearnSomethingNew = async ({
+  user,
+  tweets,
+}: {
+  user: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  const theMessages = [
+    {
+      role: "system",
+      content: `You are an amazing storyteller for an AI clone emulation universe, where the "users" are ai clones based on twitter profiles, and have money in web3 and do things onchain.
+
+Based on this character profile and recent tweets, now in this moment of the story, the character will decide to learn something now, and that can help improve their skill levels or even add a new skill.
+
+
+So please come up with some creative original new idea for something new to learn by the character of the story.
+
+The character will compose a tweet about the new skill they will learn to share it with the rest of the characters in the story.
+
+Reply in JSON format: 
+{
+  "new_skill": "", // the new skill the user will learn
+  "content": "", // the tweet content about the new skill the user will learn, can be in markdown format
+  "reasoning": "" // the reasoning behind the game character's feelings and thoughts that caused that feeling
+}`,
+    },
+    {
+      role: "user",
+      content: `Full character profile:
+${JSON.stringify(user)}
+
+## Recent publications:
+${getListOfIRLTweetsAsString({
+  handle: user.handle,
+  userIRLTweets: tweets,
+})}
+
+<Important>Do not use hashtags or emojis in the tweet. Try to be creative, original and a bit random. Also try to use the same tone and style of the user's previous tweets.</Important>`,
+    },
+  ] as CoreMessage[];
+
+  const responseFromGemini = await askGeminiThinking({
+    messages: theMessages,
+    temperature: 0.8,
+  });
+
+  console.log("🔴 responseFromGemini", responseFromGemini);
+
+  const cleanedResponse = responseFromGemini
+    .replace(/```json\n/g, "")
+    .replace(/\n```/g, "");
+
+  const theTweet = JSON.parse(cleanedResponse).content;
+  console.log("🔴 theTweet", theTweet);
+  const reasoning = JSON.parse(cleanedResponse).reasoning;
+  console.log("🔴 reasoning", reasoning);
+  const newSkill = JSON.parse(cleanedResponse).new_skill;
+  console.log("🔴 newSkill", newSkill);
+
+  // // create the action_event
+  const newActionEvent = {
+    top_level_type: "individual",
+    action_type: "learn_something_new",
+    from_handle: user.handle,
+    main_output: JSON.stringify({
+      tweet: theTweet,
+      new_skill: newSkill,
+    }),
+    story_context: reasoning,
+    to_handle: null, // ! igual quito esto?
+    extra_data: null, // ! igual quito esto?
+    created_at: new Date(),
+  } as ActionEvent;
+
+  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  await actionImpactLifeGoals({
+    action: newActionEvent,
+    profile: user,
+    tweets: tweets,
+  });
+
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newLifeGoals", newLifeGoals);
+
+  // await saveNewActionEvent(newActionEvent);
+
+  // const newSmolTweet = {
+  //   handle: user.handle,
+  //   content: theTweet,
+  //   link: null,
+  //   image_url: null,
+  //   created_at: new Date(),
+  // } as SmolTweet;
+
+  // await saveNewSmolTweet(newSmolTweet);
+
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  return theTweet;
+};
+
+const actionImpactLifeGoals = async ({
+  action,
+  profile,
+  tweets,
+}: {
+  action: ActionEvent;
+  profile: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  // ! the goal here is to see if the action can alter the user's life goals.
+
+  const messages = [
+    {
+      role: "system",
+      content: `You are a story teller for an AI clone emulation universe. Based on this character profile and an action that just happened on the story (${action.action_type}),
+you have to determine if that action can somehow impact and alter the user's list of life goals. 
+
+The user will provide you with some previous context, the description of the action, and the current list of life goals. 
+
+
+<Important>
+  - if you consider that the action should alter the user's life goals, you should return a JSON object with this structure: 
+{
+  "new_life_goals": "" // the complete list of updated life goals, in markdown format. 
+  "summary_of_the_changes": "" // the reasoning behind what changed in the user's life goals list, in markdown format.
+}  
+  - but, if you consider that the action does not alter the user's life goals, please simply reply with the word "NO".
+</Important>`,
+    },
+    {
+      role: "user",
+      content: `
+
+Full context on the user: 
+- Name: ${profile.display_name}
+- Handle: ${profile.handle}
+
+- Current Life Goals: 
+${profile.life_goals}
+
+- Current skills: 
+${JSON.stringify(profile.skills)}
+
+- Current Life Context: 
+${JSON.stringify(profile.life_context)}
+
+- Recent publications:
+${getListOfIRLTweetsAsString({
+  handle: profile.handle,
+  userIRLTweets: tweets,
+})}
+
+## Recent action that just happened:
+${JSON.stringify(action)}
+
+<Important>
+  - if you consider that the action should alter the user's life goals, you should return a the complete list of updated life goals, in markdown format. 
+  - but, if you consider that the action does not alter the user's life goals, please simply reply with the word "NO".
+</Important>`,
+    },
+  ] as CoreMessage[];
+
+  const responseFromGemini = await askGeminiThinking({
+    messages,
+    temperature: 0.8,
+  });
+
+  console.log("🔴 responseFromGemini", responseFromGemini);
+
+  const cleanedResponse = responseFromGemini
+    .replace(/```json\n/g, "")
+    .replace(/\n```/g, "");
+
+  if (cleanedResponse.trim() === "NO" || cleanedResponse.trim().length < 30) {
+    await postToDiscord(
+      `🔴 ${profile.handle} did not alter their life goals with the action: ${action.action_type}`
+    );
+    return;
+  } else {
+    await postToDiscord(
+      `✅ ${profile.handle} altered their life goals with the action: ${action.action_type}`
+    );
+
+    const newLifeGoals = JSON.parse(cleanedResponse).new_life_goals;
+    const summaryOfTheChanges =
+      JSON.parse(cleanedResponse).summary_of_the_changes;
+    // now it's time to update the user's life goals
+    // but first, we react the change:
+    const lifeGoalsChange = {
+      handle: profile.handle,
+      previous_life_goals: profile.life_goals,
+      new_life_goals: newLifeGoals,
+      summary_of_the_changes: summaryOfTheChanges,
+      created_at: new Date().toISOString(),
+    } as LifeGoalsChange;
+
+    await saveNewLifeGoalsChange(lifeGoalsChange);
+
+    // now we update the user's life goals
+    await updateUserLifeGoals(profile.handle, newLifeGoals);
+  }
+
+  return;
 };
