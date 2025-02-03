@@ -11,6 +11,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useStore from "@/lib/zustandStore";
 import { useState } from "react";
+import BigTitle from "./BigTitle";
+import BlurryEntrance from "./BlurryEntrance";
+import Title from "./Title";
+import Link from "next/link";
 
 const WaitlistModal = () => {
   const { showWaitlistModal, setShowWaitlistModal } = useStore(
@@ -28,46 +32,47 @@ const WaitlistModal = () => {
 
   return (
     <Dialog open={showWaitlistModal} onOpenChange={setShowWaitlistModal}>
-      <DialogContent className="bg-zinc-900 text-zinc-100 border-zinc-800">
+      <DialogContent className="bg-zinc-950/80 text-zinc-100 border-primary/70 md:p-12 lg:px-24 lg:max-w-3xl !rounded-3xl">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold">
-            Join the Clone Waitlist
+          <DialogTitle className="text-xl font-bold text-center">
+            <BlurryEntrance>
+              <BigTitle>Smol Universe</BigTitle>
+            </BlurryEntrance>
+            <BlurryEntrance delay={0.04}>
+              <BigTitle>is coming soon!</BigTitle>
+            </BlurryEntrance>
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="bg-zinc-800 border-zinc-700"
-              placeholder="Enter your name"
-              required
-            />
+        <BlurryEntrance delay={0.08}>
+          <div className="space-y-6 mt-6 text-center text-xl py-8 px-4 rounded-xl bg-gradient-to-br from-zinc-900 to-black">
+            <Title>To join the waitlist:</Title>
+            <BlurryEntrance delay={0.12}>
+              <div className="space-y-2">
+                <div>1 - Follow us on Twitter</div>
+                <div>2 - DM us on Twitter</div>
+              </div>
+            </BlurryEntrance>
+            <BlurryEntrance delay={0.16}>
+              <div className="text-zinc-300 max-w-60 mx-auto">
+                ...and we will add a clone of you to the game asap!
+              </div>
+            </BlurryEntrance>
           </div>
+        </BlurryEntrance>
 
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="bg-zinc-800 border-zinc-700"
-              placeholder="Enter your email"
-              required
-            />
+        <BlurryEntrance delay={0.24}>
+          <div className="max-w-72 mx-auto">
+            <Link href="https://twitter.com/SmolUniverse" target="_blank">
+              <Button
+                variant="outline"
+                className="bg-primary/10 hover:bg-primary/20 border-primary"
+              >
+                <div className="font-bold px-4">Follow @SmolUniverse</div>
+              </Button>
+            </Link>
           </div>
-
-          <Button
-            type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700"
-          >
-            Join Waitlist
-          </Button>
-        </form>
+        </BlurryEntrance>
       </DialogContent>
     </Dialog>
   );

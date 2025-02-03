@@ -32,7 +32,7 @@ const CreateANewCloneForm = () => {
 
   const { toast } = useToast();
   const submitForm = async () => {
-    if (IS_LOCALHOST) {
+    if (!IS_LOCALHOST) {
       setShowWaitlistModal(true);
       return;
     }
