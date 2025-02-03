@@ -16,7 +16,7 @@ const CreateANewCloneForm = () => {
   const { fetchPusherIndex, setFetchPusherIndex, setShowWaitlistModal } =
     useStore((state) => state);
 
-  const [twitterHandle, setTwitterHandle] = useState("javitoshi");
+  const [twitterHandle, setTwitterHandle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
