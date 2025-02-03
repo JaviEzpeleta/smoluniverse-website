@@ -5,6 +5,7 @@ import { Grandstander } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/Header";
 import ClonesSessionController from "@/components/ClonesSessionController";
+import WaitlistModal from "@/components/WaitlistModal";
 
 const grandstander = Grandstander({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({
       >
         <div className="max-w-6xl mx-auto">
           <Header />
+          <WaitlistModal />
           <ClonesSessionController />
           <div>{children}</div>
         </div>
