@@ -4,8 +4,13 @@ import { motion } from "framer-motion";
 import BigTitle from "./BigTitle";
 import BlurryEntrance from "./BlurryEntrance";
 import Title from "./Title";
+import Link from "next/link";
+import { Button } from "./ui/button";
+import { LucidePopcorn } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const IntroBanner = () => {
+  const { toast } = useToast();
   return (
     <div className="overflow-hidden">
       <BlurryEntrance delay={0.1}>
@@ -25,6 +30,36 @@ const IntroBanner = () => {
             ></motion.div>
           </div>
 
+          <div className="absolute flex justify-end items-end right-4 bottom-4">
+            <motion.div
+              //   initial={{ opacity: 0, y: 100, x: 100, scale: 0.5, rotate: 0 }}
+              //   animate={{ opacity: 1, y: 60, x: 30, scale: 1, rotate: -20 }}
+              //   exit={{ opacity: 0, y: -100 }}
+              transition={{ duration: 3.2, delay: 0.2, ease: "easeOut" }}
+              className=""
+            >
+              <Link
+                href="https://ethglobal.com/events/agents"
+                target="_blank"
+                className="bg-white hover:bg-[#d3ffdc] hover:scale-[102%] active:scale-[98%] hover:border-smolGreen 
+                duration-100 active:opacity-40 transition-all px-4 pb-1 text-black border-2 
+                border-zinc-400 flex flex-col items-center justify-center rounded-lg"
+              >
+                <img
+                  src="/images/eth-global.png"
+                  className="w-40 transition-all duration-1000"
+                />
+                <div className="-translate-y-0.5 flex flex-col items-center justify-center">
+                  <div className="text-[14px] leading-none font-semibold pt-0">
+                    Agentic Hackathon
+                  </div>
+                  <div className="text-[12px] uppercase leading-none tracking-wider opacity-70">
+                    February 2025
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+          </div>
           {/* // Rainbow disabled for now, i think */}
           {/* <div className="absolute inset-0 flex justify-end items-end pointer-events-none">
             <motion.div
@@ -57,7 +92,25 @@ const IntroBanner = () => {
               </div>
             </div>
           </BlurryEntrance>
-          <BlurryEntrance delay={0.24}>something else here?!</BlurryEntrance>
+          <BlurryEntrance delay={0.24}>
+            <div className="pt-8">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  toast({
+                    title: "Video demo coming soon!",
+                  });
+                }}
+              >
+                <div className="flex items-center gap-2 px-6">
+                  <div className="-translate-y-0.5">
+                    <LucidePopcorn />
+                  </div>
+                  <div>Watch the video demo</div>
+                </div>
+              </Button>
+            </div>
+          </BlurryEntrance>
         </div>
       </BlurryEntrance>
     </div>
