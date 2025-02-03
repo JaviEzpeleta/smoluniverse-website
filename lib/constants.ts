@@ -19,3 +19,5 @@ export const DISCORD_WEBHOOK_ERRORS_URL = process.env
   .DISCORD_WEBHOOK_ERRORS_URL as string;
 
 export const IS_LOCALHOST = process.env.NODE_ENV === "development";
+
+export const PAGE_SIZE = 30;

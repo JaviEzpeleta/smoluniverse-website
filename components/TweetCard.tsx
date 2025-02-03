@@ -4,13 +4,7 @@ import CheckMark from "./svg/CheckMark";
 import Link from "next/link";
 import { timeSinceShorter } from "@/lib/time";
 
-function TweetCard({
-  children,
-  theTweet,
-}: {
-  children: React.ReactNode;
-  theTweet: SmolTweetWithUserData;
-}) {
+function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
   return (
     <div className="bg-gradient-to-br from-zinc-600/40 to-zinc-800/70 p-[1.5px] rounded-[13.5px]">
       <div className="bg-gradient-to-br from-zinc-900 to-zinc-950 font-sans text-white py-3 px-4 rounded-xl flex flex-col gap-4 pb-6">
@@ -49,7 +43,7 @@ function TweetCard({
                 {timeSinceShorter(new Date(theTweet.created_at).getTime())}
               </div>
             </div>
-            <div className="pt-0">{children}</div>
+            <div className="pt-0">{theTweet.content}</div>
             {theTweet.image_url && (
               <div className="py-2 pt-3">
                 <Link href={theTweet.image_url} target="_blank">

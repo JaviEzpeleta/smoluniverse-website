@@ -56,9 +56,7 @@ const EventsList = () => {
       <div className="space-y-4">
         <div className="flex flex-col gap-4">
           {smolTweets.map((tweet: any) => (
-            <TweetCard key={tweet.id} theTweet={tweet}>
-              {tweet.content}
-            </TweetCard>
+            <TweetCard key={tweet.id} theTweet={tweet} />
           ))}
         </div>
       </div>

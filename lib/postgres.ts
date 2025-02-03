@@ -94,6 +94,7 @@ import {
   SkillsChange,
   LifeContextChange,
 } from "./types";
+import { PAGE_SIZE } from "./constants";
 
 export interface ImageEmbedding {
   original_name: string;
@@ -496,4 +497,20 @@ export const updateUserLifeContext = async (
     [newLifeContext, handle]
   );
   return res.rows[0];
+};
+
+export const getSmolTweetsByHandle = async (handle: string) => {
+  const res = await executeQuery(
+    `SELECT 
+      t.*,
+      u.display_name,
+      u.profile_picture
+    FROM sim_smol_tweets t
+    LEFT JOIN sim_users u ON t.handle = u.handle
+    WHERE t.handle = $1 
+    ORDER BY t.created_at DESC 
+    LIMIT $2`,
+    [handle, PAGE_SIZE]
+  );
+  return res.rows;
 };
