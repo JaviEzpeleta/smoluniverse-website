@@ -1,5 +1,5 @@
-import { findUserByHandle } from "@/lib/postgres";
-import { getBalanceByHandle } from "@/lib/web3functions";
+import { findUserByHandle, getWalletByHandle } from "@/lib/postgres";
+import { getBalanceByHandleCached } from "@/lib/web3functions";
 import { ethers } from "ethers";
 import ProfileHeaderBlock from "@/components/ProfileHeaderBlock";
 import ProfileHeaderMoneyBlock from "@/components/ProfileHeaderMoneyBlock";
@@ -21,10 +21,11 @@ const UserProfilePage = async ({
     return <div>User not found</div>;
   }
 
-  const balanceInWei = await getBalanceByHandle(handle);
+  const balanceInWei = await getBalanceByHandleCached(handle);
   const balance = ethers.formatEther(balanceInWei);
   const skills = JSON.parse(user.skills);
   const lifeContext = JSON.parse(user.life_context);
+  const wallet = await getWalletByHandle(handle);
 
   return (
     <div className="p-4">
@@ -35,6 +36,7 @@ const UserProfilePage = async ({
           <ProfileHeaderMoneyBlock
             balance={balance}
             lifeContext={lifeContext}
+            walletAddress={wallet.address}
           />
         </div>
         <ProfilePageJobAndOneLinerBlock lifeContext={lifeContext} />

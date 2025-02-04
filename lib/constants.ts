@@ -1,7 +1,8 @@
 // * ERC20 token contract address:
 export const ERC20_TOKEN_CONTRACT_ADDRESS =
-  "0xb8e5d6eDf418479aA4CC73def6E4DbB2a07E47E9";
-
+  "0xEd132A151816C1AEEAe5d58a5A7078aFf5C52312";
+export const DEPLOYER_WALLET_ADDRESS =
+  "0x6154CCc7ef29D01A30AA8f51afAB635Ae32d581b";
 // * profile generation:
 export const LIFE_GOALS_DEFAULT_COUNT = 8;
 
@@ -21,3 +22,5 @@ export const DISCORD_WEBHOOK_ERRORS_URL = process.env
 export const IS_LOCALHOST = process.env.NODE_ENV === "development";
 
 export const PAGE_SIZE = 30;
+
+export const BASESCAN_URL = "https://sepolia.basescan.org";

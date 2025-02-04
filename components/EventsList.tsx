@@ -37,7 +37,7 @@ const EventsList = () => {
     const res = await axios.get("/api/events/create");
     console.log("callToCreateANewEvent", res);
     toast({
-      title: "New Event Created!",
+      title: "Finished!!!",
     });
     setIsCreatingNewEvent(false);
     setTweetsFetcherIndex(tweetsFetcherIndex + 1);

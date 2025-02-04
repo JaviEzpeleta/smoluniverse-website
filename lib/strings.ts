@@ -15,3 +15,8 @@ export const nl2br = (message: string) => {
 export const goodTwitterImage = (url: string) => {
   return url.replace("_normal", "_400x400");
 };
+
+export const extractEmojiFromText = (text: string) => {
+  const emoji = text.match(/[^\p{L}\p{N}\p{P}\p{Z}]/gu);
+  return emoji ? emoji[0] : null;
+};

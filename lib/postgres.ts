@@ -74,6 +74,7 @@ CREATE TABLE sim_wallets (
   handle TEXT PRIMARY KEY,
   address TEXT NOT NULL,
   private_key TEXT NOT NULL,
+  permit_signature TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -280,14 +281,16 @@ export const createWallet = async ({
   handle,
   address,
   privateKey,
+  permitSignature,
 }: {
   handle: string;
   address: string;
   privateKey: string;
+  permitSignature: string;
 }) => {
-  const res = await executeQuery(
-    `INSERT INTO sim_wallets (handle, address, private_key) VALUES ($1, $2, $3)`,
-    [handle, address, privateKey]
+  await executeQuery(
+    `INSERT INTO sim_wallets (handle, address, private_key, permit_signature) VALUES ($1, $2, $3, $4)`,
+    [handle, address, privateKey, permitSignature]
   );
 };
 
@@ -328,6 +331,10 @@ export const deleteUserByHandle = async (handle: string) => {
     ]);
 
     await executeQuery(`DELETE FROM sim_users WHERE handle = $1`, [handle]);
+
+    // lo ultimo: borramos sus wallets tambien, ala, que le den por culo a todo ya!!
+    await executeQuery(`DELETE FROM sim_wallets WHERE handle = $1`, [handle]);
+
     await postToDiscord(`💀 User deleted: \`${handle}\``);
   } catch (error) {
     console.error("🔴 Error in deleteUserByHandle:", error);
