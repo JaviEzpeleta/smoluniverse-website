@@ -2,7 +2,10 @@ import { Contract, ethers, Wallet } from "ethers";
 import { createWallet, getWalletByHandle } from "./postgres";
 import { postErrorToDiscord, postToDiscord } from "./discord";
 import { cleanHandle } from "./strings";
-import { ERC20_TOKEN_CONTRACT_ADDRESS } from "./constants";
+import {
+  DEPLOYER_WALLET_ADDRESS,
+  ERC20_TOKEN_CONTRACT_ADDRESS,
+} from "./constants";
 import { unstable_cache } from "next/cache";
 
 import smolABI from "./abi/smolABI.json";
@@ -27,7 +30,7 @@ export const createAndSaveNewWallet = async (
     const permitSignature = await signPermit({
       wallet: plainWallet,
       token: tokenContract,
-      spender: ERC20_TOKEN_CONTRACT_ADDRESS,
+      spender: DEPLOYER_WALLET_ADDRESS,
     });
 
     await createWallet({
@@ -165,7 +168,14 @@ export async function transferFromCloneToClone(
   signature: string,
   deadline: bigint = ethers.MaxUint256
 ): Promise<void> {
+  console.log("🚀 Starting transfer between clones...");
+  console.log("📍 From:", cloneA);
+  console.log("🎯 To:", cloneB);
+  console.log("💰 Amount:", ethers.formatEther(amount), "tokens");
+
   const tokenAddress = await token.getAddress();
+  console.log("🪙 Token address:", tokenAddress);
+
   const permitABI = [
     "function permit(address owner, address spender, uint256 value, uint256 deadline, uint8 v, bytes32 r, bytes32 s)",
     "function transferFrom(address from, address to, uint256 amount) returns (bool)",
@@ -177,33 +187,55 @@ export async function transferFromCloneToClone(
     deployer
   );
 
+  console.log("✍️ Signature received:", signature);
   const { v, r, s } = ethers.Signature.from(signature);
+  console.log("📝 Decoded signature - v:", v, "r:", r, "s:", s);
 
-  console.log({
+  const permitParams = {
     owner: cloneA,
-    spender: await token.getAddress(),
+    spender: tokenAddress,
     amount: amount.toString(),
     deadline: deadline.toString(),
     v,
     r,
     s,
-  });
+  };
+  console.log("🔑 Permit parameters:", permitParams);
 
-  const permitTx = await tokenWithPermit.permit(
-    cloneA,
-    tokenAddress,
-    amount,
-    deadline,
-    v,
-    r,
-    s
-  );
-  await permitTx.wait();
-  console.log("Permit ejecutado correctamente.");
+  try {
+    console.log("🔐 Executing permit...");
+    const permitTx = await tokenWithPermit.permit(
+      cloneA,
+      tokenAddress,
+      amount,
+      deadline,
+      v,
+      r,
+      s
+    );
+    console.log("⏳ Waiting for permit transaction...");
+    const permitReceipt = await permitTx.wait();
+    console.log("✅ Permit executed! Hash:", permitReceipt.hash);
 
-  const transferTx = await tokenWithPermit.transferFrom(cloneA, cloneB, amount);
-  await transferTx.wait();
-  console.log("Transferencia completada de cloneA a cloneB.");
+    console.log("💸 Initiating transfer...");
+    const transferTx = await tokenWithPermit.transferFrom(
+      cloneA,
+      cloneB,
+      amount
+    );
+    console.log("⏳ Waiting for transfer transaction...");
+    const transferReceipt = await transferTx.wait();
+    console.log("🎉 Transfer completed! Hash:", transferReceipt.hash);
+  } catch (error) {
+    console.error("❌ Transaction failed!");
+    console.error("🔍 Error details:", {
+      message: error.message,
+      code: error.code,
+      data: error.data,
+      reason: error.reason,
+    });
+    throw error;
+  }
 }
 
 export const sendMoneyFromJaviToYu = async () => {
