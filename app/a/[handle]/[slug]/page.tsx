@@ -16,7 +16,7 @@ const UserProfilePage = async ({
 
   const article = await findArticleByHandleAndSlug(handle, slug);
 
-  console.log("🔴 article", article);
+  // console.log("🔴 article", article);
 
   if (!article) {
     return <div>Article not found</div>;
