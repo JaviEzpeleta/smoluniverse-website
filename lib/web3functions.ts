@@ -59,14 +59,14 @@ export const sendInitialFundsToWallet = async (address: string) => {
   const signer = new ethers.Wallet(deployerWalletPrivateKey!, provider);
 
   // ABI mínimo para transferir tokens ERC20
-  const minABI = [
-    "function transfer(address to, uint256 amount) returns (bool)",
-  ];
+  // const minABI = [
+  //   "function transfer(address to, uint256 amount) returns (bool)",
+  // ];
 
   // Crear instancia del contrato
   const tokenContract = new ethers.Contract(
     erc20TokenContractAddress!,
-    minABI,
+    smolABI,
     signer
   );
 
@@ -176,16 +176,12 @@ export async function transferFromCloneToClone(
   const tokenAddress = await token.getAddress();
   console.log("🪙 Token address:", tokenAddress);
 
-  const permitABI = [
-    "function permit(address owner, address spender, uint256 value, uint256 deadline, uint8 v, bytes32 r, bytes32 s)",
-    "function transferFrom(address from, address to, uint256 amount) returns (bool)",
-  ];
+  // const permitABI = [
+  //   "function permit(address owner, address spender, uint256 value, uint256 deadline, uint8 v, bytes32 r, bytes32 s)",
+  //   "function transferFrom(address from, address to, uint256 amount) returns (bool)",
+  // ];
 
-  const tokenWithPermit = new ethers.Contract(
-    tokenAddress,
-    permitABI,
-    deployer
-  );
+  const tokenWithPermit = new ethers.Contract(tokenAddress, smolABI, deployer);
 
   console.log("✍️ Signature received:", signature);
   const { v, r, s } = ethers.Signature.from(signature);
@@ -193,7 +189,7 @@ export async function transferFromCloneToClone(
 
   const permitParams = {
     owner: cloneA,
-    spender: tokenAddress,
+    spender: deployer.address,
     amount: amount.toString(),
     deadline: deadline.toString(),
     v,
@@ -206,7 +202,7 @@ export async function transferFromCloneToClone(
     console.log("🔐 Executing permit...");
     const permitTx = await tokenWithPermit.permit(
       cloneA,
-      tokenAddress,
+      deployer.address,
       amount,
       deadline,
       v,
@@ -247,8 +243,10 @@ export const sendMoneyFromJaviToYu = async () => {
 
   const amount = ethers.parseUnits("1", 18);
 
+  const deployerWalletPrivateKey = process.env.DEPLOYER_WALLET_PRIVATE_KEY!;
+
   const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
-  const signer = new ethers.Wallet(wallet.private_key, provider);
+  const signer = new ethers.Wallet(deployerWalletPrivateKey, provider);
 
   const tokenContract = new ethers.Contract(
     ERC20_TOKEN_CONTRACT_ADDRESS!,
