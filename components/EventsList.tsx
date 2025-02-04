@@ -28,17 +28,15 @@ const EventsList = () => {
   const { toast } = useToast();
 
   const callToCreateANewEvent = async () => {
-    toast({
-      title: "Creating new event...",
-      variant: "success",
-    });
-
-    // return;
-
     if (!IS_LOCALHOST) {
       setShowWaitlistModal(true);
       return;
     }
+
+    toast({
+      title: "Creating new event...",
+      variant: "success",
+    });
 
     setIsCreatingNewEvent(true);
     const res = await axios.get("/api/events/create");
