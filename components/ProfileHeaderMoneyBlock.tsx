@@ -1,6 +1,5 @@
 "use client";
 
-import { BsWallet2 } from "react-icons/bs";
 import MiniTitle from "./MiniTitle";
 import ToolTipped from "./ToolTipped";
 import BlurryEntrance from "./BlurryEntrance";

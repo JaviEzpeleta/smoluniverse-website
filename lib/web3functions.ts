@@ -225,12 +225,7 @@ export async function transferFromCloneToClone(
     console.log("🎉 Transfer completed! Hash:", transferReceipt.hash);
   } catch (error) {
     console.error("❌ Transaction failed!");
-    console.error("🔍 Error details:", {
-      message: error.message,
-      code: error.code,
-      data: error.data,
-      reason: error.reason,
-    });
+    console.error("🔍 Error details:", JSON.stringify(error));
     throw error;
   }
 }
