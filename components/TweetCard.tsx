@@ -10,17 +10,19 @@ function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
       <div className="bg-gradient-to-br from-zinc-900 to-zinc-950 font-sans text-white py-3 px-4 rounded-xl flex flex-col gap-4 pb-6">
         <div className="flex gap-2">
           <div>
-            <div
-              className="hover:rotate-[3600deg] hover:hue-rotate-180 scale-x-[-1] flip-horizontal hover:scale-150 ease-in-out transition-all"
-              style={{ transitionDuration: "3s" }}
-            >
-              <img
-                draggable="false"
-                className="w-12 rounded-full aspect-square"
-                src={theTweet.profile_picture}
-                alt="profile"
-              />
-            </div>
+            <Link href={`/u/${theTweet.handle}`} className="active:opacity-60">
+              <div
+                className="hover:rotate-[3600deg] hover:hue-rotate-180 scale-x-[-1] flip-horizontal hover:scale-150 ease-in-out transition-all"
+                style={{ transitionDuration: "3s" }}
+              >
+                <img
+                  draggable="false"
+                  className="w-12 rounded-full aspect-square"
+                  src={theTweet.profile_picture}
+                  alt="profile"
+                />
+              </div>
+            </Link>
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-1.5">

@@ -34,7 +34,7 @@ const EventsList = () => {
     }
 
     setIsCreatingNewEvent(true);
-    const res = await axios.get("/api/events/test-transfer");
+    const res = await axios.get("/api/events/create");
     console.log("callToCreateANewEvent", res);
     toast({
       title: "Finished!!!",

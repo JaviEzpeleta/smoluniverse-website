@@ -1,40 +1,40 @@
 export const INDIVIDUAL_ACTIONS = [
-  "tweet_an_idea", // * ✅
-  "tweet_an_idea", // * ✅
-  "tweet_an_idea", // * ✅
-  "tweet_an_idea", // * ✅
-  "tweet_an_idea", // * ✅
-  "tweet_an_idea", // * ✅
-  "tweet_an_idea", // * ✅
-  "tweet_an_idea", // * ✅
-  "tweet_an_idea", // * ✅
-  "tweet_an_idea", // * ✅
-  "tweet_an_idea", // * ✅
-  "tweet_a_wojak_meme", // * ✅
-  "tweet_a_feeling", // * ✅
-  "tweet_a_feeling", // * ✅
-  "tweet_a_feeling", // * ✅
-  "tweet_a_feeling", // * ✅
-  "learn_something_new", // * ✅
-  "learn_something_new", // * ✅
-  "learn_something_new", // * ✅
-  "release_a_side_hustle", // * ✅
-  "release_a_side_hustle", // * ✅
-  "travel_to_a_new_place", // * ✅
-  "travel_to_a_new_place", // * ✅
-  "travel_to_a_new_place", // * ✅
-  "travel_to_a_new_place", // * ✅
-  "travel_to_a_new_place", // * ✅
-  "create_art_nft", // * ✅
-  "create_art_nft", // * ✅
-  "create_art_nft", // * ✅
-  "create_art_nft", // * ✅
-  "take_a_selfie", // * ✅
-  "something_amazing_happens", // * ✅
-  "something_amazing_happens", // * ✅
-  "something_amazing_happens", // * ✅
-  "something_terrible_happens", // * ✅
-  "something_terrible_happens", // * ✅
+  // "tweet_an_idea", // * ✅
+  // "tweet_an_idea", // * ✅
+  // "tweet_an_idea", // * ✅
+  // "tweet_an_idea", // * ✅
+  // "tweet_an_idea", // * ✅
+  // "tweet_an_idea", // * ✅
+  // "tweet_an_idea", // * ✅
+  // "tweet_an_idea", // * ✅
+  // "tweet_an_idea", // * ✅
+  // "tweet_an_idea", // * ✅
+  // "tweet_an_idea", // * ✅
+  // "tweet_a_wojak_meme", // * ✅
+  // "tweet_a_feeling", // * ✅
+  // "tweet_a_feeling", // * ✅
+  // "tweet_a_feeling", // * ✅
+  // "tweet_a_feeling", // * ✅
+  // "learn_something_new", // * ✅
+  // "learn_something_new", // * ✅
+  // "learn_something_new", // * ✅
+  // "release_a_side_hustle", // * ✅
+  // "release_a_side_hustle", // * ✅
+  // "travel_to_a_new_place", // * ✅
+  // "travel_to_a_new_place", // * ✅
+  // "travel_to_a_new_place", // * ✅
+  // "travel_to_a_new_place", // * ✅
+  // "travel_to_a_new_place", // * ✅
+  // "create_art_nft", // * ✅
+  // "create_art_nft", // * ✅
+  // "create_art_nft", // * ✅
+  // "create_art_nft", // * ✅
+  // "take_a_selfie", // * ✅
+  // "something_amazing_happens", // * ✅
+  // "something_amazing_happens", // * ✅
+  // "something_amazing_happens", // * ✅
+  // "something_terrible_happens", // * ✅
+  // "something_terrible_happens", // * ✅
   "something_terrible_happens", // * ✅
   //   "tweet_a_random_thought",
   //   "buy_a_service_from_the_marketplace",
