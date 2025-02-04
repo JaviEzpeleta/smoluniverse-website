@@ -231,11 +231,11 @@ Reply in JSON format:
   "reasoning": "the reasoning behind the game character's feelings and thoughts that caused that idea"
 }
   
-The tweet can be something like: 
+## The tweet can be something like: 
 <TweetExample>
-i wrote a haiku about [__topic__]
+  i wrote a haiku about [__topic__]
 
-[__the_haiku__]
+  _the haiku divided into separated lines_
 </TweetExample>
 `,
     },
@@ -249,14 +249,13 @@ ${getListOfIRLTweetsAsString({
   handle: user.handle,
   userIRLTweets: tweets,
 })}
-
-<Important>Do not use hashtags or emojis in the tweet. Try to be creative, original and a bit random. Also try to use the same tone and style of the user's previous tweets.</Important>`,
+`,
     },
   ] as CoreMessage[];
 
   const responseFromGemini = await askGeminiThinking({
     messages: theMessages,
-    temperature: 0.8,
+    temperature: 0.75,
   });
 
   console.log("✅ finished generating tweet idea");

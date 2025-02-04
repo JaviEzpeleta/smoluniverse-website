@@ -8,6 +8,7 @@ import {
   liRenderer,
   pRenderer,
   ulRenderer,
+  emRenderer,
 } from "./markdown/renderers-plane";
 
 export const MarkdownRendererPlain = ({
@@ -25,6 +26,7 @@ export const MarkdownRendererPlain = ({
         h3: h3Renderer,
         p: pRenderer,
         a: ARenderer,
+        em: emRenderer,
       }}
       remarkPlugins={[remarkGfm]}
     >

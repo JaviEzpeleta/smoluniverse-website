@@ -287,12 +287,11 @@ export const preRenderer = (props: any) => (
 
 export const emRenderer = (props: any) => (
   <BlurryEntrance>
-    <div className="px-2 lg:px-4">
+    <div className="">
       <div
         {...props}
         className={classNames(
-          "",
-          "mt-12 mb-8 p-2 bg-indigo-50 dark:bg-indigo-950   rounded-md shadow-md lg:px-8 lg:py-4 shadow-indigo-200"
+          "pl-6 border-l border-zinc-300/20 italic text-indigo-200 font-grandstander font-light text-base"
         )}
       />
     </div>
