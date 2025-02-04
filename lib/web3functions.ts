@@ -6,7 +6,7 @@ import {
   DEPLOYER_WALLET_ADDRESS,
   ERC20_TOKEN_CONTRACT_ADDRESS,
 } from "./constants";
-import { unstable_cache } from "next/cache";
+import { revalidateTag, unstable_cache } from "next/cache";
 
 import smolABI from "./abi/smolABI.json";
 
@@ -99,14 +99,15 @@ export const getBalanceByHandleNoCache = async (handle: string) => {
   return balance.toString();
 };
 
-export const getBalanceByHandleCached = unstable_cache(
-  getBalanceByHandleNoCache,
-  ["balance-by-handle"],
-  {
-    revalidate: 3600,
-    tags: ["balance"],
-  }
-);
+export const getBalanceByHandleCached = (handle: string) =>
+  unstable_cache(
+    () => getBalanceByHandleNoCache(handle),
+    [`balance-by-handle-${handle}`],
+    {
+      revalidate: 60 * 60 * 24,
+      tags: [`balance-${handle}`],
+    }
+  )();
 
 // Valor infinito y deadline infinito
 const INFINITE_VALUE = ethers.MaxUint256;
@@ -199,19 +200,19 @@ export async function transferFromCloneToClone(
   console.log("🔑 Permit parameters:", permitParams);
 
   try {
-    console.log("🔐 Executing permit...");
-    const permitTx = await tokenWithPermit.permit(
-      cloneA,
-      deployer.address,
-      INFINITE_VALUE,
-      deadline,
-      v,
-      r,
-      s
-    );
-    console.log("⏳ Waiting for permit transaction...");
-    const permitReceipt = await permitTx.wait();
-    console.log("✅ Permit executed! Hash:", permitReceipt.hash);
+    // console.log("🔐 Executing permit...");
+    // const permitTx = await tokenWithPermit.permit(
+    //   cloneA,
+    //   deployer.address,
+    //   INFINITE_VALUE,
+    //   deadline,
+    //   v,
+    //   r,
+    //   s
+    // );
+    // console.log("⏳ Waiting for permit transaction...");
+    // const permitReceipt = await permitTx.wait();
+    // console.log("✅ Permit executed! Hash:", permitReceipt.hash);
 
     console.log("💸 Initiating transfer...");
     const transferTx = await tokenWithPermit.transferFrom(
@@ -241,7 +242,7 @@ export const sendMoneyFromJaviToYu = async () => {
   console.log({ wallet });
   console.log({ wallet2 });
 
-  const amount = ethers.parseUnits("1", 18);
+  const amount = ethers.parseUnits("100", 18);
 
   const deployerWalletPrivateKey = process.env.DEPLOYER_WALLET_PRIVATE_KEY!;
 
@@ -249,7 +250,7 @@ export const sendMoneyFromJaviToYu = async () => {
   const signer = new ethers.Wallet(deployerWalletPrivateKey, provider);
 
   const tokenContract = new ethers.Contract(
-    ERC20_TOKEN_CONTRACT_ADDRESS!,
+    ERC20_TOKEN_CONTRACT_ADDRESS,
     smolABI,
     signer
   );
@@ -268,6 +269,9 @@ export const sendMoneyFromJaviToYu = async () => {
     amount,
     wallet.permit_signature
   );
+  revalidateTag(`balance-${wallet.handle}`);
+  revalidateTag(`balance-${wallet2.handle}`);
+
   await postToDiscord(
     `💸 Sent ${amount} tokens from ${wallet.address} to ${wallet2.address}`
   );

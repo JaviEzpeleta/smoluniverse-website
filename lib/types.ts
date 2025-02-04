@@ -70,6 +70,7 @@ export type RawUser = {
   life_goals: string;
   skills: string;
   life_context: string;
+  balance?: number;
 };
 
 export type ActionEvent = {

@@ -22,3 +22,5 @@ export const DISCORD_WEBHOOK_ERRORS_URL = process.env
 export const IS_LOCALHOST = process.env.NODE_ENV === "development";
 
 export const PAGE_SIZE = 30;
+
+export const BASESCAN_URL = "https://sepolia.basescan.org";

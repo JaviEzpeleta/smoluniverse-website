@@ -11,6 +11,8 @@ import BlurryEntrance from "./BlurryEntrance";
 import MiniTitle from "./MiniTitle";
 import { BsWallet2 } from "react-icons/bs";
 import { friendlyNumber } from "@/lib/numbers";
+import NumberFlow from "@number-flow/react";
+import { extractEmojiFromText } from "@/lib/strings";
 
 const CloneInHomeList = ({
   clone,
@@ -21,31 +23,6 @@ const CloneInHomeList = ({
   index: number;
   onDelete: (handle: string) => void;
 }) => {
-  const [smolBalance, setSmolBalance] = useState(0);
-  const [isFetchingBalance, setIsFetchingBalance] = useState(false);
-  const { toast } = useToast();
-
-  const loadedRef = useRef(false);
-
-  useEffect(() => {
-    const fetchBalance = async () => {
-      setIsFetchingBalance(true);
-      const res = await axios.post("/api/balance/get", {
-        handle: clone.handle,
-      });
-      // toast({
-      //   title: "yo!",
-      // });
-      console.log("The balance is:", res.data.balance);
-
-      setSmolBalance(res.data.balance);
-      setIsFetchingBalance(false);
-    };
-    if (loadedRef.current) return;
-    loadedRef.current = true;
-    fetchBalance();
-  }, []);
-
   const x = useMotionValue(0);
   const background = useTransform(
     x,
@@ -56,6 +33,10 @@ const CloneInHomeList = ({
   const [isDragging, setIsDragging] = useState(false);
 
   //   console.log(" 💚 💚 💚 💚 💚 💚 💚 CLONE: ", clone);
+
+  const lifeContact = JSON.parse(clone.life_context);
+
+  const contryEmoji = extractEmojiFromText(lifeContact.location);
 
   const router = useRouter();
 
@@ -78,6 +59,7 @@ const CloneInHomeList = ({
       }}
       className="relative rounded-xl cursor-grab active:cursor-grabbing"
     >
+      {/* <pre>{JSON.stringify(lifeContact, null, 2)}</pre> */}
       <motion.div
         className="absolute right-2 text-white pointer-events-none h-full flex items-center"
         style={{ opacity: deleteOpacity }}
@@ -97,8 +79,12 @@ const CloneInHomeList = ({
           <div className="flex items-center gap-3">
             <div className="relative">
               <div className="absolute left-0 bottom-0 z-20 leading-none text-xs font-semibold text-shadow-like-border-black">
-                <span className="text-[8px]">$</span>
-                {friendlyNumber(Number(smolBalance))}
+                <div>{contryEmoji}</div>
+                {/* <span className="text-[8px]">$</span>
+                <NumberFlow
+                  // value={Number(friendlyNumber(Number(clone.balance)))}
+                  value={Number(clone.balance)}
+                /> */}
               </div>
               <div
                 className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center border-2 border-zinc-700 scale-x-[-1] hover:rotate-[3600deg] hover:scale-105 hover:hue-rotate-180"
@@ -112,23 +98,30 @@ const CloneInHomeList = ({
             </div>
             <div>
               <div className="text-xl font-bold">{clone.display_name}</div>
-              <div className="text-xs text-zinc-400">@{clone.handle}</div>
+              <div className="flex items-center gap-3 text-xs text-zinc-400 w-full justify-between">
+                <div className="">@{clone.handle}</div>
+                <div>
+                  <NumberFlow value={Number(clone.balance)} />
+                  <span className="font-mono font-bold text-[8px] pl-[1px]">
+                    $
+                  </span>
+                  <span className="text-[8px]">SMOL</span>
+                </div>
+              </div>
             </div>
-            <div className="w-24 flex justify-end">
-              {!isFetchingBalance && (
+            {/* <div className="w-24 flex justify-end">
+              {clone.balance && (
                 <BlurryEntrance delay={0.15}>
                   <div className="rounded-full flex items-center gap-2">
-                    {/* <BsWallet2 className="text-xs -translate-y-0.5" /> */}
                     <div className="text-base">
                       <span className="font-mono text-sm font-medium">$</span>
-                      {/* {friendlyNumber(Number(balance))} */}
-                      {friendlyNumber(Number(smolBalance))}
+                      {friendlyNumber(Number(clone.balance))}
                       <span className="text-xs pl-1">SMOL</span>
                     </div>
                   </div>
                 </BlurryEntrance>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
         {/* </Link> */}
