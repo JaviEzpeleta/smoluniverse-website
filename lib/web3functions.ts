@@ -3,6 +3,7 @@ import { createWallet, getWalletByHandle } from "./postgres";
 import { postErrorToDiscord, postToDiscord } from "./discord";
 import { cleanHandle } from "./strings";
 import { ERC20_TOKEN_CONTRACT_ADDRESS } from "./constants";
+import { unstable_cache } from "next/cache";
 
 import smolABI from "./abi/smolABI.json";
 
@@ -76,14 +77,13 @@ export const sendInitialFundsToWallet = async (address: string) => {
   return tx;
 };
 
-export const getBalanceByHandle = async (handle: string) => {
+export const getBalanceByHandleNoCache = async (handle: string) => {
   const wallet = await getWalletByHandle(handle);
   if (!wallet) {
-    return 0;
+    return "0";
   }
   const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
 
-  // Minimal ABI for balanceOf
   const minABI = ["function balanceOf(address owner) view returns (uint256)"];
 
   const tokenContract = new ethers.Contract(
@@ -93,8 +93,17 @@ export const getBalanceByHandle = async (handle: string) => {
   );
 
   const balance = await tokenContract.balanceOf(wallet.address);
-  return balance;
+  return balance.toString();
 };
+
+export const getBalanceByHandleCached = unstable_cache(
+  getBalanceByHandleNoCache,
+  ["balance-by-handle"],
+  {
+    revalidate: 3600,
+    tags: ["balance"],
+  }
+);
 
 // Valor infinito y deadline infinito
 const INFINITE_VALUE = ethers.MaxUint256;

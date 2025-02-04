@@ -20,3 +20,14 @@ body {
 .hello2 {
   border: 1px solid blue;
 }
+
+.text-shadow-like-border {
+  text-shadow: 0.5px 0 0 #00000011, -0.5px 0 0 #00000011, 0 0.5px 0 #00000011,
+    0 -0.5px 0 #00000011, 0.5px 0.5px #00000011, -0.5px -0.5px 0 #00000011,
+    0.5px -0.5px 0 #00000011, -0.5px 0.5px 0 #00000011;
+}
+.text-shadow-like-border-black {
+  text-shadow: 0.5px 0 0 black, -0.5px 0 0 black, 0 0.5px 0 black,
+    0 -0.5px 0 black, 0.5px 0.5px black, -0.5px -0.5px 0 black,
+    0.5px -0.5px 0 black, -0.5px 0.5px 0 black;
+}
