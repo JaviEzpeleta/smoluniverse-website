@@ -3,6 +3,7 @@ import React from "react";
 import CheckMark from "./svg/CheckMark";
 import Link from "next/link";
 import { timeSinceShorter } from "@/lib/time";
+import { MarkdownRendererPlain } from "./MarkdownRendererPlain";
 
 function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
   return (
@@ -45,7 +46,8 @@ function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
                 {timeSinceShorter(new Date(theTweet.created_at).getTime())}
               </div>
             </div>
-            <div className="pt-0">{theTweet.content}</div>
+            <MarkdownRendererPlain>{theTweet.content}</MarkdownRendererPlain>
+            {/* <div className="pt-0">{theTweet.content}</div> */}
             {theTweet.image_url && (
               <div className="py-2 pt-3">
                 <Link href={theTweet.image_url} target="_blank">
@@ -54,6 +56,29 @@ function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
                     src={theTweet.image_url}
                     alt={theTweet.content}
                   />
+                </Link>
+              </div>
+            )}
+            {/* <pre>{JSON.stringify(theTweet, null, 2)}</pre> */}
+            {theTweet.link_preview_img_url && theTweet.link && (
+              <div className="pb-2 group border-white/30 hover:border-yellow-100 border mt-4 rounded-lg overflow-hidden active:opacity-40 active:scale-[98%] transition-all duration-100">
+                <Link
+                  href={theTweet.link}
+                  target="_blank"
+                  className=""
+                  draggable="false"
+                >
+                  <div className="overflow-hidden">
+                    <img
+                      draggable="false"
+                      className="md:brightness-[85%] group-hover:brightness-100 transition-all duration-700 ease-in-out cursor-pointer active:opacity-50 group-hover:scale-[102%]"
+                      src={theTweet.link_preview_img_url}
+                      alt={theTweet.content}
+                    />
+                  </div>
+                  <div className="text-sm pt-3 px-2 font-bold font-grandstander group-hover:text-yellow-100 transition-all duration-300 ease-in-out">
+                    {theTweet.link_title}
+                  </div>
                 </Link>
               </div>
             )}

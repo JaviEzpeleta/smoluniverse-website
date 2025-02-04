@@ -7,16 +7,22 @@ export const generateRecraftImage = async ({
   prompt,
   handle,
   portraitMode = false,
+  landscapeMode = false,
 }: {
   prompt: string;
   handle: string;
   portraitMode?: boolean;
+  landscapeMode?: boolean;
 }) => {
   const replicate = new Replicate();
 
   const modelToUse = "recraft-ai/recraft-v3";
   const input = {
-    size: portraitMode ? "1024x1365" : "1365x1024",
+    size: portraitMode
+      ? "1024x1365"
+      : landscapeMode
+      ? "1820x1024"
+      : "1024x1024",
     prompt,
   };
 

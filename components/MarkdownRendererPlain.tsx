@@ -2,16 +2,15 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import {
   ARenderer,
-  blockquoteRenderer,
   h1Renderer,
   h2Renderer,
   h3Renderer,
   liRenderer,
   pRenderer,
   ulRenderer,
-} from "./markdown/renderers";
+} from "./markdown/renderers-plane";
 
-export const MarkdownRenderer = ({
+export const MarkdownRendererPlain = ({
   children,
 }: {
   children: React.ReactNode;
@@ -26,7 +25,6 @@ export const MarkdownRenderer = ({
         h3: h3Renderer,
         p: pRenderer,
         a: ARenderer,
-        blockquote: blockquoteRenderer,
       }}
       remarkPlugins={[remarkGfm]}
     >

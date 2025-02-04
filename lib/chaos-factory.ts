@@ -163,7 +163,7 @@ ${getListOfIRLTweetsAsString({
     temperature: 0.8,
   });
 
-  console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating tweet idea");
 
   const cleanedResponse = responseFromGemini
     .replace(/```json\n/g, "")
@@ -252,7 +252,8 @@ ${getListOfIRLTweetsAsString({
     temperature: 0.8,
   });
 
-  console.log("🔴 responseFromGemini", responseFromGemini);
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating tweet a feeling");
 
   const cleanedResponse = responseFromGemini
     .replace(/```json\n/g, "")
@@ -339,7 +340,8 @@ ${getListOfIRLTweetsAsString({
     temperature: 0.8,
   });
 
-  console.log("🔴 responseFromGemini", responseFromGemini);
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating tweet a wojak meme");
 
   const cleanedResponse = responseFromGemini
     .replace(/```json\n/g, "")
@@ -436,7 +438,8 @@ ${getListOfIRLTweetsAsString({
     temperature: 0.8,
   });
 
-  console.log("🔴 responseFromGemini", responseFromGemini);
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating learn something new");
 
   const cleanedResponse = responseFromGemini
     .replace(/```json\n/g, "")
@@ -510,9 +513,16 @@ The character will compose a tweet to publicly announce the new side hustle on a
 Reply in JSON format: 
 {
   "side_hustle": "", // the new side hustle the user will release
-  "content": "", // the tweet content about the new side hustle the user will release, can be in markdown format
+  "content": "", // the content for the tweet the user will share on socials to announce the new side hustle. It can be in markdown format.
   "reasoning": "" // the reasoning behind the game character's situation that caused them to release this side hustle
-}`,
+}
+  
+## important details about the tweet's "content" field
+In the tweet's content is about the new side hustle announcement the user just released.
+It can be in markdown format.
+The user also wrote a web article about it and will be linked next to this tweet, so end the tweet with nicely inviting to "check the link below" or something like that, casual and friendly.
+Thanks!
+`,
     },
     {
       role: "user",
@@ -534,20 +544,40 @@ ${getListOfIRLTweetsAsString({
     temperature: 0.8,
   });
 
-  console.log("🔴 responseFromGemini", responseFromGemini);
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating release a side hustle");
 
   const cleanedResponse = responseFromGemini
     .replace(/```json\n/g, "")
     .replace(/\n```/g, "");
 
-  const theTweet = JSON.parse(cleanedResponse).content;
+  const sideHustleObject = JSON.parse(cleanedResponse);
+
+  const theTweet = sideHustleObject.content;
   console.log("🔴 theTweet", theTweet);
-  const reasoning = JSON.parse(cleanedResponse).reasoning;
+  const reasoning = sideHustleObject.reasoning;
   console.log("🔴 reasoning", reasoning);
-  const sideHustle = JSON.parse(cleanedResponse).side_hustle;
+  const sideHustle = sideHustleObject.side_hustle;
   console.log("🔴 sideHustle", sideHustle);
 
-  // // create the action_event
+  const webArticle = await generateWebArticleForSideHustle({
+    sideHustle: sideHustleObject,
+    user,
+    tweets,
+  });
+
+  // console.log("🔴 webArticle", webArticle);
+
+  const webArticleImage = await generateRecraftImage({
+    prompt: webArticle.prompt_for_article_cover_image,
+    handle: user.handle,
+    landscapeMode: true,
+  });
+
+  console.log("🔴 webArticleImage", webArticleImage);
+  webArticle.image_url = webArticleImage;
+
+  // // // create the action_event
   const newActionEvent = {
     top_level_type: "individual",
     action_type: "release_a_side_hustle",
@@ -558,7 +588,7 @@ ${getListOfIRLTweetsAsString({
     }),
     story_context: reasoning,
     to_handle: null, // ! igual quito esto?
-    extra_data: null, // ! igual quito esto?
+    extra_data: JSON.stringify(webArticle),
     created_at: new Date(),
   } as ActionEvent;
 
@@ -575,8 +605,9 @@ ${getListOfIRLTweetsAsString({
   const newSmolTweet = {
     handle: user.handle,
     content: theTweet,
-    link: null,
-    image_url: null,
+    link: `/a/${user.handle}/${webArticle.article_web_slug}`,
+    link_preview_img_url: webArticleImage,
+    link_title: webArticle.article_title,
     created_at: new Date(),
   } as SmolTweet;
 
@@ -630,7 +661,8 @@ ${getListOfIRLTweetsAsString({
     temperature: 0.8,
   });
 
-  console.log("🔴 responseFromGemini", responseFromGemini);
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating travel to a new place");
 
   const cleanedResponse = responseFromGemini
     .replace(/```json\n/g, "")
@@ -681,6 +713,68 @@ ${getListOfIRLTweetsAsString({
   return theTweet;
 };
 
+const generateWebArticleForSideHustle = async ({
+  sideHustle,
+  user,
+  tweets,
+}: {
+  sideHustle: any;
+  user: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  const theMessages = [
+    {
+      role: "system",
+      content: `This is an world simulation with game characters. 
+Your job now is to create a web article for a side hustle the character just launched.
+
+Reply in JSON format: 
+{
+  "article_title": "", 
+  "price_of_service": <number>, // the price of the service/product the user is offering, in $SMOL (the game's currency that's like a dollar)
+  "type_of_payment": "", // the type of payment the user is offering ("mensual", "weekly", "one-time")
+  "article_web_slug": "", //
+  "content": "" // the whole content of the article, in markdown. Must have a title in H2, Several blocks of [H3 + content], and it can have emojis, bullet points, bold text, italic text, quotes, and a conclusion at the end. And please include and mention the amount of $SMOL (the game's currency) the service/product could cost.
+  "prompt_for_article_cover_image": "" 
+}
+## Details about the field "prompt_for_article_cover_image":  
+- Describe it as a thumbnail. Describe the background of the image and also add some text as a title. That title text should be 5 words or less.
+- Example of one "prompt_for_article_cover_image": "Create a thumbnail image for a web article, a calm restaurant with asian food. professional photography, and includes the title "Have the best dinner ever"
+
+`,
+    },
+    {
+      role: "user",
+      content: `## Here's the side hustle info:
+${JSON.stringify(sideHustle)}
+
+## Here's the user profile: 
+${JSON.stringify(user)}
+
+## Here's the recent tweets from the user:
+${getListOfIRLTweetsAsString({
+  handle: user.handle,
+  userIRLTweets: tweets,
+})}
+`,
+    },
+  ] as CoreMessage[];
+
+  console.log(" GENERATING WEB ARTICLE NOW....");
+
+  const responseFromGemini = await askGeminiThinking({
+    messages: theMessages,
+    temperature: 0,
+  });
+  const cleanedResponse = responseFromGemini
+    .replace(/```json\n/g, "")
+    .replace(/\n```/g, "");
+
+  console.log("✅ web article generated!!");
+
+  return JSON.parse(cleanedResponse);
+};
+
 const executeSomethingAmazingHappens = async ({
   user,
   tweets,
@@ -724,7 +818,8 @@ ${getListOfIRLTweetsAsString({
     temperature: 0.44,
   });
 
-  console.log("🔴 responseFromGemini", responseFromGemini);
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating something amazing happens");
 
   const cleanedResponse = responseFromGemini
     .replace(/```json\n/g, "")
@@ -818,7 +913,8 @@ ${getListOfIRLTweetsAsString({
     temperature: 0.33,
   });
 
-  console.log("🔴 responseFromGemini", responseFromGemini);
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating something terrible happens");
 
   const cleanedResponse = responseFromGemini
     .replace(/```json\n/g, "")
@@ -916,7 +1012,8 @@ ${getListOfIRLTweetsAsString({
     temperature: 0.8,
   });
 
-  console.log("🔴 responseFromGemini", responseFromGemini);
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating create art nft");
 
   const cleanedResponse = responseFromGemini
     .replace(/```json\n/g, "")
@@ -1025,7 +1122,8 @@ ${getListOfIRLTweetsAsString({
     temperature: 0.8,
   });
 
-  console.log("🔴 responseFromGemini", responseFromGemini);
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating take a selfie");
 
   const cleanedResponse = responseFromGemini
     .replace(/```json\n/g, "")
@@ -1158,7 +1256,8 @@ ${JSON.stringify(action)}
     temperature: 0.8,
   });
 
-  console.log("🔴 responseFromGemini", responseFromGemini);
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating action impact life goals");
 
   const cleanedResponse = responseFromGemini
     .replace(/```json\n/g, "")
@@ -1170,30 +1269,44 @@ ${JSON.stringify(action)}
     );
     return;
   } else {
-    const newLifeGoals = JSON.parse(cleanedResponse).new_life_goals;
-    const summaryOfTheChanges =
-      JSON.parse(cleanedResponse).summary_of_the_changes;
-    // now it's time to update the user's life goals
-    // but first, we react the change:
-    const lifeGoalsChange = {
-      handle: profile.handle,
-      previous_life_goals: profile.life_goals,
-      new_life_goals: newLifeGoals,
-      summary_of_the_changes: summaryOfTheChanges,
-      created_at: new Date().toISOString(),
-    } as LifeGoalsChange;
+    try {
+      const parsedResponse = JSON.parse(cleanedResponse);
+      const newLifeGoals = parsedResponse.new_life_goals;
+      const summaryOfTheChanges = parsedResponse.summary_of_the_changes;
 
-    await postToDiscord(
-      `✅ ${profile.handle} altered their life goals with the action: ${action.action_type}:` +
-        `\n\n${summaryOfTheChanges}`
-    );
+      // Validate required fields
+      if (!newLifeGoals || !summaryOfTheChanges) {
+        await postToDiscord(
+          `🔴 Error: Missing required fields in life goals update for ${profile.handle}`
+        );
+        return;
+      }
 
-    await saveNewLifeGoalsChange(lifeGoalsChange);
+      // Create the change record
+      const lifeGoalsChange = {
+        handle: profile.handle,
+        previous_life_goals: profile.life_goals,
+        new_life_goals: newLifeGoals,
+        summary_of_the_changes: summaryOfTheChanges,
+        created_at: new Date().toISOString(),
+      } as LifeGoalsChange;
 
-    await saveNewLifeGoalsChange(lifeGoalsChange);
+      await postToDiscord(
+        `✅ ${profile.handle} altered their life goals with the action: ${action.action_type}:` +
+          `\n\n${summaryOfTheChanges}`
+      );
 
-    // now we update the user's life goals
-    await updateUserLifeGoals(profile.handle, newLifeGoals);
+      // Save change only once and handle errors
+      await saveNewLifeGoalsChange(lifeGoalsChange);
+
+      // Update user's life goals
+      await updateUserLifeGoals(profile.handle, newLifeGoals);
+    } catch (error) {
+      await postToDiscord(
+        `🔴 Error processing life goals change for ${profile.handle}: ${error}`
+      );
+      return;
+    }
   }
 
   return;
@@ -1266,7 +1379,8 @@ ${JSON.stringify(action)}
     temperature: 0.8,
   });
 
-  console.log("🔴 responseFromGemini", responseFromGemini);
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating action impact skills");
 
   const cleanedResponse = responseFromGemini
     .replace(/```json\n/g, "")
@@ -1371,7 +1485,8 @@ ${JSON.stringify(action)}
     temperature: 0.8,
   });
 
-  console.log("🔴 responseFromGemini", responseFromGemini);
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating action impact life context");
 
   const cleanedResponse = responseFromGemini
     .replace(/```json\n/g, "")
