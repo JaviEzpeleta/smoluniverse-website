@@ -605,7 +605,7 @@ ${getListOfIRLTweetsAsString({
   const newSmolTweet = {
     handle: user.handle,
     content: theTweet,
-    link: `/u/articles/${user.handle}/${webArticle.article_web_slug}`,
+    link: `/a/${user.handle}/${webArticle.article_web_slug}`,
     link_preview_img_url: webArticleImage,
     link_title: webArticle.article_title,
     created_at: new Date(),
@@ -1269,30 +1269,44 @@ ${JSON.stringify(action)}
     );
     return;
   } else {
-    const newLifeGoals = JSON.parse(cleanedResponse).new_life_goals;
-    const summaryOfTheChanges =
-      JSON.parse(cleanedResponse).summary_of_the_changes;
-    // now it's time to update the user's life goals
-    // but first, we react the change:
-    const lifeGoalsChange = {
-      handle: profile.handle,
-      previous_life_goals: profile.life_goals,
-      new_life_goals: newLifeGoals,
-      summary_of_the_changes: summaryOfTheChanges,
-      created_at: new Date().toISOString(),
-    } as LifeGoalsChange;
+    try {
+      const parsedResponse = JSON.parse(cleanedResponse);
+      const newLifeGoals = parsedResponse.new_life_goals;
+      const summaryOfTheChanges = parsedResponse.summary_of_the_changes;
 
-    await postToDiscord(
-      `✅ ${profile.handle} altered their life goals with the action: ${action.action_type}:` +
-        `\n\n${summaryOfTheChanges}`
-    );
+      // Validate required fields
+      if (!newLifeGoals || !summaryOfTheChanges) {
+        await postToDiscord(
+          `🔴 Error: Missing required fields in life goals update for ${profile.handle}`
+        );
+        return;
+      }
 
-    await saveNewLifeGoalsChange(lifeGoalsChange);
+      // Create the change record
+      const lifeGoalsChange = {
+        handle: profile.handle,
+        previous_life_goals: profile.life_goals,
+        new_life_goals: newLifeGoals,
+        summary_of_the_changes: summaryOfTheChanges,
+        created_at: new Date().toISOString(),
+      } as LifeGoalsChange;
 
-    await saveNewLifeGoalsChange(lifeGoalsChange);
+      await postToDiscord(
+        `✅ ${profile.handle} altered their life goals with the action: ${action.action_type}:` +
+          `\n\n${summaryOfTheChanges}`
+      );
 
-    // now we update the user's life goals
-    await updateUserLifeGoals(profile.handle, newLifeGoals);
+      // Save change only once and handle errors
+      await saveNewLifeGoalsChange(lifeGoalsChange);
+
+      // Update user's life goals
+      await updateUserLifeGoals(profile.handle, newLifeGoals);
+    } catch (error) {
+      await postToDiscord(
+        `🔴 Error processing life goals change for ${profile.handle}: ${error}`
+      );
+      return;
+    }
   }
 
   return;
