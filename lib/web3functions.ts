@@ -203,7 +203,7 @@ export async function transferFromCloneToClone(
     const permitTx = await tokenWithPermit.permit(
       cloneA,
       deployer.address,
-      amount,
+      INFINITE_VALUE,
       deadline,
       v,
       r,
