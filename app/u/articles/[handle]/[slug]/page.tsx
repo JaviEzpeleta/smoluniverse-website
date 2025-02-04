@@ -25,7 +25,7 @@ const UserProfilePage = async ({
   const theContent = extraData.content;
 
   return (
-    <div className="max-w-xl mx-auto">
+    <div className="max-w-xl mx-auto pb-12">
       <BlurryEntrance delay={0.14}>
         <div className="pb-6 relative">
           <img
@@ -42,7 +42,9 @@ const UserProfilePage = async ({
         <MarkdownRenderer>{theContent}</MarkdownRenderer>
       </BlurryEntrance>
 
-      {/* <Button>Share this article</Button> */}
+      <div className="py-8 w-full flex justify-center">
+        <Button size="lg">Share this article</Button>
+      </div>
       {/* <div>
         <pre>{JSON.stringify(article, null, 2)}</pre>
       </div> */}
