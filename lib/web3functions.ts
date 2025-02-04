@@ -27,7 +27,7 @@ export const createAndSaveNewWallet = async (
     const permitSignature = await signPermit({
       wallet: plainWallet,
       token: tokenContract,
-      spender: "0x0000000000000000000000000000000000000000",
+      spender: ERC20_TOKEN_CONTRACT_ADDRESS,
     });
 
     await createWallet({
@@ -165,23 +165,33 @@ export async function transferFromCloneToClone(
   signature: string,
   deadline: bigint = ethers.MaxUint256
 ): Promise<void> {
+  const tokenAddress = await token.getAddress();
   const permitABI = [
     "function permit(address owner, address spender, uint256 value, uint256 deadline, uint8 v, bytes32 r, bytes32 s)",
     "function transferFrom(address from, address to, uint256 amount) returns (bool)",
   ];
 
-  // Create new contract instance with permit function
   const tokenWithPermit = new ethers.Contract(
-    await token.getAddress(),
+    tokenAddress,
     permitABI,
     deployer
   );
 
   const { v, r, s } = ethers.Signature.from(signature);
 
+  console.log({
+    owner: cloneA,
+    spender: await token.getAddress(),
+    amount: amount.toString(),
+    deadline: deadline.toString(),
+    v,
+    r,
+    s,
+  });
+
   const permitTx = await tokenWithPermit.permit(
     cloneA,
-    deployer.address,
+    tokenAddress,
     amount,
     deadline,
     v,
@@ -195,3 +205,40 @@ export async function transferFromCloneToClone(
   await transferTx.wait();
   console.log("Transferencia completada de cloneA a cloneB.");
 }
+
+export const sendMoneyFromJaviToYu = async () => {
+  const wallet = await getWalletByHandle("javitoshi");
+  const wallet2 = await getWalletByHandle("mad4yu");
+
+  console.log({ wallet });
+  console.log({ wallet2 });
+
+  const amount = ethers.parseUnits("1", 18);
+
+  const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+  const signer = new ethers.Wallet(wallet.private_key, provider);
+
+  const tokenContract = new ethers.Contract(
+    ERC20_TOKEN_CONTRACT_ADDRESS!,
+    smolABI,
+    signer
+  );
+
+  // const signature = await signPermit({
+  //   wallet: signer,
+  //   token: tokenContract,
+  //   spender: wallet2.address,
+  // });
+
+  await transferFromCloneToClone(
+    tokenContract,
+    signer,
+    wallet.address,
+    wallet2.address,
+    amount,
+    wallet.permit_signature
+  );
+  await postToDiscord(
+    `💸 Sent ${amount} tokens from ${wallet.address} to ${wallet2.address}`
+  );
+};

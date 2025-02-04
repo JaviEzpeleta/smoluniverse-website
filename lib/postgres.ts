@@ -331,6 +331,10 @@ export const deleteUserByHandle = async (handle: string) => {
     ]);
 
     await executeQuery(`DELETE FROM sim_users WHERE handle = $1`, [handle]);
+
+    // lo ultimo: borramos sus wallets tambien, ala, que le den por culo a todo ya!!
+    await executeQuery(`DELETE FROM sim_wallets WHERE handle = $1`, [handle]);
+
     await postToDiscord(`💀 User deleted: \`${handle}\``);
   } catch (error) {
     console.error("🔴 Error in deleteUserByHandle:", error);
