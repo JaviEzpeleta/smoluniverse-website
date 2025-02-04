@@ -146,3 +146,43 @@ export const signPermit = async ({
 
   return signature;
 };
+
+export async function transferFromCloneToClone(
+  token: Contract,
+  deployer: Wallet,
+  cloneA: string,
+  cloneB: string,
+  amount: bigint,
+  signature: string,
+  deadline: bigint = ethers.MaxUint256
+): Promise<void> {
+  const permitABI = [
+    "function permit(address owner, address spender, uint256 value, uint256 deadline, uint8 v, bytes32 r, bytes32 s)",
+    "function transferFrom(address from, address to, uint256 amount) returns (bool)",
+  ];
+
+  // Create new contract instance with permit function
+  const tokenWithPermit = new ethers.Contract(
+    await token.getAddress(),
+    permitABI,
+    deployer
+  );
+
+  const { v, r, s } = ethers.Signature.from(signature);
+
+  const permitTx = await tokenWithPermit.permit(
+    cloneA,
+    deployer.address,
+    amount,
+    deadline,
+    v,
+    r,
+    s
+  );
+  await permitTx.wait();
+  console.log("Permit ejecutado correctamente.");
+
+  const transferTx = await tokenWithPermit.transferFrom(cloneA, cloneB, amount);
+  await transferTx.wait();
+  console.log("Transferencia completada de cloneA a cloneB.");
+}
