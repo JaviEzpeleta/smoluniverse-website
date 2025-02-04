@@ -575,6 +575,7 @@ ${getListOfIRLTweetsAsString({
   });
 
   console.log("🔴 webArticleImage", webArticleImage);
+  webArticle.image_url = webArticleImage;
 
   // // // create the action_event
   const newActionEvent = {

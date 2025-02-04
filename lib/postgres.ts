@@ -524,3 +524,22 @@ export const getSmolTweetsByHandle = async (handle: string) => {
   );
   return res.rows;
 };
+
+export const findArticleByHandleAndSlug = async (
+  handle: string,
+  slug: string
+) => {
+  try {
+    const res = await executeQuery(
+      `SELECT * FROM sim_action_events WHERE from_handle = $1 AND extra_data LIKE '%${slug}%'`,
+      [handle]
+    );
+    return res.rows[0];
+  } catch (error) {
+    console.error("🔴 Error in findArticleByHandleAndSlug:", error);
+    await postErrorToDiscord(
+      "🔴 Error in findArticleByHandleAndSlug: " + handle + " " + slug
+    );
+    return null;
+  }
+};

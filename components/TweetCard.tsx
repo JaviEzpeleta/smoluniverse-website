@@ -47,7 +47,7 @@ function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
               </div>
             </div>
             <MarkdownRendererPlain>{theTweet.content}</MarkdownRendererPlain>
-            <div className="pt-0">{theTweet.content}</div>
+            {/* <div className="pt-0">{theTweet.content}</div> */}
             {theTweet.image_url && (
               <div className="py-2 pt-3">
                 <Link href={theTweet.image_url} target="_blank">
@@ -61,13 +61,15 @@ function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
             )}
             {/* <pre>{JSON.stringify(theTweet, null, 2)}</pre> */}
             {theTweet.link_preview_img_url && theTweet.link && (
-              <div className="pb-2 group border-white/30 hover:border-yellow-50 border-2 mt-4 rounded-lg">
+              <div className="pb-2 group border-white/30 hover:border-yellow-50 border mt-4 rounded-lg overflow-hidden">
                 <Link href={theTweet.link} target="_blank" className="">
-                  <img
-                    className="rounded-lg md:brightness-[85%] group-hover:brightness-100 transition-all duration-300 ease-in-out cursor-pointer active:opacity-50"
-                    src={theTweet.link_preview_img_url}
-                    alt={theTweet.content}
-                  />
+                  <div className="overflow-hidden">
+                    <img
+                      className="md:brightness-[85%] group-hover:brightness-100 transition-all duration-700 ease-in-out cursor-pointer active:opacity-50 group-hover:scale-[102%]"
+                      src={theTweet.link_preview_img_url}
+                      alt={theTweet.content}
+                    />
+                  </div>
                   <div className="text-base pt-1 px-2 font-bold font-grandstander group-hover:text-yellow-50 transition-all duration-300 ease-in-out text-balance">
                     {theTweet.link_title}
                   </div>

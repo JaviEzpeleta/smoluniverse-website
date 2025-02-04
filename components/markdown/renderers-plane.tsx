@@ -24,7 +24,7 @@ export const h1Renderer = (props: any) => (
   <div
     {...props}
     className={classNames(
-      "mb-4 text-xl font-medium tracking-tight text-zinc-200 sm:text-3xl"
+      "mb-4 text-base  tracking-tight text-zinc-200 sm:text-3xl"
     )}
   />
 );
@@ -32,7 +32,7 @@ export const h1RendererDark = (props: any) => (
   <div
     {...props}
     className={classNames(
-      "mb-4 mt-4 text-xl font-medium tracking-tight text-zinc-200 sm:text-3xl"
+      "mb-4 mt-4 text-base  tracking-tight text-zinc-200 sm:text-3xl"
     )}
   />
 );
@@ -40,7 +40,7 @@ export const h1RendererMessage = (props: any) => (
   <div
     {...props}
     className={classNames(
-      "mb-4 mt-4 text-lg font-medium tracking-tight text-zinc-200 sm:text-xl"
+      "mb-4 mt-4 text-base  tracking-tight text-zinc-200 sm:text-base"
     )}
   />
 );
@@ -54,7 +54,7 @@ export const h2Renderer = (props: any) => (
     {...props}
     className={classNames(
       "font-light",
-      "mb-4 text-base uppercase tracking-wider text-zinc-400 sm:text-xl"
+      "mb-4 text-base uppercase tracking-wider text-zinc-400 sm:text-base"
     )}
   />
 );
@@ -63,7 +63,7 @@ export const h2RendererDark = (props: any) => (
     {...props}
     className={classNames(
       "font-light",
-      "mb-4 pt-6 text-base uppercase tracking-wider text-zinc-300 sm:text-xl"
+      "mb-4 pt-6 text-base uppercase tracking-wider text-zinc-300 sm:text-base"
     )}
   />
 );
@@ -83,7 +83,7 @@ export const h3Renderer = (props: any) => (
     className={classNames(
       "",
       "",
-      "py-2 text-lg md:text-xl font-semibold tracking-tight text-zinc-200"
+      "py-2 text-base md:text-base font-semibold tracking-tight text-zinc-200"
     )}
   />
 );
@@ -108,7 +108,7 @@ export const codeRenderMessage = (props: any) => (
 //         className="group hover:bg-indigo-300 bg-indigo-900/50 transition-all -translate-y-1"
 //       >
 //         <div className="text-xs flex items-center gap-2 text-emerald-500 group-hover:text-emerald-700">
-//           <div className="font-medium tracking-tight">copy</div>
+//           <div className=" tracking-tight">copy</div>
 //           <div className="">
 //             <LuCopy />
 //           </div>
@@ -130,7 +130,7 @@ export const h3RendererMessage = (props: any) => (
     className={classNames(
       "",
       "",
-      "font-semibold mt-2 py-2 pt-4 text-lg sm:text-xl tracking-tight text-zinc-300"
+      "font-semibold mt-2 py-2 pt-4 text-base sm:text-base tracking-tight text-zinc-300"
     )}
   />
 );
@@ -139,7 +139,7 @@ export const h4Renderer = (props: any) => (
   <div
     {...props}
     className={classNames(
-      "mb-4 text-lg font-medium tracking-tight text-zinc-200 sm:text-xl"
+      "mb-4 text-base  tracking-tight text-zinc-200 sm:text-base"
     )}
   />
 );
@@ -159,9 +159,7 @@ export const hrRenderer = (props: any) => (
 export const pRenderer = (props: any) => (
   <div
     {...props}
-    className={classNames(
-      "text-base font-medium lg:text-lg my-2 text-zinc-200"
-    )}
+    className={classNames("text-base  lg:text-base my-2 text-zinc-200")}
   />
 );
 export const pRendererMessage = (props: any) => (
@@ -245,7 +243,7 @@ export const ARenderer = (props: any) => {
                 </div>
               </div>
             </div>
-            <div className="truncate font-medium tracking-tight text-ellipsis w-52 md:w-72 text-sm pt-1">
+            <div className="truncate  tracking-tight text-ellipsis w-52 md:w-72 text-sm pt-1">
               {metaTags.title}
             </div>
           </motion.div>
@@ -259,7 +257,7 @@ export const ulRenderer = (props: any) => (
   <ul
     {...props}
     className={classNames(
-      "text-lg list-disc pl-1.5 sm:pl-4 marker:text-indigo-400",
+      "text-base list-disc pl-1.5 sm:pl-4 marker:text-indigo-400",
       "mb-2 p-0"
     )}
   />
@@ -294,7 +292,7 @@ export const emRenderer = (props: any) => (
         {...props}
         className={classNames(
           "",
-          "mt-12 mb-8 p-2 bg-indigo-50 dark:bg-indigo-950  font-medium rounded-md shadow-md lg:px-8 lg:py-4 shadow-indigo-200"
+          "mt-12 mb-8 p-2 bg-indigo-50 dark:bg-indigo-950   rounded-md shadow-md lg:px-8 lg:py-4 shadow-indigo-200"
         )}
       />
     </div>
