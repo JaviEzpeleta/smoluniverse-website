@@ -50,3 +50,19 @@ export const generateRecraftImage = async ({
     }
   } else return false;
 };
+
+export const generateVoiceNoteAudioFile = async ({
+  message,
+}: {
+  message: string;
+}) => {
+  const replicate = new Replicate();
+  const modelToUse = "openai/whisper-large-v3";
+  const input = {
+    model: modelToUse,
+    input: message,
+  };
+  const output = await replicate.run(modelToUse, {
+    input,
+  });
+};
