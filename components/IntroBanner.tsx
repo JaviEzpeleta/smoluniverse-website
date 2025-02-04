@@ -15,7 +15,7 @@ const IntroBanner = () => {
   return (
     <div className="overflow-hidden">
       <BlurryEntrance delay={0.1}>
-        <div className="border-zinc-400 bg-black min-h-60 border-2 overflow-hidden p-4 py-8 rounded-2xl flex flex-col items-center justify-center relative">
+        <div className="border-zinc-400 bg-black min-h-80 md:min-h-60 border-2 overflow-hidden p-4 md:py-8 rounded-2xl flex flex-col items-center justify-center relative">
           <div className="absolute inset-0">
             <motion.div
               initial={{ opacity: 0, y: 100 }}
@@ -37,7 +37,7 @@ const IntroBanner = () => {
             </motion.div>
           </div>
 
-          <div className="absolute flex justify-end items-end right-4 bottom-4">
+          <div className="absolute flex justify-end items-end right-2 bottom-2 md:right-4 md:bottom-4">
             <motion.div
               //   initial={{ opacity: 0, y: 100, x: 100, scale: 0.5, rotate: 0 }}
               //   animate={{ opacity: 1, y: 60, x: 30, scale: 1, rotate: -20 }}
@@ -54,13 +54,13 @@ const IntroBanner = () => {
               >
                 <img
                   src="/images/eth-global.png"
-                  className="w-40 transition-all duration-1000"
+                  className="w-28 md:w-40 transition-all duration-1000"
                 />
                 <div className="-translate-y-0.5 flex flex-col items-center justify-center">
-                  <div className="text-[14px] leading-none font-semibold pt-0">
+                  <div className="text-xs sm:text-sm leading-none font-semibold pt-0">
                     Agentic Hackathon
                   </div>
-                  <div className="text-[12px] uppercase leading-none tracking-wider opacity-70">
+                  <div className="text-xs sm:text-sm uppercase leading-none tracking-wider opacity-70">
                     February 2025
                   </div>
                 </div>
@@ -100,7 +100,7 @@ const IntroBanner = () => {
             </div>
           </BlurryEntrance>
           <BlurryEntrance delay={0.24}>
-            <div className="pt-8">
+            <div className="pt-4 md:pt-8">
               <Button
                 variant="outline"
                 onClick={() => {
