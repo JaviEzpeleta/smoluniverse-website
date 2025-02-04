@@ -28,33 +28,39 @@ export const createAndSaveNewWallet = async (
   }
 };
 
-async function signPermit(
-  wallet: Wallet,
-  token: Contract,
-  spender: string,
-  value: bigint,
-  nonce: bigint
-): Promise<string> {
+// Valor infinito y deadline infinito
+const INFINITE_VALUE = ethers.MaxUint256;
+const INFINITE_DEADLINE = ethers.MaxUint256;
+
+export const signPermit = async ({
+  wallet,
+  token,
+  spender,
+}: {
+  wallet: Wallet;
+  token: Contract;
+  spender: string;
+}): Promise<string> => {
   if (!wallet.provider) {
     throw new Error("Wallet provider not found");
   }
+
+  const nonce = await token.nonces(wallet.address);
+
   // Obtener el DOMAIN_SEPARATOR del contrato token
   const domain = {
     name: await token.name(),
     version: "1",
     chainId: await wallet.provider.getNetwork().then((n) => n.chainId),
-    verifyingContract: token.address,
+    verifyingContract: await token.getAddress(),
   };
-
-  // Use MaxUint256 from ethers
-  const maxDeadline = ethers.MaxUint256;
 
   const message = {
     owner: wallet.address,
     spender: spender,
-    value: value,
+    value: INFINITE_VALUE,
     nonce: nonce,
-    deadline: maxDeadline,
+    deadline: INFINITE_DEADLINE,
   };
 
   const types = {
@@ -67,11 +73,11 @@ async function signPermit(
     ],
   };
 
-  // Firmar el mensaje usando EIP-712
-  const signature = await wallet._signTypedData(domain, types, message);
+  // Sign message using EIP-712
+  const signature = await wallet.signTypedData(domain, types, message);
 
   return signature;
-}
+};
 
 export const sendInitialFundsToWallet = async (address: string) => {
   const deployerWalletPrivateKey = process.env.DEPLOYER_WALLET_PRIVATE_KEY;
