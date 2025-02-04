@@ -4,6 +4,7 @@ import MiniTitle from "@/components/MiniTitle";
 import BlurryEntrance from "@/components/BlurryEntrance";
 import MiniAnimatedPriceOfService from "@/components/MiniAnimatedPriceOfService";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 const UserProfilePage = async ({
   params,
 }: {
@@ -24,6 +25,11 @@ const UserProfilePage = async ({
 
   const theContent = extraData.content;
 
+  const tweetContentWithLinkToShareTheArticle = `Check out this article: https://smoluniverse.com/a/${handle}/${slug}`;
+  const tweetUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(
+    tweetContentWithLinkToShareTheArticle
+  )}`;
+
   return (
     <div className="max-w-xl mx-auto pb-12">
       <BlurryEntrance delay={0.14}>
@@ -43,7 +49,9 @@ const UserProfilePage = async ({
       </BlurryEntrance>
 
       <div className="py-8 w-full flex justify-center">
-        <Button size="lg">Share this article</Button>
+        <Link href={tweetUrl} target="_blank" rel="noopener noreferrer">
+          <Button size="lg">Share this article</Button>
+        </Link>
       </div>
       {/* <div>
         <pre>{JSON.stringify(article, null, 2)}</pre>
