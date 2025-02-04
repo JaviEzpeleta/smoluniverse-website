@@ -1,5 +1,5 @@
 export const INDIVIDUAL_ACTIONS = [
-  // "write_a_haiku", // ! NOT DONE YET
+  "write_a_haiku", // ! NOT DONE YET
   // "tweet_an_idea", // * ✅
   // "tweet_an_idea", // * ✅
   // "tweet_an_idea", // * ✅
@@ -19,7 +19,7 @@ export const INDIVIDUAL_ACTIONS = [
   // "learn_something_new", // * ✅
   // "learn_something_new", // * ✅
   // "learn_something_new", // * ✅
-  "release_a_side_hustle", // * ✅
+  // "release_a_side_hustle", // * ✅
   // "release_a_side_hustle", // * ✅
   // "travel_to_a_new_place", // * ✅
   // "travel_to_a_new_place", // * ✅

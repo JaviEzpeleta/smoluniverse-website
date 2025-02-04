@@ -89,6 +89,9 @@ const executeIndividualAction = async ({
     case "tweet_an_idea":
       await executeTweetAnIdea({ user, tweets });
       break;
+    case "write_a_haiku":
+      await executeWriteAHaiku({ user, tweets });
+      break;
     case "tweet_a_feeling":
       await executeTweetAFelling({ user, tweets });
       break;
@@ -194,6 +197,94 @@ ${getListOfIRLTweetsAsString({
     profile: user,
     tweets: tweets,
   });
+
+  const newSmolTweet = {
+    handle: user.handle,
+    content: theTweet,
+    link: null,
+    image_url: null,
+    created_at: new Date(),
+  } as SmolTweet;
+
+  await saveNewSmolTweet(newSmolTweet);
+
+  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  return theTweet;
+};
+
+const executeWriteAHaiku = async ({
+  user,
+  tweets,
+}: {
+  user: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  const theMessages = [
+    {
+      role: "system",
+      content: `You are a story teller for an AI clone emulation universe. Based on this character profile and recent tweets, now in this moment of the story, the character will write a haiku.
+        
+Reply in JSON format: 
+{
+  "content": "the tweet content about the idea the user had", // can be in markdown format
+  "reasoning": "the reasoning behind the game character's feelings and thoughts that caused that idea"
+}
+  
+The tweet can be something like: 
+<TweetExample>
+i wrote a haiku about [__topic__]
+
+[__the_haiku__]
+</TweetExample>
+`,
+    },
+    {
+      role: "user",
+      content: `Full character profile:
+${JSON.stringify(user)}
+
+## Recent publications:
+${getListOfIRLTweetsAsString({
+  handle: user.handle,
+  userIRLTweets: tweets,
+})}
+
+<Important>Do not use hashtags or emojis in the tweet. Try to be creative, original and a bit random. Also try to use the same tone and style of the user's previous tweets.</Important>`,
+    },
+  ] as CoreMessage[];
+
+  const responseFromGemini = await askGeminiThinking({
+    messages: theMessages,
+    temperature: 0.8,
+  });
+
+  console.log("✅ finished generating tweet idea");
+
+  const cleanedResponse = responseFromGemini
+    .replace(/```json\n/g, "")
+    .replace(/\n```/g, "");
+
+  const theTweet = JSON.parse(cleanedResponse).content;
+  console.log("🔴 theTweet", theTweet);
+  const reasoning = JSON.parse(cleanedResponse).reasoning;
+  console.log("🔴 reasoning", reasoning);
+
+  // create the action_event
+  const newActionEvent = {
+    top_level_type: "individual",
+    action_type: "write_a_haiku",
+    from_handle: user.handle,
+    main_output: JSON.stringify({
+      tweet: theTweet,
+    }),
+    story_context: reasoning,
+    to_handle: null,
+    extra_data: null,
+    created_at: new Date(),
+  } as ActionEvent;
+
+  await saveNewActionEvent(newActionEvent);
 
   const newSmolTweet = {
     handle: user.handle,
