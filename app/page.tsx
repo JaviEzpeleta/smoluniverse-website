@@ -7,11 +7,13 @@ export default function Home() {
     <div className="p-4 py-6">
       <div className="space-y-8">
         <IntroBanner />
-        <CreateANewCloneForm />
       </div>
       <div className="flex flex-col md:flex-row gap-4">
         <div className="w-full md:w-1/2">
-          <RecentClones />
+          <div className="flex flex-col gap-4 py-12 sticky top-0">
+            <RecentClones />
+            <CreateANewCloneForm />
+          </div>
         </div>
         <div className="w-full md:w-1/2">
           <EventsList />

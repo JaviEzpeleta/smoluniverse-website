@@ -7,6 +7,7 @@ import BlurryEntrance from "./BlurryEntrance";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { IS_LOCALHOST } from "@/lib/constants";
+import { motion } from "framer-motion";
 
 const RecentClones = () => {
   const { clones, setClones, fetchPusherIndex, setFetchPusherIndex } = useStore(
@@ -34,25 +35,32 @@ const RecentClones = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 py-12 sticky top-0">
+    <>
       <BlurryEntrance delay={0.15}>
         <div className="text-2xl font-bold">
           Recent Clones ({clones.length})
         </div>
       </BlurryEntrance>
-      <BlurryEntrance delay={0.2}>
-        <div className="flex flex-wrap gap-2">
-          {clones.map((clone: RawUser, index: number) => (
-            <CloneInHomeList
-              key={clone.handle}
-              index={index}
-              clone={clone}
-              onDelete={onDelete}
-            />
-          ))}
-        </div>
-      </BlurryEntrance>
-    </div>
+      <motion.div
+        className="min-h-[100px]"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <BlurryEntrance delay={0.2}>
+          <div className="flex flex-wrap gap-2">
+            {clones.map((clone: RawUser, index: number) => (
+              <CloneInHomeList
+                key={clone.handle}
+                index={index}
+                clone={clone}
+                onDelete={onDelete}
+              />
+            ))}
+          </div>
+        </BlurryEntrance>
+      </motion.div>
+    </>
   );
 };
 

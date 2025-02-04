@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import useStore from "@/lib/zustandStore";
 import BlurryEntrance from "./BlurryEntrance";
 import { IS_LOCALHOST } from "@/lib/constants";
+import MiniTitle from "./MiniTitle";
 
 const CreateANewCloneForm = () => {
   const { fetchPusherIndex, setFetchPusherIndex, setShowWaitlistModal } =
@@ -75,9 +76,9 @@ const CreateANewCloneForm = () => {
 
   return (
     <BlurryEntrance delay={0.1}>
-      <div className="border-primary/60 border-2 p-4 py-8 rounded-2xl flex flex-col items-center justify-center">
+      <div className="border-primary/60 border-2 p-4 pt-6 max-w-md rounded-2xl flex flex-col items-center justify-center">
         <BlurryEntrance delay={0.18}>
-          <Title>Create a new Clone</Title>
+          <MiniTitle>Create a new Clone</MiniTitle>
         </BlurryEntrance>
         <BlurryEntrance delay={0.24}>
           <div className="flex items-center gap-2 py-6">
