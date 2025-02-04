@@ -1,4 +1,5 @@
 export const INDIVIDUAL_ACTIONS = [
+  // "write_a_haiku", // ! NOT DONE YET
   // "tweet_an_idea", // * ✅
   // "tweet_an_idea", // * ✅
   // "tweet_an_idea", // * ✅
@@ -18,7 +19,7 @@ export const INDIVIDUAL_ACTIONS = [
   // "learn_something_new", // * ✅
   // "learn_something_new", // * ✅
   // "learn_something_new", // * ✅
-  // "release_a_side_hustle", // * ✅
+  "release_a_side_hustle", // * ✅
   // "release_a_side_hustle", // * ✅
   // "travel_to_a_new_place", // * ✅
   // "travel_to_a_new_place", // * ✅
@@ -35,7 +36,7 @@ export const INDIVIDUAL_ACTIONS = [
   // "something_amazing_happens", // * ✅
   // "something_terrible_happens", // * ✅
   // "something_terrible_happens", // * ✅
-  "something_terrible_happens", // * ✅
+  // "something_terrible_happens", // * ✅
   //   "tweet_a_random_thought",
   //   "buy_a_service_from_the_marketplace",
   //   "put_a_service_on_the_marketplace",

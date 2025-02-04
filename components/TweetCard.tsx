@@ -3,6 +3,7 @@ import React from "react";
 import CheckMark from "./svg/CheckMark";
 import Link from "next/link";
 import { timeSinceShorter } from "@/lib/time";
+import { MarkdownRendererPlain } from "./MarkdownRendererPlain";
 
 function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
   return (
@@ -45,6 +46,7 @@ function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
                 {timeSinceShorter(new Date(theTweet.created_at).getTime())}
               </div>
             </div>
+            <MarkdownRendererPlain>{theTweet.content}</MarkdownRendererPlain>
             <div className="pt-0">{theTweet.content}</div>
             {theTweet.image_url && (
               <div className="py-2 pt-3">
@@ -54,6 +56,21 @@ function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
                     src={theTweet.image_url}
                     alt={theTweet.content}
                   />
+                </Link>
+              </div>
+            )}
+            {/* <pre>{JSON.stringify(theTweet, null, 2)}</pre> */}
+            {theTweet.link_preview_img_url && theTweet.link && (
+              <div className="pb-2 group border-white/30 hover:border-yellow-50 border-2 mt-4 rounded-lg">
+                <Link href={theTweet.link} target="_blank" className="">
+                  <img
+                    className="rounded-lg md:brightness-[85%] group-hover:brightness-100 transition-all duration-300 ease-in-out cursor-pointer active:opacity-50"
+                    src={theTweet.link_preview_img_url}
+                    alt={theTweet.content}
+                  />
+                  <div className="text-base pt-1 px-2 font-bold font-grandstander group-hover:text-yellow-50 transition-all duration-300 ease-in-out text-balance">
+                    {theTweet.link_title}
+                  </div>
                 </Link>
               </div>
             )}

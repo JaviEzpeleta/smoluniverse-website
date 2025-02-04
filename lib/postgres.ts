@@ -31,6 +31,8 @@ CREATE TABLE sim_smol_tweets (
   handle TEXT NOT NULL,
   content TEXT NOT NULL,
   link TEXT,
+  link_title TEXT,
+  link_preview_img_url TEXT,
   image_url TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -386,13 +388,14 @@ export const getActionEventsByHandle = async (handle: string) => {
 export const saveNewSmolTweet = async (smolTweet: SmolTweet) => {
   try {
     const res = await executeQuery(
-      `INSERT INTO sim_smol_tweets (handle, content, link, image_url, created_at) VALUES ($1, $2, $3, $4, $5)`,
+      `INSERT INTO sim_smol_tweets (handle, content, link, image_url, link_preview_img_url, link_title) VALUES ($1, $2, $3, $4, $5, $6)`,
       [
         smolTweet.handle,
         smolTweet.content,
         smolTweet.link,
         smolTweet.image_url,
-        smolTweet.created_at,
+        smolTweet.link_preview_img_url,
+        smolTweet.link_title,
       ]
     );
 
