@@ -25,7 +25,10 @@ const UserProfilePage = async ({
 
   const theContent = extraData.content;
 
-  const tweetContentWithLinkToShareTheArticle = `Check out this article: https://smoluniverse.com/a/${handle}/${slug}`;
+  const tweetContentWithLinkToShareTheArticle =
+    `(web article on smoluniverse)\n\n` +
+    `${extraData.article_title}\n` +
+    `https://smoluniverse.com/a/${handle}/${slug}`;
   const tweetUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(
     tweetContentWithLinkToShareTheArticle
   )}`;
@@ -41,6 +44,16 @@ const UserProfilePage = async ({
             className="rounded-xl"
           />
           <MiniAnimatedPriceOfService price={extraData.price_of_service} />
+        </div>
+      </BlurryEntrance>
+
+      <BlurryEntrance delay={0.36}>
+        <div className="w-full flex pb-6">
+          <Link href={tweetUrl} target="_blank" rel="noopener noreferrer">
+            <Button size="sm" variant="outline">
+              Share this article
+            </Button>
+          </Link>
         </div>
       </BlurryEntrance>
 
