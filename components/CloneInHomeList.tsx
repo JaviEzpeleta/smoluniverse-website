@@ -57,7 +57,7 @@ const CloneInHomeList = ({
           x.set(0);
         }
       }}
-      className="relative rounded-xl cursor-grab active:cursor-grabbing"
+      className="relative rounded-xl cursor-grab active:cursor-grabbing w-full"
     >
       {/* <pre>{JSON.stringify(lifeContact, null, 2)}</pre> */}
       <motion.div
@@ -75,8 +75,8 @@ const CloneInHomeList = ({
         className="active:opacity-50"
       >
         {/* <Link href={`/u/${clone.handle}`} className="active:opacity-50"> */}
-        <div className="bg-zinc-900 border border-zinc-900 hover:border-zinc-700 transition-all duration-150 py-2 px-4 rounded-lg flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="bg-zinc-900 border border-zinc-900 hover:border-zinc-700 transition-all duration-150 py-2 px-4 rounded-lg flex items-center justify-between w-full">
+          <div className="flex items-center gap-3 w-full">
             <div className="relative">
               <div className="absolute left-0 bottom-0 z-20 leading-none text-xs font-semibold text-shadow-like-border-black">
                 <div>{contryEmoji}</div>
@@ -96,16 +96,18 @@ const CloneInHomeList = ({
                 }}
               />
             </div>
-            <div>
-              <div className="text-xl font-bold">{clone.display_name}</div>
-              <div className="flex items-center gap-3 text-xs text-zinc-400 w-full justify-between">
-                <div className="">@{clone.handle}</div>
+            <div className="w-full">
+              <div className="text-xl font-bold translate-y-1">
+                {clone.display_name}
+              </div>
+              <div className="flex items-center gap-3 text-base font-bold text-zinc-400 w-full justify-between">
+                <div className="text-sm font-medium">@{clone.handle}</div>
                 <div>
                   <NumberFlow value={Number(clone.balance)} />
-                  <span className="font-mono font-bold text-[8px] pl-[1px]">
+                  <span className="font-mono font-medium text-sm pl-[1px]">
                     $
                   </span>
-                  <span className="text-[8px]">SMOL</span>
+                  <span className="text-sm font-light">SMOL</span>
                 </div>
               </div>
             </div>
