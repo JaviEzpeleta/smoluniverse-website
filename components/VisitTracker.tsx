@@ -1,5 +1,6 @@
 "use client";
 
+import { IS_LOCALHOST } from "@/lib/constants";
 import axios from "axios";
 import { usePathname, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef } from "react";
@@ -82,6 +83,7 @@ function VisitTracker() {
       });
     };
 
+    if (IS_LOCALHOST) return;
     if (pathname) {
       if (!loadedRef.current) {
         loadedRef.current = true;
@@ -90,6 +92,8 @@ function VisitTracker() {
       }
     }
   }, [pathname, searchParams]);
+
+  if (IS_LOCALHOST) return <></>;
 
   return <></>;
 }

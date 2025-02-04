@@ -1,6 +1,9 @@
 import { findArticleByHandleAndSlug } from "@/lib/postgres";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
-
+import MiniTitle from "@/components/MiniTitle";
+import BlurryEntrance from "@/components/BlurryEntrance";
+import MiniAnimatedPriceOfService from "@/components/MiniAnimatedPriceOfService";
+import { Button } from "@/components/ui/button";
 const UserProfilePage = async ({
   params,
 }: {
@@ -22,17 +25,30 @@ const UserProfilePage = async ({
   const theContent = extraData.content;
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <div>
-        <img src={extraData.image_url} alt={extraData.title} />
-      </div>
-      <MarkdownRenderer>{theContent}</MarkdownRenderer>
-      <div>
+    <div className="max-w-xl mx-auto">
+      <BlurryEntrance delay={0.14}>
+        <div className="pb-6 relative">
+          <img
+            draggable={false}
+            src={extraData.image_url}
+            alt={extraData.title}
+            className="rounded-xl"
+          />
+          <MiniAnimatedPriceOfService price={extraData.price_of_service} />
+        </div>
+      </BlurryEntrance>
+
+      <BlurryEntrance delay={0.26}>
+        <MarkdownRenderer>{theContent}</MarkdownRenderer>
+      </BlurryEntrance>
+
+      {/* <Button>Share this article</Button> */}
+      {/* <div>
         <pre>{JSON.stringify(article, null, 2)}</pre>
-      </div>
-      <div>
+      </div> */}
+      {/* <div>
         <pre>{JSON.stringify(extraData, null, 2)}</pre>
-      </div>
+      </div> */}
     </div>
   );
 };

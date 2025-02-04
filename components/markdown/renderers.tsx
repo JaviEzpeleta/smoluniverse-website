@@ -53,8 +53,7 @@ export const h2Renderer = (props: any) => (
   <div
     {...props}
     className={classNames(
-      "font-light",
-      "mb-4 text-base uppercase tracking-wider text-zinc-400 sm:text-xl"
+      "mb-4 text-3xl uppercase font-semibold text-yellow-100"
     )}
   />
 );
@@ -159,9 +158,7 @@ export const hrRenderer = (props: any) => (
 export const pRenderer = (props: any) => (
   <div
     {...props}
-    className={classNames(
-      "text-base font-medium lg:text-lg my-2 text-zinc-200"
-    )}
+    className={classNames("text-base font-medium lg:text-lg my-2")}
   />
 );
 export const pRendererMessage = (props: any) => (
@@ -299,4 +296,13 @@ export const emRenderer = (props: any) => (
       />
     </div>
   </BlurryEntrance>
+);
+
+export const blockquoteRenderer = (props: any) => (
+  <blockquote
+    {...props}
+    className={classNames(
+      "border-l border-indigo-200/60 text-indigo-200 my-4 p-0 italic pl-4 md:pl-8"
+    )}
+  />
 );

@@ -61,16 +61,22 @@ function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
             )}
             {/* <pre>{JSON.stringify(theTweet, null, 2)}</pre> */}
             {theTweet.link_preview_img_url && theTweet.link && (
-              <div className="pb-2 group border-white/30 hover:border-yellow-50 border mt-4 rounded-lg overflow-hidden">
-                <Link href={theTweet.link} target="_blank" className="">
+              <div className="pb-2 group border-white/30 hover:border-yellow-100 border mt-4 rounded-lg overflow-hidden active:opacity-40 active:scale-[98%] transition-all duration-100">
+                <Link
+                  href={theTweet.link}
+                  target="_blank"
+                  className=""
+                  draggable="false"
+                >
                   <div className="overflow-hidden">
                     <img
+                      draggable="false"
                       className="md:brightness-[85%] group-hover:brightness-100 transition-all duration-700 ease-in-out cursor-pointer active:opacity-50 group-hover:scale-[102%]"
                       src={theTweet.link_preview_img_url}
                       alt={theTweet.content}
                     />
                   </div>
-                  <div className="text-base pt-1 px-2 font-bold font-grandstander group-hover:text-yellow-50 transition-all duration-300 ease-in-out text-balance">
+                  <div className="text-sm pt-3 px-2 font-bold font-grandstander group-hover:text-yellow-100 transition-all duration-300 ease-in-out">
                     {theTweet.link_title}
                   </div>
                 </Link>

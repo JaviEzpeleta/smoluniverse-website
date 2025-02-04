@@ -2,6 +2,7 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import {
   ARenderer,
+  blockquoteRenderer,
   h1Renderer,
   h2Renderer,
   h3Renderer,
@@ -25,6 +26,7 @@ export const MarkdownRenderer = ({
         h3: h3Renderer,
         p: pRenderer,
         a: ARenderer,
+        blockquote: blockquoteRenderer,
       }}
       remarkPlugins={[remarkGfm]}
     >
