@@ -78,7 +78,7 @@ const CloneInHomeList = ({
         <div className="bg-zinc-900 border border-zinc-900 hover:border-zinc-700 transition-all duration-150 py-2 px-4 rounded-lg flex items-center justify-between w-full">
           <div className="flex items-center gap-3 w-full">
             <div className="relative">
-              <div className="absolute left-0 bottom-0 z-20 leading-none text-xs font-semibold text-shadow-like-border-black">
+              <div className="absolute -left-1 -bottom-1 z-20 leading-none text-lg font-semibold">
                 <div>{contryEmoji}</div>
                 {/* <span className="text-[8px]">$</span>
                 <NumberFlow

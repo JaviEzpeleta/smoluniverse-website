@@ -3,16 +3,21 @@
 import { motion } from "framer-motion";
 import BigTitle from "./BigTitle";
 import BlurryEntrance from "./BlurryEntrance";
-import Title from "./Title";
 import MagneticZone from "./MagneticZone";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { LucidePopcorn } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useState, useEffect } from "react";
 
 const IntroBanner = () => {
-  const randomNumberFrom1To5 = Math.floor(Math.random() * 5) + 1;
+  const [randomNumber, setRandomNumber] = useState(1);
   const { toast } = useToast();
+
+  useEffect(() => {
+    setRandomNumber(Math.floor(Math.random() * 5) + 1);
+  }, []);
+
   return (
     <div className="overflow-hidden">
       <BlurryEntrance delay={0.1}>
@@ -29,7 +34,7 @@ const IntroBanner = () => {
                 <div
                   className="w-full h-full rounded-2xl scale-105 origin-center"
                   style={{
-                    backgroundImage: `url(/images/banner_${randomNumberFrom1To5}.png)`,
+                    backgroundImage: `url(/images/banner_${randomNumber}.png)`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                   }}

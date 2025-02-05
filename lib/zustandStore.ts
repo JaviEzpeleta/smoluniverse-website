@@ -31,8 +31,9 @@ const useStore = create<AppState>((set) => ({
   showWaitlistModal: false,
   setShowWaitlistModal: (showWaitlistModal) => set({ showWaitlistModal }),
 
-  logoImageIndex: Math.floor(Math.random() * 2) + 1,
+  logoImageIndex: 1,
   setLogoImageIndex: (logoImageIndex) => set({ logoImageIndex }),
 }));
 
+// Move the random initialization to a useEffect in a component
 export default useStore;

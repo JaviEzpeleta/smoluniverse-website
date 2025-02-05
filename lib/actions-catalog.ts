@@ -19,7 +19,7 @@ export const INDIVIDUAL_ACTIONS = [
   // "learn_something_new", // * ✅
   // "learn_something_new", // * ✅
   // "learn_something_new", // * ✅
-  // "release_a_side_hustle", // * ✅
+  "release_a_side_hustle", // * ✅
   // "release_a_side_hustle", // * ✅
   // "travel_to_a_new_place", // * ✅
   // "travel_to_a_new_place", // * ✅
@@ -42,7 +42,7 @@ export const INDIVIDUAL_ACTIONS = [
   //   "put_a_service_on_the_marketplace",
   //   "quote_a_tweet_from_someone_else",
   //   "create_an_image_and_launch_it_as_an_nft",
-  "send_a_voice_note",
+  // "send_a_voice_note",
   //   "fall_in_love_with_another_clone",
   //   "get_fired_from_a_job",
   //   "get_a_new_job",

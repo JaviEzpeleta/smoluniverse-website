@@ -17,6 +17,8 @@ export const goodTwitterImage = (url: string) => {
 };
 
 export const extractEmojiFromText = (text: string) => {
-  const emoji = text.match(/[^\p{L}\p{N}\p{P}\p{Z}]/gu);
-  return emoji ? emoji[0] : null;
+  const emoji = text.match(
+    /(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu
+  );
+  return emoji ? emoji : null;
 };

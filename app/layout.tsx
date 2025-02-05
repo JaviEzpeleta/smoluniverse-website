@@ -8,6 +8,7 @@ import ClonesSessionController from "@/components/ClonesSessionController";
 import WaitlistModal from "@/components/WaitlistModal";
 import { Suspense } from "react";
 import VisitTracker from "@/components/VisitTracker";
+import LogoImageInitializer from "@/components/LogoImageInitializer";
 
 const grandstander = Grandstander({
   subsets: ["latin"],
@@ -31,6 +32,7 @@ export default function RootLayout({
         className={`${grandstander.className} ${grandstander.variable} antialiased selection:bg-smolGreen/10 selection:text-smolGreen`}
       >
         <div className="max-w-6xl mx-auto">
+          <LogoImageInitializer />
           <Suspense fallback={null}>
             <VisitTracker />
           </Suspense>

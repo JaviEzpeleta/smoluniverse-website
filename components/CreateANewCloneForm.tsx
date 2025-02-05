@@ -125,10 +125,10 @@ const CreateANewCloneForm = () => {
               className="overflow-hidden"
             >
               <div className="flex flex-col gap-2 items-center justify-center animate-pulse py-12">
-                <div className="text-4xl">
+                <div className="text-2xl">
                   <ImSpinner8 className="animate-spin" />
                 </div>
-                <Title>Creating a new clone...</Title>
+                <div>Creating a new clone...</div>
               </div>
             </motion.div>
           )}
