@@ -7,12 +7,19 @@ import { Button } from "./ui/button";
 import axios from "axios";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { IS_LOCALHOST } from "@/lib/constants";
 
 const ProfilePlayground = ({ user }: { user: RawUser }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const executeAction = async (code: string) => {
+    if (IS_LOCALHOST) {
+      toast({
+        title: "This is a local feature, not available on the live site.",
+      });
+      return;
+    }
     console.log(code);
     setIsLoading(true);
     toast({
@@ -33,7 +40,7 @@ const ProfilePlayground = ({ user }: { user: RawUser }) => {
           <Button
             disabled={isLoading}
             onClick={() => executeAction(action.code)}
-            size="lg"
+            // size="lg"
             variant="outlineGray"
             key={action.code}
             // className="bg-zinc-800 rounded-lg p-2 pb-1 flex items-center gap-2 justify-between"
