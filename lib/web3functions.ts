@@ -11,13 +11,7 @@ import { revalidateTag, unstable_cache } from "next/cache";
 
 import smolABI from "./abi/smolABI.json";
 import nftABI from "./abi/nftABI.json";
-
-type OurWallet = {
-  handle: string;
-  address: string;
-  private_key: string;
-  permit_signature: string;
-};
+import { SmolWalletRow } from "./types";
 
 export const createAndSaveNewWallet = async (
   handle: string
@@ -244,8 +238,8 @@ export const sendMoneyFromWalletAToWalletB = async ({
   walletB,
   amount,
 }: {
-  walletA: OurWallet;
-  walletB: OurWallet;
+  walletA: SmolWalletRow;
+  walletB: SmolWalletRow;
   amount: bigint;
 }) => {
   const deployerWalletPrivateKey = process.env.DEPLOYER_WALLET_PRIVATE_KEY!;
@@ -378,7 +372,7 @@ export const sendMoneyToCloneFromGovernment = async ({
   amount,
   handle,
 }: {
-  wallet: OurWallet;
+  wallet: SmolWalletRow;
   amount: bigint;
   handle: string;
 }) => {

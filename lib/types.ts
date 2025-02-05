@@ -135,3 +135,10 @@ export type LifeContextChange = {
   created_at: string;
   action_id: string;
 };
+
+export type SmolWalletRow = {
+  handle: string;
+  address: string;
+  private_key: string;
+  permit_signature: string;
+};
