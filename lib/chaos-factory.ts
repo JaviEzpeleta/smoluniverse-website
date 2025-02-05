@@ -1413,11 +1413,17 @@ Reply in JSON format:
 {
   "nft_art_title": "", // the title of the artwork. make it short and catchy.
   "art_prompt": "", // the prompt for the artwork. If you feel it, it can contain specific locations, and text too, but try to avoid including people. Make it be very artistic and deep.
-  "content": "", // the tweet content about the new art the user will create and launch as an NFT, can be in markdown format
+  "content": "", // the tweet content about the new hand-made personal piece of art the user just minted as an NFT. It can be in markdown format. Don't include any links.
   "reasoning": "" // the reasoning behind the game character's situation that caused them to create this art
 }
   
-<Important>Do not use hashtags or emojis in the tweet's "content" field. Try to be creative, original and a bit random. Also try to use the same tone and style of the user's previous tweets.</Important>`,
+<DetailAboutTheArtPrompt>
+In the prompt for the "art_prompt" field, please make it so the clone is painting by hand and it's something extremely minimalistic and abstract, with only a few colors, very conceptual and experimental. Pick drawing styles and concetps that may fit into those requirements. thank you!!
+</DetailAboutTheArtPrompt>
+
+<Important>
+Do not use hashtags or emojis in the tweet's "content" field. Try to be creative, original and a bit random. Also try to use the same tone and style of the user's previous tweets.
+</Important>`,
     },
     {
       role: "user",
