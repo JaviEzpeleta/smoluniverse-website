@@ -107,7 +107,7 @@ export const getBalanceByHandleCached = (handle: string) =>
     () => getBalanceByHandleNoCache(handle),
     [`balance-by-handle-${handle}`],
     {
-      revalidate: 60 * 60 * 24,
+      revalidate: 60 * 10,
       tags: [`balance-${handle}`],
     }
   )();
