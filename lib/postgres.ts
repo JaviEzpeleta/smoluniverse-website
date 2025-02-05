@@ -337,6 +337,11 @@ export const deleteUserByHandle = async (handle: string) => {
       handle,
     ]);
 
+    await executeQuery(
+      `DELETE FROM sim_updates_life_context WHERE handle = $1`,
+      [handle]
+    );
+
     await executeQuery(`DELETE FROM sim_users WHERE handle = $1`, [handle]);
 
     // lo ultimo: borramos sus wallets tambien, ala, que le den por culo a todo ya!!

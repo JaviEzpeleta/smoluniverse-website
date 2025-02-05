@@ -97,6 +97,7 @@ export type SmolTweet = {
 };
 
 export type SmolTweetWithUserData = {
+  id?: string;
   handle: string;
   content: string;
   link: string | null;
