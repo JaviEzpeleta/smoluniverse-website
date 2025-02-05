@@ -5,8 +5,10 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import BlurryEntrance from "./BlurryEntrance";
 import { BASESCAN_URL, ERC20_TOKEN_CONTRACT_ADDRESS } from "@/lib/constants";
+import useStore from "@/lib/zustandStore";
 
 const Header = () => {
+  const { logoImageIndex, setLogoImageIndex } = useStore((state) => state);
   const ERC20TokenContractAddress = `${BASESCAN_URL}/token/${ERC20_TOKEN_CONTRACT_ADDRESS}`;
   return (
     <div className="flex justify-between items-center p-4">
@@ -17,15 +19,17 @@ const Header = () => {
             variant="ghost"
           >
             <div className="group-hover:rotate-[360deg] transition-all duration-300 ease-in-out group-hover:scale-[1.1] group-active:scale-[0.9] group-active:rotate-[180deg]">
-              <Image
-                src="/logo.png"
+              <img
+                src={`/images/logo_${logoImageIndex}.png`}
                 alt="Smol Universe"
-                width={32}
-                height={32}
+                className="w-8 h-8"
               />
             </div>
             <div className="text-2xl tracking-tighter translate-y-0.5 font-bold">
-              Smol Universe
+              Smol Universe{" "}
+              <span className="opacity-0 transition-all duration-300 ease-in-out">
+                {logoImageIndex}
+              </span>
             </div>
           </Button>
         </Link>
