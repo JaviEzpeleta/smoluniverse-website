@@ -57,13 +57,13 @@ export const createNewRandomEvent = async () => {
       return "no random clone found";
     }
 
-    const randomCloneTweets = await readIRLTweets({
+    const referenceCloneTweets = await readIRLTweets({
       handle: randomClone.handle,
     });
     await executeIndividualAction({
       user: randomClone,
       action_type: randomAction,
-      tweets: randomCloneTweets,
+      tweets: referenceCloneTweets,
     });
 
     return { top_level_type: "individual", action: randomAction };
@@ -72,7 +72,7 @@ export const createNewRandomEvent = async () => {
   return "unsupported main type: " + mainType;
 };
 
-const executeIndividualAction = async ({
+export const executeIndividualAction = async ({
   user,
   action_type,
   tweets,
@@ -1956,6 +1956,10 @@ ${JSON.stringify(action)}
       `✅ ${profile.handle} altered their life context with the action: ${action.action_type}:` +
         `\n\n${summaryOfTheChanges}`
     );
+
+    console.log(" 📘  I HAVEEEEEEE");
+    console.log(actionId);
+    console.log(" 📘  WOOOOO");
 
     const lifeContextChange = {
       handle: profile.handle,
