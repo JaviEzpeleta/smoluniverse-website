@@ -33,8 +33,8 @@ const ProfileHeaderMoneyBlock = ({
               target="_blank"
               className="bg-primary/10 text-primary hover:bg-primary/15
           active:opacity-40 group
-        transition-all duration-100
-        p-2 pb-1 rounded-full px-4 flex items-center gap-3 h-12"
+        transition-all duration-100 w-12
+        p-2 pb-1 rounded-full flex items-center justify-center gap-3 h-12"
             >
               <Image
                 src="/images/opensea-logo.svg"
