@@ -503,12 +503,13 @@ export const saveNewLifeContextChange = async (
   lifeContextChange: LifeContextChange
 ) => {
   const res = await executeQuery(
-    `INSERT INTO sim_updates_life_context (handle, previous_life_context, new_life_context, summary_of_the_changes) VALUES ($1, $2, $3, $4)`,
+    `INSERT INTO sim_updates_life_context (handle, previous_life_context, new_life_context, summary_of_the_changes, action_id) VALUES ($1, $2, $3, $4, $5)`,
     [
       lifeContextChange.handle,
       lifeContextChange.previous_life_context,
       lifeContextChange.new_life_context,
       lifeContextChange.summary_of_the_changes,
+      lifeContextChange.action_id,
     ]
   );
   return res.rows[0];

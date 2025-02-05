@@ -7,6 +7,7 @@ import ProfilePageSkillsBlock from "@/components/ProfilePageSkillsBlock";
 import ProfilePageJobAndOneLinerBlock from "@/components/ProfilePageJobAndOneLinerBlock";
 import ProfilePageLifeGoalsBlock from "@/components/ProfilePageLifeGoalsBlock";
 import ProfilePageTweetsBlock from "@/components/ProfilePageTweetsBlock";
+import ProfilePlayground from "@/components/ProfilePlayground";
 
 const UserProfilePage = async ({
   params,
@@ -40,6 +41,10 @@ const UserProfilePage = async ({
           />
         </div>
         <ProfilePageJobAndOneLinerBlock lifeContext={lifeContext} />
+      </div>
+
+      <div className="pt-6">
+        <ProfilePlayground user={user} />
       </div>
 
       <div className="flex flex-col md:flex-row gap-4 w-full my-4">

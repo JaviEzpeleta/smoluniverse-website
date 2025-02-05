@@ -57,13 +57,13 @@ export const createNewRandomEvent = async () => {
       return "no random clone found";
     }
 
-    const randomCloneTweets = await readIRLTweets({
+    const referenceCloneTweets = await readIRLTweets({
       handle: randomClone.handle,
     });
     await executeIndividualAction({
       user: randomClone,
       action_type: randomAction,
-      tweets: randomCloneTweets,
+      tweets: referenceCloneTweets,
     });
 
     return { top_level_type: "individual", action: randomAction };
@@ -72,7 +72,7 @@ export const createNewRandomEvent = async () => {
   return "unsupported main type: " + mainType;
 };
 
-const executeIndividualAction = async ({
+export const executeIndividualAction = async ({
   user,
   action_type,
   tweets,
@@ -1410,7 +1410,9 @@ Reply in JSON format:
   "art_prompt": "", // the prompt for the artwork. If you feel it, it can contain specific locations, and text too, but try to avoid including people. Make it be very artistic and deep.
   "content": "", // the tweet content about the new art the user will create and launch as an NFT, can be in markdown format
   "reasoning": "" // the reasoning behind the game character's situation that caused them to create this art
-}`,
+}
+  
+<Important>Do not use hashtags or emojis in the tweet's "content" field. Try to be creative, original and a bit random. Also try to use the same tone and style of the user's previous tweets.</Important>`,
     },
     {
       role: "user",
@@ -1956,6 +1958,10 @@ ${JSON.stringify(action)}
       `✅ ${profile.handle} altered their life context with the action: ${action.action_type}:` +
         `\n\n${summaryOfTheChanges}`
     );
+
+    console.log(" 📘  I HAVEEEEEEE");
+    console.log(actionId);
+    console.log(" 📘  WOOOOO");
 
     const lifeContextChange = {
       handle: profile.handle,

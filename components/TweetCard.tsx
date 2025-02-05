@@ -69,7 +69,7 @@ function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
                 <div className="py-2 pt-3">
                   <Link href={theTweet.image_url} target="_blank">
                     <img
-                      className="rounded-md border-2 hover:border-primary transition-all duration-150 ease-in-out cursor-pointer active:opacity-50"
+                      className="rounded-md border-2 border-zinc-600 hover:border-primary transition-all duration-150 ease-in-out cursor-pointer active:opacity-50"
                       src={theTweet.image_url}
                       alt={theTweet.content}
                     />

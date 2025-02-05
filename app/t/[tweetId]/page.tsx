@@ -11,6 +11,7 @@ import ProfilePageJobAndOneLinerBlock from "@/components/ProfilePageJobAndOneLin
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { timeSince } from "@/lib/time";
 import BlurryEntrance from "@/components/BlurryEntrance";
+import Link from "next/link";
 
 const UserProfilePage = async ({
   params,
@@ -66,6 +67,39 @@ const UserProfilePage = async ({
               </BlurryEntrance>
             </div>
             <MarkdownRenderer>{tweet.content}</MarkdownRenderer>
+            {tweet.image_url && (
+              <div className="py-2 pt-3">
+                <Link href={tweet.image_url} target="_blank">
+                  <img
+                    className="rounded-md border-2 border-zinc-600 hover:border-primary transition-all duration-150 ease-in-out cursor-pointer active:opacity-50"
+                    src={tweet.image_url}
+                    alt={tweet.content}
+                  />
+                </Link>
+              </div>
+            )}
+            {tweet.link_preview_img_url && tweet.link && (
+              <div className="pb-2 group border-white/30 hover:border-yellow-100 border-2 mt-4 rounded-lg overflow-hidden active:opacity-40 active:scale-[98%] transition-all duration-700 active:duration-75">
+                <Link
+                  href={tweet.link}
+                  target="_blank"
+                  className=""
+                  draggable="false"
+                >
+                  <div className="overflow-hidden">
+                    <img
+                      draggable="false"
+                      className="md:brightness-[85%] group-hover:brightness-100 transition-all duration-700 ease-in-out cursor-pointer active:opacity-50 group-hover:scale-[102%]"
+                      src={tweet.link_preview_img_url}
+                      alt={tweet.content}
+                    />
+                  </div>
+                  <div className="text-sm pt-3 px-2 font-bold font-grandstander group-hover:text-yellow-100 transition-all duration-300 ease-in-out">
+                    {tweet.link_title}
+                  </div>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </BlurryEntrance>
