@@ -33,7 +33,7 @@ Please give me a list of life goals this character could have in the videogame, 
 Ideally the goals are concise, practical, achievable and fun. 
 
 Please return a list of life goals for the user in Markdown format. Reply ONLY and directly with the list of life goals in Markdown format.`,
-    temperature: 0.6,
+    temperature: 0.4,
   });
 
   return response;
@@ -45,7 +45,7 @@ export const generateUserInitialSkillLevels = async (handle: string) => {
   const userPrompt = `List of tweets from ${handle}:
   ${getListOfIRLTweetsAsString({ handle, userIRLTweets })}
   
-  Create a DnD-like character with UNIQUE skills based on these tweets. Mix real skills with 3-5 invented ones. Include 2-4 weaknesses (low level skills).
+  Create a DnD-like character with UNIQUE skills based on these tweets. Mix real skills with 1-2 invented ones. Include 1-2 weaknesses (low level skills).
   
   Return JSON format:
   {
@@ -61,10 +61,9 @@ export const generateUserInitialSkillLevels = async (handle: string) => {
   }
   
   Include these categories:
-  - 40% skills related to tweets
-  - 30% invented funny/weird skills
-  - 20% life management skills
-  - 10% random weaknesses
+  - skills related to tweets
+  - invented funny/weird skills
+  - random weaknesses
   
   Level ranges:
   - Strengths: 60-100
@@ -93,7 +92,7 @@ Rules:
 - Varied levels (some high, medium, and low)
 - Creative emojis for each skill
 - Tangible and concise skill names
-- 8-12 total skills
+- 6-8 total skills
 - Short, funny descriptions
 - Prioritize fun over realism!`,
     temperature: 0.7,

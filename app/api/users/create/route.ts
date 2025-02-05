@@ -19,6 +19,7 @@ import {
   generateUserInitialSkillLevels,
   getLifeGoals,
 } from "@/lib/prompts";
+import { revalidateTag } from "next/cache";
 
 export async function POST(request: Request) {
   try {
@@ -105,6 +106,7 @@ export async function POST(request: Request) {
           });
         }
         await sendInitialFundsToWallet(wallet.address);
+        revalidateTag(`balance-${handle}`);
       } else {
         // console.log(" WALLET YA EXISTE PARA EL USER: ", handle);
       }

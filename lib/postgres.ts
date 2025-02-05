@@ -34,6 +34,8 @@ CREATE TABLE sim_smol_tweets (
   link_title TEXT,
   link_preview_img_url TEXT,
   image_url TEXT,
+  action_type TEXT NOT NULL,
+  action_id TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -43,6 +45,7 @@ CREATE TABLE sim_updates_life_context (
   previous_life_context TEXT NOT NULL,
   new_life_context TEXT NOT NULL,
   summary_of_the_changes TEXT NOT NULL,
+  action_id TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -52,6 +55,7 @@ CREATE TABLE sim_updates_skills (
   previous_skills TEXT NOT NULL,
   new_skills TEXT NOT NULL,
   summary_of_the_changes TEXT NOT NULL,
+  action_id TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -61,6 +65,7 @@ CREATE TABLE sim_updates_life_goals (
   previous_life_goals TEXT NOT NULL,
   new_life_goals TEXT NOT NULL,
   summary_of_the_changes TEXT NOT NULL,
+  action_id TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -332,6 +337,11 @@ export const deleteUserByHandle = async (handle: string) => {
       handle,
     ]);
 
+    await executeQuery(
+      `DELETE FROM sim_updates_life_context WHERE handle = $1`,
+      [handle]
+    );
+
     await executeQuery(`DELETE FROM sim_users WHERE handle = $1`, [handle]);
 
     // lo ultimo: borramos sus wallets tambien, ala, que le den por culo a todo ya!!
@@ -356,7 +366,9 @@ export const getRandomClone = async () => {
 
 export const saveNewActionEvent = async (actionEvent: ActionEvent) => {
   const res = await executeQuery(
-    `INSERT INTO sim_action_events (from_handle, action_type, main_output, story_context, to_handle, extra_data, top_level_type) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+    `INSERT INTO sim_action_events (from_handle, action_type, main_output, story_context, to_handle, extra_data, top_level_type) 
+     VALUES ($1, $2, $3, $4, $5, $6, $7)
+     RETURNING id`,
     [
       actionEvent.from_handle,
       actionEvent.action_type,
@@ -367,7 +379,7 @@ export const saveNewActionEvent = async (actionEvent: ActionEvent) => {
       actionEvent.top_level_type,
     ]
   );
-  return res.rows[0];
+  return res.rows[0].id as string | null;
 };
 
 export const getRecentActionEvents = async () => {
@@ -388,7 +400,7 @@ export const getActionEventsByHandle = async (handle: string) => {
 export const saveNewSmolTweet = async (smolTweet: SmolTweet) => {
   try {
     const res = await executeQuery(
-      `INSERT INTO sim_smol_tweets (handle, content, link, image_url, link_preview_img_url, link_title) VALUES ($1, $2, $3, $4, $5, $6)`,
+      `INSERT INTO sim_smol_tweets (handle, content, link, image_url, link_preview_img_url, link_title, action_type, action_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
       [
         smolTweet.handle,
         smolTweet.content,
@@ -396,6 +408,8 @@ export const saveNewSmolTweet = async (smolTweet: SmolTweet) => {
         smolTweet.image_url,
         smolTweet.link_preview_img_url,
         smolTweet.link_title,
+        smolTweet.action_type,
+        smolTweet.action_id,
       ]
     );
 
@@ -440,12 +454,13 @@ export const saveNewLifeGoalsChange = async (
   lifeGoalsChange: LifeGoalsChange
 ) => {
   const res = await executeQuery(
-    `INSERT INTO sim_updates_life_goals (handle, previous_life_goals, new_life_goals, summary_of_the_changes) VALUES ($1, $2, $3, $4)`,
+    `INSERT INTO sim_updates_life_goals (handle, previous_life_goals, new_life_goals, summary_of_the_changes, action_id) VALUES ($1, $2, $3, $4, $5)`,
     [
       lifeGoalsChange.handle,
       lifeGoalsChange.previous_life_goals,
       lifeGoalsChange.new_life_goals,
       lifeGoalsChange.summary_of_the_changes,
+      lifeGoalsChange.action_id,
     ]
   );
   return res.rows[0];
@@ -464,12 +479,13 @@ export const updateUserLifeGoals = async (
 
 export const saveNewSkillsChange = async (skillsChange: SkillsChange) => {
   const res = await executeQuery(
-    `INSERT INTO sim_updates_skills (handle, previous_skills, new_skills, summary_of_the_changes) VALUES ($1, $2, $3, $4)`,
+    `INSERT INTO sim_updates_skills (handle, previous_skills, new_skills, summary_of_the_changes, action_id) VALUES ($1, $2, $3, $4, $5)`,
     [
       skillsChange.handle,
       skillsChange.previous_skills,
       skillsChange.new_skills,
       skillsChange.summary_of_the_changes,
+      skillsChange.action_id,
     ]
   );
   return res.rows[0];

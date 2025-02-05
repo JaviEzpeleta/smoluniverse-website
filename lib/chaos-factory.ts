@@ -90,7 +90,7 @@ const executeIndividualAction = async ({
       await executeTweetAnIdea({ user, tweets });
       break;
     case "write_a_haiku":
-      await executeWriteAHaiku({ user, tweets });
+      await executeWriteAHaiku({ user, tweets, temperature: 0.25 });
       break;
     case "tweet_a_feeling":
       await executeTweetAFelling({ user, tweets });
@@ -197,9 +197,16 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
+  if (!newActionId) {
+    await postErrorToDiscord(
+      `🔴 Error in executeTweetAnIdea: newActionId is null for user ${user.handle}`
+    );
+    return;
+  }
   await processActionImpact({
     action: newActionEvent,
+    actionId: newActionId,
     profile: user,
     tweets: tweets,
   });
@@ -210,7 +217,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: null,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "tweet_an_idea",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -222,9 +231,11 @@ ${getListOfIRLTweetsAsString({
 const executeWriteAHaiku = async ({
   user,
   tweets,
+  temperature,
 }: {
   user: RawUser;
   tweets: SavedTweet[];
+  temperature: number;
 }) => {
   const theMessages = [
     {
@@ -261,7 +272,7 @@ ${getListOfIRLTweetsAsString({
 
   const responseFromGemini = await askGeminiThinking({
     messages: theMessages,
-    temperature: 0.75,
+    temperature,
   });
 
   console.log("✅ finished generating tweet idea");
@@ -289,7 +300,13 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
+  if (!newActionId) {
+    await postErrorToDiscord(
+      `🔴 Error in executeWriteAHaiku: newActionId is null for user ${user.handle}`
+    );
+    return;
+  }
 
   const newSmolTweet = {
     handle: user.handle,
@@ -297,7 +314,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: null,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "write_a_haiku",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -374,9 +393,16 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
+  if (!newActionId) {
+    await postErrorToDiscord(
+      `🔴 Error in executeTweetAFelling: newActionId is null for user ${user.handle}`
+    );
+    return;
+  }
   await processActionImpact({
     action: newActionEvent,
+    actionId: newActionId,
     profile: user,
     tweets: tweets,
   });
@@ -387,7 +413,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: null,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "tweet_a_feeling",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -469,7 +497,13 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
+  if (!newActionId) {
+    await postErrorToDiscord(
+      `🔴 Error in executeTweetAWojakMeme: newActionId is null for user ${user.handle}`
+    );
+    return;
+  }
 
   // ! ok.. for now.. this will not affect the user's life goals or skills or anything. it's just a meme!!
 
@@ -479,7 +513,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: gliffImage,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "tweet_a_wojak_meme",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -565,13 +601,20 @@ ${getListOfIRLTweetsAsString({
 
   console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
+  const newActionId = await saveNewActionEvent(newActionEvent);
+  if (!newActionId) {
+    await postErrorToDiscord(
+      `🔴 Error in executeLearnSomethingNew: newActionId is null for user ${user.handle}`
+    );
+    return;
+  }
+
   await processActionImpact({
     action: newActionEvent,
+    actionId: newActionId,
     profile: user,
     tweets: tweets,
   });
-
-  await saveNewActionEvent(newActionEvent);
 
   const newSmolTweet = {
     handle: user.handle,
@@ -579,7 +622,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: null,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "learn_something_new",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -671,6 +716,15 @@ ${getListOfIRLTweetsAsString({
   });
 
   console.log("🔴 webArticleImage", webArticleImage);
+
+  if (!webArticleImage) {
+    await postErrorToDiscord(
+      `🔴 webArticleImage is null for user ${user.handle} -- prompt: ${webArticle.prompt_for_article_cover_image}`
+    );
+    console.log("🔴 webArticleImage is null");
+    return;
+  }
+
   webArticle.image_url = webArticleImage;
 
   // // // create the action_event
@@ -690,13 +744,21 @@ ${getListOfIRLTweetsAsString({
 
   console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
+  const newActionId = await saveNewActionEvent(newActionEvent);
+
+  if (!newActionId) {
+    await postErrorToDiscord(
+      `🔴 Error in executeReleaseASideHustle: newActionId is null for user ${user.handle}`
+    );
+    return;
+  }
+
   await processActionImpact({
     action: newActionEvent,
+    actionId: newActionId,
     profile: user,
     tweets: tweets,
   });
-
-  await saveNewActionEvent(newActionEvent);
 
   const newSmolTweet = {
     handle: user.handle,
@@ -705,7 +767,9 @@ ${getListOfIRLTweetsAsString({
     link_preview_img_url: webArticleImage,
     link_title: webArticle.article_title,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "release_a_side_hustle",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -830,7 +894,7 @@ ${getListOfIRLTweetsAsString({
   //   link_preview_img_url: webArticleImage,
   //   link_title: webArticle.article_title,
   //   created_at: new Date(),
-  // } as SmolTweet;
+  // }
 
   // await saveNewSmolTweet(newSmolTweet);
 
@@ -917,7 +981,14 @@ ${getListOfIRLTweetsAsString({
   //   tweets: tweets,
   // });
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
+
+  if (!newActionId) {
+    await postErrorToDiscord(
+      `🔴 Error in executeTweetADadJoke: newActionId is null for user ${user.handle}`
+    );
+    return;
+  }
 
   const newSmolTweet = {
     handle: user.handle,
@@ -926,7 +997,9 @@ ${getListOfIRLTweetsAsString({
     link_preview_img_url: null,
     link_title: null,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "tweet_a_dad_joke",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -1009,13 +1082,21 @@ ${getListOfIRLTweetsAsString({
 
   console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
+  const newActionId = await saveNewActionEvent(newActionEvent);
+
+  if (!newActionId) {
+    await postErrorToDiscord(
+      `🔴 Error in executeTravelToANewPlace: newActionId is null for user ${user.handle}`
+    );
+    return;
+  }
+
   await processActionImpact({
     action: newActionEvent,
+    actionId: newActionId,
     profile: user,
     tweets: tweets,
   });
-
-  await saveNewActionEvent(newActionEvent);
 
   const newSmolTweet = {
     handle: user.handle,
@@ -1023,7 +1104,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: null,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "travel_to_a_new_place",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -1166,13 +1249,21 @@ ${getListOfIRLTweetsAsString({
 
   console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
+  const newActionId = await saveNewActionEvent(newActionEvent);
+
+  if (!newActionId) {
+    await postErrorToDiscord(
+      `🔴 Error in executeSomethingAmazingHappens: newActionId is null for user ${user.handle}`
+    );
+    return;
+  }
+
   await processActionImpact({
     action: newActionEvent,
+    actionId: newActionId,
     profile: user,
     tweets: tweets,
   });
-
-  await saveNewActionEvent(newActionEvent);
 
   const newSmolTweet = {
     handle: user.handle,
@@ -1180,7 +1271,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: null,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "something_amazing_happens",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -1261,13 +1354,21 @@ ${getListOfIRLTweetsAsString({
 
   console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
+  const newActionId = await saveNewActionEvent(newActionEvent);
+
+  if (!newActionId) {
+    await postErrorToDiscord(
+      `🔴 Error in executeSomethingTerribleHappens: newActionId is null for user ${user.handle}`
+    );
+    return;
+  }
+
   await processActionImpact({
     action: newActionEvent,
+    actionId: newActionId,
     profile: user,
     tweets: tweets,
   });
-
-  await saveNewActionEvent(newActionEvent);
 
   const newSmolTweet = {
     handle: user.handle,
@@ -1275,7 +1376,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: null,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "something_terrible_happens",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -1373,13 +1476,21 @@ ${getListOfIRLTweetsAsString({
 
   console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
+  const newActionId = await saveNewActionEvent(newActionEvent);
+
+  if (!newActionId) {
+    await postErrorToDiscord(
+      `🔴 Error in executeCreateArtNft: newActionId is null for user ${user.handle}`
+    );
+    return;
+  }
+
   await processActionImpact({
     action: newActionEvent,
+    actionId: newActionId,
     profile: user,
     tweets: tweets,
   });
-
-  await saveNewActionEvent(newActionEvent);
 
   const newSmolTweet = {
     handle: user.handle,
@@ -1387,7 +1498,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: artworkUrl,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "create_art_nft",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -1484,22 +1597,32 @@ ${getListOfIRLTweetsAsString({
 
   console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
+  const newActionId = await saveNewActionEvent(newActionEvent);
+
+  if (!newActionId) {
+    await postErrorToDiscord(
+      `🔴 Error in executeTakeASelfie: newActionId is null for user ${user.handle}`
+    );
+    return;
+  }
+
   // ! Not needed, I think!!
   // await processActionImpact({
   //   action: newActionEvent,
+  //   actionId: newActionId,
   //   profile: user,
   //   tweets: tweets,
   // });
 
-  await saveNewActionEvent(newActionEvent);
-
   const newSmolTweet = {
     handle: user.handle,
-    content: theTweet,
+    content: theTweet as string,
     link: null,
     image_url: selfieUrl,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "take_a_selfie",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -1508,10 +1631,12 @@ ${getListOfIRLTweetsAsString({
 
 const actionImpactLifeGoals = async ({
   action,
+  actionId,
   profile,
   tweets,
 }: {
   action: ActionEvent;
+  actionId: string;
   profile: RawUser;
   tweets: SavedTweet[];
 }) => {
@@ -1606,6 +1731,7 @@ ${JSON.stringify(action)}
         new_life_goals: newLifeGoals,
         summary_of_the_changes: summaryOfTheChanges,
         created_at: new Date().toISOString(),
+        action_id: actionId,
       } as LifeGoalsChange;
 
       await postToDiscord(
@@ -1631,10 +1757,12 @@ ${JSON.stringify(action)}
 
 const actionImpactSkills = async ({
   action,
+  actionId,
   profile,
   tweets,
 }: {
   action: ActionEvent;
+  actionId: string;
   profile: RawUser;
   tweets: SavedTweet[];
 }) => {
@@ -1720,7 +1848,8 @@ ${JSON.stringify(action)}
       new_skills: newSkills,
       summary_of_the_changes: summaryOfTheChanges,
       created_at: new Date().toISOString(),
-    } as SkillsChange;
+      action_id: actionId,
+    };
 
     await postToDiscord(
       `✅ ${profile.handle} altered their skills with the action: ${action.action_type}:` +
@@ -1738,10 +1867,12 @@ ${JSON.stringify(action)}
 
 const actionImpactLifeContext = async ({
   action,
+  actionId,
   profile,
   tweets,
 }: {
   action: ActionEvent;
+  actionId: string;
   profile: RawUser;
   tweets: SavedTweet[];
 }) => {
@@ -1832,6 +1963,7 @@ ${JSON.stringify(action)}
       new_life_context: newLifeContext,
       summary_of_the_changes: summaryOfTheChanges,
       created_at: new Date().toISOString(),
+      action_id: actionId,
     } as LifeContextChange;
 
     await saveNewLifeContextChange(lifeContextChange);
@@ -1845,10 +1977,12 @@ ${JSON.stringify(action)}
 
 const processActionImpact = async ({
   action,
+  actionId,
   profile,
   tweets,
 }: {
   action: ActionEvent;
+  actionId: string;
   profile: RawUser;
   tweets: SavedTweet[];
 }) => {
@@ -1856,15 +1990,18 @@ const processActionImpact = async ({
     action,
     profile,
     tweets,
+    actionId,
   });
   await actionImpactSkills({
     action,
     profile,
     tweets,
+    actionId,
   });
   await actionImpactLifeContext({
     action,
     profile,
     tweets,
+    actionId,
   });
 };
