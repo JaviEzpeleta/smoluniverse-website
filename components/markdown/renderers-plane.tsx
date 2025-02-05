@@ -286,6 +286,10 @@ export const preRenderer = (props: any) => (
 );
 
 export const emRenderer = (props: any) => (
+  <span {...props} className={classNames("italic font-semibold")} />
+);
+
+export const emRendererForHaikuTweets = (props: any) => (
   <BlurryEntrance>
     <div className="">
       <div

@@ -9,6 +9,7 @@ import {
   pRenderer,
   ulRenderer,
   emRenderer,
+  emRendererForHaikuTweets,
 } from "./markdown/renderers-plane";
 
 export const MarkdownRendererPlain = ({
@@ -26,7 +27,13 @@ export const MarkdownRendererPlain = ({
         h3: h3Renderer,
         p: pRenderer,
         a: ARenderer,
-        em: emRenderer,
+        em: children
+          ? typeof children === "string"
+            ? children.includes("haiku")
+              ? emRendererForHaikuTweets
+              : emRenderer
+            : emRenderer
+          : emRenderer,
       }}
       remarkPlugins={[remarkGfm]}
     >

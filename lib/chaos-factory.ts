@@ -609,13 +609,13 @@ Reply in JSON format:
   "content": "", // the content for the tweet the user will share on socials to announce the new side hustle. It can be in markdown format.
   "reasoning": "" // the reasoning behind the game character's situation that caused them to release this side hustle
 }
-  
+
+<TweetInstructions>
 ## important details about the tweet's "content" field
 In the tweet's content is about the new side hustle announcement the user just released.
-It can be in markdown format.
 The user also wrote a web article about it and will be linked next to this tweet, so end the tweet with nicely inviting to "check the link below" or something like that, casual and friendly.
-Thanks!
-`,
+Don't include links or markdown here. Just text.
+</TweetInstructions>`,
     },
     {
       role: "user",
@@ -952,7 +952,7 @@ Reply in JSON format:
   "price_of_service": <number>, // the price of the service/product the user is offering, in $SMOL (the game's currency that's like a dollar)
   "type_of_payment": "", // the type of payment the user is offering ("mensual", "weekly", "one-time")
   "article_web_slug": "", //
-  "content": "" // the whole content of the article, in markdown. Must have a title in H2, Several blocks of [H3 + content], and it can have emojis, bullet points, bold text, italic text, quotes, and a conclusion at the end. And please include and mention the amount of $SMOL (the game's currency) the service/product could cost.
+  "content": "" // the whole content of the article, in markdown. Must have a title in H2, Several blocks of [H3 + content], and it can have emojis, bullet points, bold text, italic text, quotes, and a conclusion at the end. And please include and mention the amount of $SMOL (the game's currency) the service/product could cost. DO NOT INCLUDE ANY LINK.
   "prompt_for_article_cover_image": "" 
 }
 ## Details about the field "prompt_for_article_cover_image":  
