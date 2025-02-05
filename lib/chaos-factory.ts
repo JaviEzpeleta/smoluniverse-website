@@ -197,7 +197,7 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
   await processActionImpact({
     action: newActionEvent,
     profile: user,
@@ -210,7 +210,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: null,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "tweet_an_idea",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -289,7 +291,7 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
 
   const newSmolTweet = {
     handle: user.handle,
@@ -297,7 +299,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: null,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "write_a_haiku",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -374,7 +378,7 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
   await processActionImpact({
     action: newActionEvent,
     profile: user,
@@ -387,7 +391,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: null,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "tweet_a_feeling",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -469,7 +475,7 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
 
   // ! ok.. for now.. this will not affect the user's life goals or skills or anything. it's just a meme!!
 
@@ -479,7 +485,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: gliffImage,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "tweet_a_wojak_meme",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -571,7 +579,7 @@ ${getListOfIRLTweetsAsString({
     tweets: tweets,
   });
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
 
   const newSmolTweet = {
     handle: user.handle,
@@ -579,7 +587,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: null,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "learn_something_new",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -671,6 +681,15 @@ ${getListOfIRLTweetsAsString({
   });
 
   console.log("🔴 webArticleImage", webArticleImage);
+
+  if (!webArticleImage) {
+    await postErrorToDiscord(
+      `🔴 webArticleImage is null for user ${user.handle} -- prompt: ${webArticle.prompt_for_article_cover_image}`
+    );
+    console.log("🔴 webArticleImage is null");
+    return;
+  }
+
   webArticle.image_url = webArticleImage;
 
   // // // create the action_event
@@ -696,7 +715,7 @@ ${getListOfIRLTweetsAsString({
     tweets: tweets,
   });
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
 
   const newSmolTweet = {
     handle: user.handle,
@@ -705,7 +724,9 @@ ${getListOfIRLTweetsAsString({
     link_preview_img_url: webArticleImage,
     link_title: webArticle.article_title,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "release_a_side_hustle",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -830,7 +851,7 @@ ${getListOfIRLTweetsAsString({
   //   link_preview_img_url: webArticleImage,
   //   link_title: webArticle.article_title,
   //   created_at: new Date(),
-  // } as SmolTweet;
+  // }
 
   // await saveNewSmolTweet(newSmolTweet);
 
@@ -917,7 +938,7 @@ ${getListOfIRLTweetsAsString({
   //   tweets: tweets,
   // });
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
 
   const newSmolTweet = {
     handle: user.handle,
@@ -926,7 +947,9 @@ ${getListOfIRLTweetsAsString({
     link_preview_img_url: null,
     link_title: null,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "tweet_a_dad_joke",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -1015,7 +1038,7 @@ ${getListOfIRLTweetsAsString({
     tweets: tweets,
   });
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
 
   const newSmolTweet = {
     handle: user.handle,
@@ -1023,7 +1046,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: null,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "travel_to_a_new_place",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -1172,7 +1197,7 @@ ${getListOfIRLTweetsAsString({
     tweets: tweets,
   });
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
 
   const newSmolTweet = {
     handle: user.handle,
@@ -1180,7 +1205,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: null,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "something_amazing_happens",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -1267,7 +1294,7 @@ ${getListOfIRLTweetsAsString({
     tweets: tweets,
   });
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
 
   const newSmolTweet = {
     handle: user.handle,
@@ -1275,7 +1302,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: null,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "something_terrible_happens",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -1379,7 +1408,7 @@ ${getListOfIRLTweetsAsString({
     tweets: tweets,
   });
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
 
   const newSmolTweet = {
     handle: user.handle,
@@ -1387,7 +1416,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: artworkUrl,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "create_art_nft",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 
@@ -1491,7 +1522,7 @@ ${getListOfIRLTweetsAsString({
   //   tweets: tweets,
   // });
 
-  await saveNewActionEvent(newActionEvent);
+  const newActionId = await saveNewActionEvent(newActionEvent);
 
   const newSmolTweet = {
     handle: user.handle,
@@ -1499,7 +1530,9 @@ ${getListOfIRLTweetsAsString({
     link: null,
     image_url: selfieUrl,
     created_at: new Date(),
-  } as SmolTweet;
+    action_type: "take_a_selfie",
+    action_id: newActionId,
+  };
 
   await saveNewSmolTweet(newSmolTweet);
 

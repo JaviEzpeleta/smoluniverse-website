@@ -87,10 +87,12 @@ export type ActionEvent = {
 export type SmolTweet = {
   handle: string;
   content: string;
-  link: string | null;
-  image_url: string | null;
-  link_preview_img_url: string | null;
-  link_title: string | null;
+  action_type: string;
+  action_id: string;
+  link?: string | null;
+  image_url?: string | null;
+  link_preview_img_url?: string | null;
+  link_title?: string | null;
   created_at: Date;
 };
 

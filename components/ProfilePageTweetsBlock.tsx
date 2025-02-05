@@ -22,6 +22,16 @@ const ProfilePageTweetsBlock = ({ handle }: { handle: string }) => {
     };
     fetchTweets();
   }, [handle]);
+
+  if (tweets.length === 0) {
+    return (
+      <div className="bg-zinc-900 rounded-lg p-4 px-6 md:max-w-xl mx-auto w-full">
+        <BlurryEntrance>
+          <MiniTitle>No tweets yet</MiniTitle>
+        </BlurryEntrance>
+      </div>
+    );
+  }
   return (
     <div className="bg-zinc-900 rounded-lg p-4 px-6 md:max-w-xl mx-auto w-full">
       <BlurryEntrance>

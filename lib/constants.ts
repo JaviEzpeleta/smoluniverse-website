@@ -4,7 +4,7 @@ export const ERC20_TOKEN_CONTRACT_ADDRESS =
 export const DEPLOYER_WALLET_ADDRESS =
   "0x6154CCc7ef29D01A30AA8f51afAB635Ae32d581b";
 // * profile generation:
-export const LIFE_GOALS_DEFAULT_COUNT = 8;
+export const LIFE_GOALS_DEFAULT_COUNT = 6;
 
 // * twitter api:
 export const MAX_PUBLICATIONS_WHEN_PARSING_PROFILE = 92;

@@ -34,6 +34,8 @@ CREATE TABLE sim_smol_tweets (
   link_title TEXT,
   link_preview_img_url TEXT,
   image_url TEXT,
+  action_type TEXT NOT NULL,
+  action_id TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -367,7 +369,7 @@ export const saveNewActionEvent = async (actionEvent: ActionEvent) => {
       actionEvent.top_level_type,
     ]
   );
-  return res.rows[0];
+  return res.rows[0].id;
 };
 
 export const getRecentActionEvents = async () => {
