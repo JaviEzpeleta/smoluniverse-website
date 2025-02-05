@@ -5,10 +5,12 @@ import { cleanHandle } from "./strings";
 import {
   DEPLOYER_WALLET_ADDRESS,
   ERC20_TOKEN_CONTRACT_ADDRESS,
+  NFT_CONTRACT_ADDRESS,
 } from "./constants";
 import { revalidateTag, unstable_cache } from "next/cache";
 
 import smolABI from "./abi/smolABI.json";
+import nftABI from "./abi/nftABI.json";
 
 export const createAndSaveNewWallet = async (
   handle: string
@@ -270,4 +272,80 @@ export const sendMoneyFromJaviToYu = async () => {
   await postToDiscord(
     `💸 Sent ${amount} tokens from ${wallet.address} to ${wallet2.address}`
   );
+};
+
+export const mintNftForClone = async ({
+  userHandle,
+  artworkUrl,
+  nftArtTitle,
+}: {
+  userHandle: string;
+  artworkUrl: string;
+  nftArtTitle: string;
+}) => {
+  const cloneWallet = await getWalletByHandle(userHandle);
+  if (!cloneWallet) {
+    throw new Error("Wallet not found");
+  }
+
+  // Crea un provider y un signer
+  const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+  const deployerWallet = new ethers.Wallet(
+    process.env.DEPLOYER_WALLET_PRIVATE_KEY!,
+    provider
+  );
+
+  // Si en algún momento necesitas el bytecode: const bytecode = artifact.bytecode;
+
+  // Crea la instancia del contrato (conectada al owner, que es el deployer)
+  const contract = new ethers.Contract(
+    NFT_CONTRACT_ADDRESS,
+    nftABI,
+    deployerWallet
+  );
+
+  console.log("A la hostia, se va a mintear un NFT con estos datos:");
+  console.log("nftImageURL:", artworkUrl);
+  console.log("nftTitle:", nftArtTitle);
+  console.log("cloneAddress:", cloneWallet.address);
+
+  // Llama a la función mintSmolNFTsCollection (nota: esta función solo la puede llamar el owner)
+  try {
+    const tx = await contract.mintSmolNFTsCollection(
+      cloneWallet.address,
+      artworkUrl,
+      nftArtTitle
+    );
+    console.log(
+      "Tx enviada, esperando confirmación... (tx hash:",
+      tx.hash,
+      ")"
+    );
+
+    await postToDiscord(`💸 NFT minteado! Confirmado en el bloque: ${tx.hash}`);
+
+    const receipt = await tx.wait();
+    console.log(
+      "¡Coño, NFT minteado! Confirmado en el bloque:",
+      receipt.blockNumber
+    );
+
+    return tx.hash;
+  } catch (error) {
+    console.error("Error al mintear el NFT:", error);
+    process.exit(1);
+  }
+};
+
+export const ownedNFTs = async (address: string): Promise<number> => {
+  const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+  const contract = new ethers.Contract(NFT_CONTRACT_ADDRESS, nftABI, provider);
+
+  try {
+    const balance = await contract.balanceOf(address);
+    return Number(balance);
+  } catch (error) {
+    console.error("Error getting NFT balance:", error);
+    return 0;
+  }
 };

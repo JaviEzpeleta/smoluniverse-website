@@ -1,5 +1,5 @@
 import { findUserByHandle, getWalletByHandle } from "@/lib/postgres";
-import { getBalanceByHandleCached } from "@/lib/web3functions";
+import { getBalanceByHandleCached, ownedNFTs } from "@/lib/web3functions";
 import { ethers } from "ethers";
 import ProfileHeaderBlock from "@/components/ProfileHeaderBlock";
 import ProfileHeaderMoneyBlock from "@/components/ProfileHeaderMoneyBlock";
@@ -28,6 +28,12 @@ const UserProfilePage = async ({
   const lifeContext = JSON.parse(user.life_context);
   const wallet = await getWalletByHandle(handle);
 
+  if (!wallet) {
+    return <div>Wallet not found</div>;
+  }
+
+  const nftsOwned = await ownedNFTs(wallet.address);
+
   return (
     <div className="p-4">
       {/* <div></div> */}
@@ -35,6 +41,7 @@ const UserProfilePage = async ({
         <div className="flex justify-between w-full items-center">
           <ProfileHeaderBlock user={user} lifeContext={lifeContext} />
           <ProfileHeaderMoneyBlock
+            nftsOwned={nftsOwned}
             balance={balance}
             lifeContext={lifeContext}
             walletAddress={wallet.address}

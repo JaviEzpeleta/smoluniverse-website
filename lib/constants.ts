@@ -3,6 +3,11 @@ export const ERC20_TOKEN_CONTRACT_ADDRESS =
   "0xEd132A151816C1AEEAe5d58a5A7078aFf5C52312";
 export const DEPLOYER_WALLET_ADDRESS =
   "0x6154CCc7ef29D01A30AA8f51afAB635Ae32d581b";
+
+// * NFT contract address:
+export const NFT_CONTRACT_ADDRESS =
+  "0x52314AcD39f3E296FF49c03f727fcEC943C4332E";
+
 // * profile generation:
 export const LIFE_GOALS_DEFAULT_COUNT = 6;
 
@@ -24,3 +29,4 @@ export const IS_LOCALHOST = process.env.NODE_ENV === "development";
 export const PAGE_SIZE = 30;
 
 export const BASESCAN_URL = "https://sepolia.basescan.org";
+export const OPENSEA_URL = "https://testnets.opensea.io";
