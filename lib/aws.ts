@@ -1,6 +1,7 @@
 import axios from "axios";
 import sharp from "sharp";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { postToDiscord } from "./discord";
 
 const s3 = new S3Client({
   credentials: {
@@ -46,4 +47,25 @@ export const uploadWebpFromURLToAWSS3 = async (imageUrl: string) => {
   };
   await s3.send(new PutObjectCommand(params));
   return `https://${params.Bucket}.s3.${process.env.AWS_S3_BUCKET_REGION}.amazonaws.com/${params.Key}`;
+};
+
+export const uploadAudioToAWSS3 = async (buffer: Buffer) => {
+  const newFileAudio =
+    "audios/" +
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15) +
+    ".mp3";
+
+  const params = {
+    Bucket: process.env.AWS_S3_BUCKET_NAME || "",
+    Key: newFileAudio,
+    Body: buffer,
+  };
+
+  await s3.send(new PutObjectCommand(params));
+
+  const url = `https://${params.Bucket}.s3.${process.env.AWS_S3_BUCKET_REGION}.amazonaws.com/${params.Key}`;
+  console.log(" 💥 💥 💥 💥 💥 💥 uploaded audio to S3;;;;;;; " + url);
+  await postToDiscord(`💥 💥 💥 💥 💥 💥 uploaded audio to S3;;;;;;; ${url}`);
+  return url;
 };

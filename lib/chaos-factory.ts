@@ -15,7 +15,7 @@ import {
   updateUserLifeContext,
 } from "./postgres";
 import { getListOfIRLTweetsAsString } from "./prompts";
-import { generateRecraftImage } from "./replicate";
+import { generateRecraftImage, generateVoiceNoteAudioFile } from "./replicate";
 import {
   ActionEvent,
   LifeContextChange,
@@ -726,7 +726,8 @@ Based on this character profile and recent tweets, now in this moment of the sto
 So please come up with some creative original new idea for a new voice note the clone will record and share on a social network. 
 Make it sound super natural and casual, pure and simple, straight to the point.
 
-The voice note should be 10 seconds or less.
+The voice note should be around 3 sentences. 
+Make it end with a play on words like a dad joke or something super short and funny.
 The voice note will be shared on a social network, so it should come with a text for the tweet that contains the audio player.
 Reply in JSON format: 
 {
@@ -770,67 +771,67 @@ ${getListOfIRLTweetsAsString({
     message: voiceNoteObject.voice_note_message_text,
   });
 
-  const theTweet = sideHustleObject.content;
-  console.log("🔴 theTweet", theTweet);
-  const reasoning = sideHustleObject.reasoning;
-  console.log("🔴 reasoning", reasoning);
-  const sideHustle = sideHustleObject.side_hustle;
-  console.log("🔴 sideHustle", sideHustle);
+  // const theTweet = sideHustleObject.content;
+  // console.log("🔴 theTweet", theTweet);
+  // const reasoning = sideHustleObject.reasoning;
+  // console.log("🔴 reasoning", reasoning);
+  // const sideHustle = sideHustleObject.side_hustle;
+  // console.log("🔴 sideHustle", sideHustle);
 
-  const webArticle = await generateWebArticleForSideHustle({
-    sideHustle: sideHustleObject,
-    user,
-    tweets,
-  });
+  // const webArticle = await generateWebArticleForSideHustle({
+  //   sideHustle: sideHustleObject,
+  //   user,
+  //   tweets,
+  // });
 
-  // console.log("🔴 webArticle", webArticle);
+  // // console.log("🔴 webArticle", webArticle);
 
-  const webArticleImage = await generateRecraftImage({
-    prompt: webArticle.prompt_for_article_cover_image,
-    handle: user.handle,
-    landscapeMode: true,
-  });
+  // const webArticleImage = await generateRecraftImage({
+  //   prompt: webArticle.prompt_for_article_cover_image,
+  //   handle: user.handle,
+  //   landscapeMode: true,
+  // });
 
-  console.log("🔴 webArticleImage", webArticleImage);
-  webArticle.image_url = webArticleImage;
+  // console.log("🔴 webArticleImage", webArticleImage);
+  // webArticle.image_url = webArticleImage;
 
-  // // // create the action_event
-  const newActionEvent = {
-    top_level_type: "individual",
-    action_type: "release_a_side_hustle",
-    from_handle: user.handle,
-    main_output: JSON.stringify({
-      tweet: theTweet,
-      side_hustle: sideHustle,
-    }),
-    story_context: reasoning,
-    to_handle: null, // ! igual quito esto?
-    extra_data: JSON.stringify(webArticle),
-    created_at: new Date(),
-  } as ActionEvent;
+  // // // // create the action_event
+  // const newActionEvent = {
+  //   top_level_type: "individual",
+  //   action_type: "release_a_side_hustle",
+  //   from_handle: user.handle,
+  //   main_output: JSON.stringify({
+  //     tweet: theTweet,
+  //     side_hustle: sideHustle,
+  //   }),
+  //   story_context: reasoning,
+  //   to_handle: null, // ! igual quito esto?
+  //   extra_data: JSON.stringify(webArticle),
+  //   created_at: new Date(),
+  // } as ActionEvent;
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
-  await processActionImpact({
-    action: newActionEvent,
-    profile: user,
-    tweets: tweets,
-  });
+  // await processActionImpact({
+  //   action: newActionEvent,
+  //   profile: user,
+  //   tweets: tweets,
+  // });
 
-  await saveNewActionEvent(newActionEvent);
+  // await saveNewActionEvent(newActionEvent);
 
-  const newSmolTweet = {
-    handle: user.handle,
-    content: theTweet,
-    link: `/a/${user.handle}/${webArticle.article_web_slug}`,
-    link_preview_img_url: webArticleImage,
-    link_title: webArticle.article_title,
-    created_at: new Date(),
-  } as SmolTweet;
+  // const newSmolTweet = {
+  //   handle: user.handle,
+  //   content: theTweet,
+  //   link: `/a/${user.handle}/${webArticle.article_web_slug}`,
+  //   link_preview_img_url: webArticleImage,
+  //   link_title: webArticle.article_title,
+  //   created_at: new Date(),
+  // } as SmolTweet;
 
-  await saveNewSmolTweet(newSmolTweet);
+  // await saveNewSmolTweet(newSmolTweet);
 
-  return theTweet;
+  // return theTweet;
 };
 
 const executeTravelToANewPlace = async ({
