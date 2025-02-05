@@ -122,6 +122,9 @@ const executeIndividualAction = async ({
     case "send_a_voice_note":
       await executeSendAVoiceNote({ user, tweets });
       break;
+    case "tweet_a_dad_joke":
+      await executeTweetADadJoke({ user, tweets });
+      break;
     default:
       console.log(
         "🔴 Error in executeIndividualAction: unsupported action type" +
@@ -832,6 +835,102 @@ ${getListOfIRLTweetsAsString({
   // await saveNewSmolTweet(newSmolTweet);
 
   // return theTweet;
+};
+
+const executeTweetADadJoke = async ({
+  user,
+  tweets,
+}: {
+  user: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  const theMessages = [
+    {
+      role: "system",
+      content: `You are an amazing storyteller for an AI clone emulation universe, where the "users" are ai clones based on twitter profiles, and have money in web3 and do things onchain.
+
+Based on this character profile and recent tweets, now in this moment of the story, the character will decide to record a voice note and share it on a social network.
+
+So please come up with some creative original new idea for a new voice note the clone will record and share on a social network. 
+Make it sound super natural and casual, pure and simple, straight to the point.
+
+The voice note should be around 3 sentences. 
+Make it end with a play on words like a dad joke or something super short and funny.
+The voice note will be shared on a social network, so it should come with a text for the tweet that contains the audio player.
+Reply in JSON format: 
+{
+  "voice_note_message_text": "", // the transcription of the voice note.
+  "content": "", // the content for the tweet the user will share on socials to share the new voice note with. make it super super short, to introduce the voice note in the audio player below.
+  "reasoning": "" // the reasoning behind the message the user is sharing at this point of the story.
+}
+  
+<Important>Do not use hashtags or emojis in the tweet.</Important>`,
+    },
+    {
+      role: "user",
+      content: `Full character profile:
+${JSON.stringify(user)}
+
+## Recent publications:
+${getListOfIRLTweetsAsString({
+  handle: user.handle,
+  userIRLTweets: tweets,
+})}
+
+<Important>Do not use hashtags or emojis in the tweet. Try to be creative, original and a bit random. Also try to use the same tone and style of the user's previous tweets.</Important>`,
+    },
+  ] as CoreMessage[];
+
+  const responseFromGemini = await askGeminiThinking({
+    messages: theMessages,
+    temperature: 0.1,
+  });
+
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating release a side hustle");
+
+  const cleanedResponse = responseFromGemini
+    .replace(/```json\n/g, "")
+    .replace(/\n```/g, "");
+
+  const voiceNoteObject = JSON.parse(cleanedResponse);
+  const theTweet = voiceNoteObject.voice_note_message_text;
+  console.log("🔴 theTweet", theTweet);
+  const reasoning = voiceNoteObject.reasoning;
+  console.log("🔴 reasoning", reasoning);
+  const newActionEvent = {
+    top_level_type: "individual",
+    action_type: "tweet_a_dad_joke",
+    from_handle: user.handle,
+    main_output: JSON.stringify({
+      tweet: theTweet,
+    }),
+    story_context: reasoning,
+    created_at: new Date(),
+  } as ActionEvent;
+
+  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  // await processActionImpact({
+  //   action: newActionEvent,
+  //   profile: user,
+  //   tweets: tweets,
+  // });
+
+  await saveNewActionEvent(newActionEvent);
+
+  const newSmolTweet = {
+    handle: user.handle,
+    content: theTweet,
+    link: null,
+    link_preview_img_url: null,
+    link_title: null,
+    created_at: new Date(),
+  } as SmolTweet;
+
+  await saveNewSmolTweet(newSmolTweet);
+
+  return theTweet;
 };
 
 const executeTravelToANewPlace = async ({
