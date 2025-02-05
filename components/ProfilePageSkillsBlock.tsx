@@ -3,6 +3,7 @@
 import ToolTipped from "./ToolTipped";
 import MiniTitle from "./MiniTitle";
 import BlurryEntrance from "./BlurryEntrance";
+import NumberFlow from "@number-flow/react";
 
 const ProfilePageSkillsBlock = ({ skills }: { skills: any }) => {
   return (
@@ -33,7 +34,7 @@ const ProfilePageSkillsBlock = ({ skills }: { skills: any }) => {
                     <div>{emoji}</div>
                     <div>{name}</div>
                   </div>
-                  <div>{level}</div>
+                  <NumberFlow value={Number(level)} />
                 </div>
               </BlurryEntrance>
             </ToolTipped>

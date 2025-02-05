@@ -27,6 +27,7 @@ import {
 import { SavedTweet } from "./types";
 
 import { CoreMessage } from "ai";
+import { mintNftForClone } from "./web3functions";
 
 export const createNewRandomEvent = async () => {
   // ! RANDOMNESS DISABLED FOR NOW!
@@ -1410,6 +1411,7 @@ The user will tweet something about the art they will create and launch as an NF
 
 Reply in JSON format: 
 {
+  "nft_art_title": "", // the title of the artwork. make it short and catchy.
   "art_prompt": "", // the prompt for the artwork. If you feel it, it can contain specific locations, and text too, but try to avoid including people. Make it be very artistic and deep.
   "content": "", // the tweet content about the new art the user will create and launch as an NFT, can be in markdown format
   "reasoning": "" // the reasoning behind the game character's situation that caused them to create this art
@@ -1450,6 +1452,8 @@ ${getListOfIRLTweetsAsString({
   console.log("🔴 reasoning", reasoning);
   const artPrompt = JSON.parse(cleanedResponse).art_prompt;
   console.log("🔴 artPrompt", artPrompt);
+  const nftArtTitle = JSON.parse(cleanedResponse).nft_art_title;
+  console.log("🔴 nftArtTitle", nftArtTitle);
 
   await postToDiscord(`Prompt for art: ${artPrompt}`);
 
@@ -1463,6 +1467,13 @@ ${getListOfIRLTweetsAsString({
     return;
   }
 
+  // now we mint the NFT!!!!
+  const txHash = await mintNftForClone({
+    userHandle: user.handle,
+    artworkUrl,
+    nftArtTitle,
+  });
+
   // create the action_event
   const newActionEvent = {
     top_level_type: "individual",
@@ -1472,6 +1483,8 @@ ${getListOfIRLTweetsAsString({
       tweet: theTweet,
       artwork_url: artworkUrl,
       art_prompt: artPrompt,
+      tx_hash: txHash,
+      nft_art_title: nftArtTitle,
     }),
     story_context: reasoning,
     to_handle: null, // ! igual quito esto?
