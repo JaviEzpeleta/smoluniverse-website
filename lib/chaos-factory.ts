@@ -1653,7 +1653,7 @@ The user will tweet something about the photo they will share, so give me the tw
 
 Reply in JSON format: 
 {
-  "photo_prompt": "", // the prompt for the photo image. If you feel it, it can contain specific locations, brands, and text too. Make it very realistic. Please include in the prompt that is an "iPhone 13 photo, raw.".
+  "photo_prompt": "", // the prompt for the photo image. If you feel it, it can contain specific locations, brands, and text too. Make it very realistic.
   "content": "", // the tweet content about the new photo the user will share, can be in markdown format
   "reasoning": "" // the reasoning behind the game character's situation that caused them to take this photo
 }`,
