@@ -14,7 +14,7 @@ const ProfilePlayground = ({ user }: { user: RawUser }) => {
   const { toast } = useToast();
 
   const executeAction = async (code: string) => {
-    if (IS_LOCALHOST) {
+    if (!IS_LOCALHOST) {
       toast({
         title: "This is a local feature, not available on the live site.",
       });

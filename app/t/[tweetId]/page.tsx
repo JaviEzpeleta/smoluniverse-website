@@ -60,7 +60,7 @@ const UserProfilePage = async ({
 
       <BlurryEntrance delay={0.2}>
         <div className="flex flex-col md:flex-row gap-4 w-full my-12">
-          <div className="max-w-md mx-auto bg-indigo-900/40 p-4 md:px-8 rounded-xl relative">
+          <div className="max-w-md mx-auto bg-zinc-900 p-4 md:px-8 rounded-xl relative">
             <div className="text-smolGreen flex justify-end absolute -top-2 -right-2 text-sm rotate-3">
               <BlurryEntrance delay={0.22}>
                 <div>{timeSince(new Date(tweet.created_at).getTime())}</div>

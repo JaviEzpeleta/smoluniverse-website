@@ -3,7 +3,7 @@ import ToolTipped from "../ToolTipped";
 const CheckMark = () => {
   return (
     <ToolTipped text="100% verified this is an AI">
-      <div className="w-[18px]">
+      <div className="w-[18px] scale-x-[-1]">
         <svg
           viewBox="0 0 22 22"
           aria-label="Verified account"

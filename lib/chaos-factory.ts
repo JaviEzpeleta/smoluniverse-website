@@ -1,4 +1,4 @@
-import { INDIVIDUAL_ACTIONS } from "./actions-catalog";
+import { ACTIONS_OBJECT, INDIVIDUAL_ACTIONS } from "./actions-catalog";
 import { postErrorToDiscord, postToDiscord } from "./discord";
 import { askGeminiThinking } from "./gemini";
 import { generateGliffWojakMeme } from "./gliff";
@@ -47,7 +47,7 @@ export const createNewRandomEvent = async () => {
   if (mainType === "individual") {
     // ! individual
     const randomAction =
-      INDIVIDUAL_ACTIONS[Math.floor(Math.random() * INDIVIDUAL_ACTIONS.length)];
+      ACTIONS_OBJECT[Math.floor(Math.random() * ACTIONS_OBJECT.length)];
 
     const randomClone = await getRandomClone();
     if (!randomClone) {
@@ -62,7 +62,7 @@ export const createNewRandomEvent = async () => {
     });
     await executeIndividualAction({
       user: randomClone,
-      action_type: randomAction,
+      action_type: randomAction.code,
       tweets: referenceCloneTweets,
     });
 
@@ -112,6 +112,9 @@ export const executeIndividualAction = async ({
       break;
     case "take_a_selfie":
       await executeTakeASelfie({ user, tweets });
+      break;
+    case "share_a_photo_of_where_you_are":
+      await executeShareAPictureOfWhereYouAre({ user, tweets });
       break;
     case "something_amazing_happens":
       await executeSomethingAmazingHappens({ user, tweets });
@@ -1623,6 +1626,127 @@ ${getListOfIRLTweetsAsString({
     image_url: selfieUrl,
     created_at: new Date(),
     action_type: "take_a_selfie",
+    action_id: newActionId,
+  };
+
+  await saveNewSmolTweet(newSmolTweet);
+
+  return theTweet;
+};
+const executeShareAPictureOfWhereYouAre = async ({
+  user,
+  tweets,
+}: {
+  user: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  const theMessages = [
+    {
+      role: "system",
+      content: `You are an amazing storyteller for an AI clone emulation universe, where the "users" are ai clones based on twitter profiles, and have money in web3 and do things onchain.
+
+Based on this character profile and recent tweets, now in this moment of the story, the character decides to share a photo of where they are.
+
+So please come up with some creative original prompt for a photo of where they are.
+
+The user will tweet something about the photo they will share, so give me the tweet content too.
+
+Reply in JSON format: 
+{
+  "photo_prompt": "", // the prompt for the photo image. If you feel it, it can contain specific locations, brands, and text too. Make it very realistic. Please include in the prompt that is an "iPhone 13 photo, raw.".
+  "content": "", // the tweet content about the new photo the user will share, can be in markdown format
+  "reasoning": "" // the reasoning behind the game character's situation that caused them to take this photo
+}`,
+    },
+    {
+      role: "user",
+      content: `Full character profile:
+${JSON.stringify(user)}
+
+## Recent publications:
+${getListOfIRLTweetsAsString({
+  handle: user.handle,
+  userIRLTweets: tweets,
+})}
+
+<Important>Do not use hashtags or emojis in the tweet. Try to be creative, original and a bit random. Also try to use the same tone and style of the user's previous tweets.</Important>`,
+    },
+  ] as CoreMessage[];
+
+  const responseFromGemini = await askGeminiThinking({
+    messages: theMessages,
+    temperature: 0.8,
+  });
+
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating share a photo of where you are");
+
+  const cleanedResponse = responseFromGemini
+    .replace(/```json\n/g, "")
+    .replace(/\n```/g, "");
+
+  const theTweet = JSON.parse(cleanedResponse).content;
+  console.log("🔴 theTweet", theTweet);
+  const reasoning = JSON.parse(cleanedResponse).reasoning;
+  console.log("🔴 reasoning", reasoning);
+  const photoPrompt = JSON.parse(cleanedResponse).photo_prompt;
+  console.log("🔴 photoPrompt", photoPrompt);
+
+  await postToDiscord(`Prompt for photo: ${photoPrompt}`);
+
+  const photoUrl = await generateRecraftImage({
+    prompt: photoPrompt,
+    handle: user.handle,
+    portraitMode: true,
+  });
+
+  if (!photoUrl) {
+    await postToDiscord(`💥 Error generating photo for ${user.handle}`);
+    return;
+  }
+
+  // create the action_event
+  const newActionEvent = {
+    top_level_type: "individual",
+    action_type: "share_a_photo_of_where_you_are",
+    from_handle: user.handle,
+    main_output: JSON.stringify({
+      tweet: theTweet,
+      photo_url: photoUrl,
+      photo_prompt: photoPrompt,
+    }),
+    story_context: reasoning,
+    to_handle: null,
+    extra_data: null,
+    created_at: new Date(),
+  } as ActionEvent;
+
+  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  const newActionId = await saveNewActionEvent(newActionEvent);
+
+  if (!newActionId) {
+    await postErrorToDiscord(
+      `🔴 Error in executeShareAPictureOfWhereYouAre: newActionId is null for user ${user.handle}`
+    );
+    return;
+  }
+
+  // ! Not needed, I think!!
+  // await processActionImpact({
+  //   action: newActionEvent,
+  //   actionId: newActionId,
+  //   profile: user,
+  //   tweets: tweets,
+  // });
+
+  const newSmolTweet = {
+    handle: user.handle,
+    content: theTweet as string,
+    link: null,
+    image_url: photoUrl,
+    created_at: new Date(),
+    action_type: "share_a_photo_of_where_you_are",
     action_id: newActionId,
   };
 
