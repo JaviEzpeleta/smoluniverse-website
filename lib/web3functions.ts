@@ -12,6 +12,8 @@ import { revalidateTag, unstable_cache } from "next/cache";
 import smolABI from "./abi/smolABI.json";
 import nftABI from "./abi/nftABI.json";
 
+import { Wallet as OurWallet } from "./types";
+
 export const createAndSaveNewWallet = async (
   handle: string
 ): Promise<boolean> => {
@@ -232,15 +234,15 @@ export async function transferFromCloneToClone(
   }
 }
 
-export const sendMoneyFromJaviToYu = async () => {
-  const wallet = await getWalletByHandle("javitoshi");
-  const wallet2 = await getWalletByHandle("mad4yu");
-
-  console.log({ wallet });
-  console.log({ wallet2 });
-
-  const amount = ethers.parseUnits("100", 18);
-
+export const sendMoneyFromWalletAToWalletB = async ({
+  walletA,
+  walletB,
+  amount,
+}: {
+  walletA: OurWallet;
+  walletB: OurWallet;
+  amount: bigint;
+}) => {
   const deployerWalletPrivateKey = process.env.DEPLOYER_WALLET_PRIVATE_KEY!;
 
   const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
@@ -261,17 +263,33 @@ export const sendMoneyFromJaviToYu = async () => {
   await transferFromCloneToClone(
     tokenContract,
     signer,
-    wallet.address,
-    wallet2.address,
+    walletA.address,
+    walletB.address,
     amount,
-    wallet.permit_signature
+    walletA.permit_signature
   );
-  revalidateTag(`balance-${wallet.handle}`);
-  revalidateTag(`balance-${wallet2.handle}`);
+  revalidateTag(`balance-${walletA.handle}`);
+  revalidateTag(`balance-${walletB.handle}`);
 
   await postToDiscord(
-    `💸 Sent ${amount} tokens from ${wallet.address} to ${wallet2.address}`
+    `💸 Sent ${amount} tokens from ${walletA.address} to ${walletB.address}`
   );
+};
+
+export const sendMoneyFromJaviToYu = async () => {
+  const wallet = await getWalletByHandle("javitoshi");
+  const wallet2 = await getWalletByHandle("mad4yu");
+
+  console.log({ wallet });
+  console.log({ wallet2 });
+
+  const amount = ethers.parseUnits("100", 18);
+
+  await sendMoneyFromWalletAToWalletB({
+    walletA: wallet,
+    walletB: wallet2,
+    amount,
+  });
 };
 
 export const mintNftForClone = async ({
@@ -348,4 +366,35 @@ export const ownedNFTs = async (address: string): Promise<number> => {
     console.error("Error getting NFT balance:", error);
     return 0;
   }
+};
+
+export const sendMoneyToCloneFromGovernment = async ({
+  wallet,
+  amount,
+  handle,
+}: {
+  wallet: OurWallet;
+  amount: bigint;
+  handle: string;
+}) => {
+  const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+  const signer = new ethers.Wallet(
+    process.env.DEPLOYER_WALLET_PRIVATE_KEY!,
+    provider
+  );
+
+  const tokenContract = new ethers.Contract(
+    ERC20_TOKEN_CONTRACT_ADDRESS,
+    smolABI,
+    signer
+  );
+
+  const tx = await tokenContract.transfer(wallet.address, amount);
+  await tx.wait();
+
+  revalidateTag(`balance-${handle}`);
+
+  await postToDiscord(
+    `💸 Sent ${amount} tokens to ${wallet.address} from the government to ${handle}`
+  );
 };

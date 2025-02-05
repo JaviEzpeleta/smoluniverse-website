@@ -77,6 +77,18 @@ export const ACTIONS_OBJECT = [
     emoji: "📸",
     color: "pink",
   },
+  {
+    code: "win_an_award",
+    name: "Win an Award",
+    emoji: "🏆",
+    color: "amber",
+  },
+  // {
+  //   code: "create_a_new_pfp",
+  //   name: "Create a New PFP",
+  //   emoji: "👤",
+  //   color: "purple",
+  // },
 ];
 
 export const INDIVIDUAL_ACTIONS = [
