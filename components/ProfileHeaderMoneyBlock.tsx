@@ -31,7 +31,7 @@ const ProfileHeaderMoneyBlock = ({
             <Link
               href={`${OPENSEA_URL}/${walletAddress}`}
               target="_blank"
-              className="bg-primary/10 text-primary hover:bg-primary/15
+              className="bg-blue-200/10 text-blue-200 hover:bg-blue-200/20
           active:opacity-40 group
         transition-all duration-100 w-12
         p-2 pb-1 rounded-full flex items-center justify-center gap-3 h-12"

@@ -1185,7 +1185,7 @@ const executeTravelToANewPlace = async ({
 
 Based on this character profile and recent tweets, now in this moment of the story, the character will decide to travel to a new place.
 
-So please come up with some creative original new idea for a new place for the clone to travel to in this virtual universe.
+So please come up with some logical real-world location, for the clone to travel to in this parallel universe.
 
 The character will compose a tweet to publicly announce the new place they will travel to.
 

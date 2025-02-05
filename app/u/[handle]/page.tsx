@@ -24,7 +24,22 @@ const UserProfilePage = async ({
 
   const balanceInWei = await getBalanceByHandleCached(handle);
   const balance = ethers.formatEther(balanceInWei);
-  const skills = JSON.parse(user.skills);
+
+  let skills = [] as any[];
+  // first, validate the skills json string is valid
+  const isValidSkills = validateJsonString(user.skills);
+  if (!isValidSkills) {
+    const skilsStringFixed = fixJsonString(user.skills);
+    const skillsParsed = JSON.parse(skilsStringFixed);
+    skills = skillsParsed as any[];
+  } else {
+    skills = JSON.parse(user.skills);
+  }
+
+  console.log("user.skills");
+  console.log("user.skills");
+  console.log(user.skills);
+
   const lifeContext = JSON.parse(user.life_context);
   const wallet = await getWalletByHandle(handle);
 
@@ -69,3 +84,42 @@ const UserProfilePage = async ({
 };
 
 export default UserProfilePage;
+
+function fixJsonString(jsonStr: string): string {
+  // Trim extra whitespace
+  const trimmed = jsonStr.trim();
+
+  // Check if the JSON array ends with a ']' but not with '}]'
+  if (trimmed.endsWith("]") && !trimmed.endsWith("}]")) {
+    // Remove the last character (the closing array bracket)
+    // and append a missing '}' plus the closing bracket
+    return trimmed.slice(0, -1) + "}]";
+  }
+
+  // Otherwise, return the original string
+  return jsonStr;
+}
+
+// Example usage:
+const brokenJson = `[{"emoji":"📱","name":"SwiftUI Sorcery","level":94,"description":"Weaving digital spells with Apple's UI framework. Can conjure interfaces from thin air."},{"emoji":"🎬","name":"Video Editing for App Marketing","level":1,"description":"Embarking on a journey to master video editing, specifically to create engaging marketing content for apps. Starting from the basics, aiming to produce videos that resonate with modern social media trends and boost app visibility."]`;
+
+try {
+  // First, try parsing the broken JSON (this will throw an error)
+  JSON.parse(brokenJson);
+} catch (e) {
+  console.error("Fucking error while parsing JSON:", e.message);
+  // Fix the JSON string
+  const fixedJson = fixJsonString(brokenJson);
+  // Now parse the fixed JSON
+  const data = JSON.parse(fixedJson);
+  console.log("Fixed JSON parsed successfully:", data);
+}
+
+function validateJsonString(jsonStr: string): boolean {
+  try {
+    JSON.parse(jsonStr);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
