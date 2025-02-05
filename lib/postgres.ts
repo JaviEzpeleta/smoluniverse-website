@@ -559,3 +559,11 @@ export const findArticleByHandleAndSlug = async (
     return null;
   }
 };
+
+export const getSmolTweetById = async (tweetId: string) => {
+  const res = await executeQuery(
+    `SELECT * FROM sim_smol_tweets WHERE id = $1`,
+    [tweetId]
+  );
+  return res.rows[0];
+};

@@ -1,4 +1,4 @@
-import { RawUser, SmolTweetWithUserData } from "@/lib/types";
+import { SmolTweetWithUserData } from "@/lib/types";
 import React from "react";
 import CheckMark from "./svg/CheckMark";
 import Link from "next/link";
