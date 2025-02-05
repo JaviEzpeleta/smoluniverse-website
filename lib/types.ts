@@ -114,6 +114,7 @@ export type LifeGoalsChange = {
   new_life_goals: string;
   summary_of_the_changes: string;
   created_at: string;
+  action_id: string;
 };
 
 export type SkillsChange = {
@@ -122,6 +123,7 @@ export type SkillsChange = {
   new_skills: string;
   summary_of_the_changes: string;
   created_at: string;
+  action_id: string;
 };
 
 export type LifeContextChange = {
@@ -130,4 +132,5 @@ export type LifeContextChange = {
   new_life_context: string;
   summary_of_the_changes: string;
   created_at: string;
+  action_id: string;
 };
