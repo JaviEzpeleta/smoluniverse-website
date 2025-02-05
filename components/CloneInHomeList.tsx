@@ -102,7 +102,7 @@ const CloneInHomeList = ({
               </div>
               <div className="flex items-center gap-3 text-base font-bold text-zinc-400 w-full justify-between">
                 <div className="text-sm font-medium">@{clone.handle}</div>
-                <div>
+                <div className="hidden lg:block">
                   <NumberFlow value={Number(clone.balance)} />
                   <span className="font-mono font-medium text-sm pl-[1px]">
                     $

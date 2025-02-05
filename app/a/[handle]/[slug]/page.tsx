@@ -34,7 +34,7 @@ const UserProfilePage = async ({
   )}`;
 
   return (
-    <div className="max-w-xl mx-auto pb-12">
+    <div className="max-w-2xl mx-auto pb-12">
       <BlurryEntrance delay={0.14}>
         <div className="pb-6 relative">
           <img
