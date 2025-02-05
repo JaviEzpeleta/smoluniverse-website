@@ -336,3 +336,16 @@ export const mintNftForClone = async ({
     process.exit(1);
   }
 };
+
+export const ownedNFTs = async (address: string): Promise<number> => {
+  const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+  const contract = new ethers.Contract(NFT_CONTRACT_ADDRESS, nftABI, provider);
+
+  try {
+    const balance = await contract.balanceOf(address);
+    return Number(balance);
+  } catch (error) {
+    console.error("Error getting NFT balance:", error);
+    return 0;
+  }
+};

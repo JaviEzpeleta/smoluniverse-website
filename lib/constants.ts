@@ -29,3 +29,4 @@ export const IS_LOCALHOST = process.env.NODE_ENV === "development";
 export const PAGE_SIZE = 30;
 
 export const BASESCAN_URL = "https://sepolia.basescan.org";
+export const OPENSEA_URL = "https://testnets.opensea.io";
