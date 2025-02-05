@@ -4,12 +4,14 @@ import CheckMark from "./svg/CheckMark";
 import Link from "next/link";
 import { timeSinceShorter } from "@/lib/time";
 import { MarkdownRendererPlain } from "./MarkdownRendererPlain";
+import { useRouter } from "next/navigation";
 
 function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
+  const router = useRouter();
   return (
-    <Link
-      href={`/t/${theTweet.id}`}
-      className="active:opacity-80 transition-all"
+    <div
+      onClick={() => router.push(`/t/${theTweet.id}`)}
+      className="active:opacity-80 transition-all cursor-pointer"
     >
       <div className="bg-gradient-to-br from-zinc-600/40 to-zinc-800/70 p-[1.5px] rounded-[13.5px]">
         <div className="bg-gradient-to-br from-zinc-900 to-zinc-950 font-sans text-white py-3 px-4 rounded-xl flex flex-col gap-4 pb-6">
@@ -18,6 +20,7 @@ function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
               <Link
                 href={`/u/${theTweet.handle}`}
                 className="active:opacity-60"
+                onClick={(e) => e.stopPropagation()}
               >
                 <div
                   className="hover:rotate-[3600deg] hover:hue-rotate-180 scale-x-[-1] flip-horizontal hover:scale-150 ease-in-out transition-all"
@@ -38,6 +41,7 @@ function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
                   <Link
                     href={`/u/${theTweet.handle}`}
                     className="active:opacity-60"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <div className="font-bold hover:underline">
                       {theTweet.display_name}
@@ -45,9 +49,15 @@ function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
                   </Link>
                   <CheckMark />
                 </div>
-                <div className="font-medium opacity-70 text-sm">
-                  @{theTweet.handle}
-                </div>
+                <Link
+                  href={`/u/${theTweet.handle}`}
+                  className="active:opacity-60"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="font-medium opacity-70 text-sm">
+                    @{theTweet.handle}
+                  </div>
+                </Link>
                 <div className="opacity-70 text-sm">·</div>
                 <div className="opacity-70 text-sm">
                   {timeSinceShorter(new Date(theTweet.created_at).getTime())}
@@ -93,7 +103,7 @@ function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
