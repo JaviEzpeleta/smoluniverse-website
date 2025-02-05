@@ -11,6 +11,7 @@ import { LucidePopcorn } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const IntroBanner = () => {
+  const randomNumberFrom1To5 = Math.floor(Math.random() * 5) + 1;
   const { toast } = useToast();
   return (
     <div className="overflow-hidden">
@@ -18,17 +19,17 @@ const IntroBanner = () => {
         <div className="border-zinc-400 bg-black min-h-80 md:min-h-60 border-2 overflow-hidden p-4 md:py-8 rounded-2xl flex flex-col items-center justify-center relative">
           <div className="absolute inset-0">
             <motion.div
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 90, rotate: -10, scale: 0.8 }}
+              animate={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
               exit={{ opacity: 0, y: -100 }}
-              transition={{ duration: 1.5, delay: 0.62, ease: "easeOut" }}
-              className="w-full h-full rounded-2xl"
+              transition={{ duration: 3.5, ease: "easeInOut" }}
+              className="w-full h-full rounded-2xl origin-left"
             >
-              <MagneticZone hfull factor={90.5}>
+              <MagneticZone hfull factor={170.5}>
                 <div
                   className="w-full h-full rounded-2xl scale-105 origin-center"
                   style={{
-                    backgroundImage: "url(/images/intro-banner.png)",
+                    backgroundImage: `url(/images/banner_${randomNumberFrom1To5}.png)`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                   }}
