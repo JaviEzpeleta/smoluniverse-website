@@ -13,6 +13,9 @@ interface AppState {
 
   showWaitlistModal: boolean;
   setShowWaitlistModal: (showWaitlistModal: boolean) => void;
+
+  logoImageIndex: number;
+  setLogoImageIndex: (logoImageIndex: number) => void;
 }
 
 const useStore = create<AppState>((set) => ({
@@ -27,6 +30,9 @@ const useStore = create<AppState>((set) => ({
 
   showWaitlistModal: false,
   setShowWaitlistModal: (showWaitlistModal) => set({ showWaitlistModal }),
+
+  logoImageIndex: Math.floor(Math.random() * 2) + 1,
+  setLogoImageIndex: (logoImageIndex) => set({ logoImageIndex }),
 }));
 
 export default useStore;

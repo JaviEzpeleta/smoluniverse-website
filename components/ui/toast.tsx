@@ -32,7 +32,7 @@ const toastVariants = cva(
         default:
           "border bg-black border-primary text-primary bg-gradient-to-br from-primary/10 backdrop-blur-xl to-primary/20",
         success:
-          "border backdrop-blur-xl bg-black border-smolGreen text-smolGreen bg-gradient-to-tl from-smolGreen/35 to-black",
+          "border backdrop-blur-xl bg-black border-smolGreen text-smolGreen bg-gradient-to-br from-smolGreen/35 to-black",
         destructive: "destructive group border-red-500 bg-red-500 text-zinc-50",
       },
     },
