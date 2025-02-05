@@ -106,7 +106,7 @@ const brokenJson = `[{"emoji":"📱","name":"SwiftUI Sorcery","level":94,"descri
 try {
   // First, try parsing the broken JSON (this will throw an error)
   JSON.parse(brokenJson);
-} catch (e) {
+} catch (e: any) {
   console.error("Fucking error while parsing JSON:", e.message);
   // Fix the JSON string
   const fixedJson = fixJsonString(brokenJson);
