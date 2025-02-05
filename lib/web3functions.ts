@@ -12,7 +12,12 @@ import { revalidateTag, unstable_cache } from "next/cache";
 import smolABI from "./abi/smolABI.json";
 import nftABI from "./abi/nftABI.json";
 
-import { Wallet as OurWallet } from "./types";
+type OurWallet = {
+  handle: string;
+  address: string;
+  private_key: string;
+  permit_signature: string;
+};
 
 export const createAndSaveNewWallet = async (
   handle: string
