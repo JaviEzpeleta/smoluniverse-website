@@ -8,14 +8,23 @@ import Link from "next/link";
 const ProfileHeaderBlock = ({
   user,
   lifeContext,
+  linkToProfile = false,
 }: {
   user: RawUser;
   lifeContext: any;
+  linkToProfile?: boolean;
 }) => {
   return (
     <div className="flex gap-4 items-center">
       <BlurryEntrance>
-        <Link href={`https://twitter.com/${user.handle}`} target="_blank">
+        <Link
+          href={
+            linkToProfile
+              ? `/u/${user.handle}`
+              : `https://twitter.com/${user.handle}`
+          }
+          target={linkToProfile ? "_self" : "_blank"}
+        >
           <div
             className="rounded-full w-24 h-24 bg-zinc-900 scale-x-[-1] hover:rotate-[3600deg] hover:hue-rotate-180 hover:scale-[103%]"
             style={{
