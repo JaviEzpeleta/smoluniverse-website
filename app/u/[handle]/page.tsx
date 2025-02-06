@@ -70,7 +70,7 @@ const UserProfilePage = async ({
       </div> */}
 
       <div className="flex flex-col md:flex-row gap-4 w-full my-4">
-        <ProfilePageSkillsBlock skills={skills} />
+        <ProfilePageSkillsBlock skills={skills} handle={handle} />
         <ProfilePageLifeGoalsBlock lifeGoals={user.life_goals} />
       </div>
       <ProfilePageTweetsBlock handle={handle} />

@@ -576,3 +576,11 @@ export const findRandomUserNotYou = async (handle: string) => {
   );
   return res.rows[0].handle;
 };
+
+export const getSkillsHistoryByHandle = async (handle: string) => {
+  const res = await executeQuery(
+    `SELECT * FROM sim_updates_skills WHERE handle = $1`,
+    [handle]
+  );
+  return res.rows;
+};
