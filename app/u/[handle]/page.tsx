@@ -100,21 +100,6 @@ function fixJsonString(jsonStr: string): string {
   return jsonStr;
 }
 
-// Example usage:
-const brokenJson = `[{"emoji":"📱","name":"SwiftUI Sorcery","level":94,"description":"Weaving digital spells with Apple's UI framework. Can conjure interfaces from thin air."},{"emoji":"🎬","name":"Video Editing for App Marketing","level":1,"description":"Embarking on a journey to master video editing, specifically to create engaging marketing content for apps. Starting from the basics, aiming to produce videos that resonate with modern social media trends and boost app visibility."]`;
-
-try {
-  // First, try parsing the broken JSON (this will throw an error)
-  JSON.parse(brokenJson);
-} catch (e: any) {
-  console.error("Fucking error while parsing JSON:", e.message);
-  // Fix the JSON string
-  const fixedJson = fixJsonString(brokenJson);
-  // Now parse the fixed JSON
-  const data = JSON.parse(fixedJson);
-  console.log("Fixed JSON parsed successfully:", data);
-}
-
 function validateJsonString(jsonStr: string): boolean {
   try {
     JSON.parse(jsonStr);

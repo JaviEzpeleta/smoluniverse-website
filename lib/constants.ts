@@ -1,12 +1,14 @@
-// * ERC20 token contract address:
-export const ERC20_TOKEN_CONTRACT_ADDRESS =
-  "0xEd132A151816C1AEEAe5d58a5A7078aFf5C52312";
+// * deployer wallet address:
 export const DEPLOYER_WALLET_ADDRESS =
   "0x6154CCc7ef29D01A30AA8f51afAB635Ae32d581b";
 
+// * ERC20 token contract address:
+export const ERC20_TOKEN_CONTRACT_ADDRESS =
+  "0xd88E46AfC2C43A584DFb0836B098778dc0dF2e7F";
+
 // * NFT contract address:
 export const NFT_CONTRACT_ADDRESS =
-  "0x52314AcD39f3E296FF49c03f727fcEC943C4332E";
+  "0xf8a34aC797A4982631D1d54E6B70ae4feeC14230";
 
 // * profile generation:
 export const LIFE_GOALS_DEFAULT_COUNT = 6;

@@ -317,7 +317,7 @@ ${getListOfIRLTweetsAsString({
 
   await saveNewSmolTweet(newSmolTweet);
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   return theTweet;
 };
@@ -414,7 +414,7 @@ ${getListOfIRLTweetsAsString({
 
   await saveNewSmolTweet(newSmolTweet);
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   return theTweet;
 };
@@ -513,7 +513,7 @@ ${getListOfIRLTweetsAsString({
 
   await saveNewSmolTweet(newSmolTweet);
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   return theTweet;
 };
@@ -693,7 +693,7 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   const newActionId = await saveNewActionEvent(newActionEvent);
   if (!newActionId) {
@@ -722,7 +722,7 @@ ${getListOfIRLTweetsAsString({
 
   await saveNewSmolTweet(newSmolTweet);
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   return theTweet;
 };
@@ -846,7 +846,7 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   const newActionId = await saveNewActionEvent(newActionEvent);
   if (!newActionId) {
@@ -875,7 +875,7 @@ ${getListOfIRLTweetsAsString({
 
   await saveNewSmolTweet(newSmolTweet);
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   return theTweet;
 };
@@ -915,6 +915,7 @@ Reply in JSON format:
 {
   "item_name": "", // the name of the item/service the user sold
   "item_price": <number>, // the price of the item/service the user sold in $USD
+  "item_image_prompt": "", // the prompt used to generate the image of the item/service the user sold
   "content": "", // the tweet content about the item/service the user sold, can be in markdown format
   "reasoning": "" // the reasoning behind the game character's feelings and thoughts that caused that feeling
 }
@@ -962,6 +963,27 @@ ${JSON.stringify(buyerUser)}
   const itemPrice = JSON.parse(cleanedResponse).item_price;
   console.log("🔴 itemPrice", itemPrice);
 
+  const itemImagePrompt = JSON.parse(cleanedResponse).item_image_prompt;
+  console.log("🔴 itemImagePrompt", itemImagePrompt);
+
+  const itemImageURL = await generateRecraftImage({
+    prompt: itemImagePrompt,
+    handle: user.handle,
+  });
+
+  console.log("🔴 itemImageURL", itemImageURL);
+
+  if (!itemImageURL) {
+    await postErrorToDiscord(`🔴 itemImageURL is null for user ${user.handle}`);
+    return;
+  }
+
+  const txHash = await mintNftForClone({
+    userHandle: buyerUser.handle,
+    artworkUrl: itemImageURL,
+    nftArtTitle: `${itemName} -- (${itemPrice} $SMOL)`,
+  });
+
   // move the money now to the user!!!
 
   const userWallet = await getWalletByHandle(user.handle);
@@ -994,6 +1016,8 @@ ${JSON.stringify(buyerUser)}
       tweet: theTweet,
       item_name: itemName,
       item_price: itemPrice,
+      item_image_url: itemImageURL,
+      tx_hash: txHash,
     }),
     story_context: reasoning,
     // ! ------------- (THIS WILL BE A NOTIFICATION OR A MENTION MESSAGE ON THE OTHER'S TIMELINE!)
@@ -1002,7 +1026,7 @@ ${JSON.stringify(buyerUser)}
     created_at: new Date(),
   } as ActionEvent;
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   const newActionId = await saveNewActionEvent(newActionEvent);
   if (!newActionId) {
@@ -1022,6 +1046,7 @@ ${JSON.stringify(buyerUser)}
   const newSmolTweet = {
     handle: user.handle,
     content: theTweet,
+    image_url: itemImageURL,
     link: null,
     created_at: new Date(),
     action_type: "someone_buys_something_from_you",
@@ -1030,7 +1055,7 @@ ${JSON.stringify(buyerUser)}
 
   await saveNewSmolTweet(newSmolTweet);
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   return theTweet;
 };
@@ -1155,7 +1180,7 @@ ${JSON.stringify(sellerUser)}
     created_at: new Date(),
   } as ActionEvent;
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   const newActionId = await saveNewActionEvent(newActionEvent);
   if (!newActionId) {
@@ -1183,7 +1208,7 @@ ${JSON.stringify(sellerUser)}
 
   await saveNewSmolTweet(newSmolTweet);
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   return theTweet;
 };
@@ -1453,7 +1478,7 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   const newActionId = await saveNewActionEvent(newActionEvent);
 
@@ -1684,7 +1709,7 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   // await processActionImpact({
   //   action: newActionEvent,
@@ -1791,7 +1816,7 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   const newActionId = await saveNewActionEvent(newActionEvent);
 
@@ -1958,7 +1983,7 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   const newActionId = await saveNewActionEvent(newActionEvent);
 
@@ -2063,7 +2088,7 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   const newActionId = await saveNewActionEvent(newActionEvent);
 
@@ -2205,7 +2230,7 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   const newActionId = await saveNewActionEvent(newActionEvent);
 
@@ -2326,7 +2351,7 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   const newActionId = await saveNewActionEvent(newActionEvent);
 
@@ -2447,7 +2472,7 @@ ${getListOfIRLTweetsAsString({
     created_at: new Date(),
   } as ActionEvent;
 
-  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   const newActionId = await saveNewActionEvent(newActionEvent);
 
