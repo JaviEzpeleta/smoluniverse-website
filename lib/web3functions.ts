@@ -12,7 +12,6 @@ import { revalidateTag, unstable_cache } from "next/cache";
 import smolABI from "./abi/smolABI.json";
 import nftABI from "./abi/nftABI.json";
 import { SmolWalletRow } from "./types";
-
 import { avsTransferFunds } from "./avsModule";
 
 export const createAndSaveNewWallet = async (
@@ -254,13 +253,15 @@ export const sendMoneyFromWalletAToWalletB = async ({
     signer
   );
 
+  const nonce = await tokenContract.nonces(walletA.address);
   // Llama a la función AVS que se encarga de verificar y ejecutar la transferencia.
   const avsSignature = await avsTransferFunds(
-    tokenContract,
+    ERC20_TOKEN_CONTRACT_ADDRESS,
     signer,
     walletA.address,
     walletB.address,
     amount,
+    nonce,
     walletA.permit_signature // la firma del permiso generada en el proceso de creación de la wallet
   );
 

@@ -8,6 +8,10 @@ export const DEPLOYER_WALLET_ADDRESS =
 export const NFT_CONTRACT_ADDRESS =
   "0x52314AcD39f3E296FF49c03f727fcEC943C4332E";
 
+// * AVSTransfer contract address:
+export const AVSTRANSFER_CONTRACT_ADDRESS =
+  "0x807D83aE2300fA1CC575382795305F1B007f5FF1";
+
 // * profile generation:
 export const LIFE_GOALS_DEFAULT_COUNT = 6;
 
