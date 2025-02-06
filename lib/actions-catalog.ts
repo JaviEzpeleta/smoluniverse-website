@@ -101,6 +101,12 @@ export const ACTIONS_OBJECT = [
     emoji: "💰",
     color: "emerald",
   },
+  {
+    code: "you_buy_something_from_someone_else",
+    name: "You Buy Something from Someone Else",
+    emoji: "💰",
+    color: "emerald",
+  },
   // {
   //   code: "create_a_new_pfp",
   //   name: "Create a New PFP",

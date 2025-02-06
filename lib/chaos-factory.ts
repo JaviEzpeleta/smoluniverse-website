@@ -992,7 +992,8 @@ ${JSON.stringify(buyerUser)}
       item_price: itemPrice,
     }),
     story_context: reasoning,
-    to_handle: buyerUser.handle,
+    // ! ------------- (THIS WILL BE A NOTIFICATION OR A MENTION MESSAGE ON THE OTHER'S TIMELINE!)
+    to_handle: buyerUser.handle, // ! WOHOOO TENEMOS ESTO POR PRIMERA VEZ!!! YAYYYYY
     extra_data: null, // ! igual quito esto?
     created_at: new Date(),
   } as ActionEvent;
