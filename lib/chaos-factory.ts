@@ -14,7 +14,7 @@ import {
   saveNewLifeContextChange,
   updateUserLifeContext,
   getWalletByHandle,
-  findRandomUserToReceiveMoney,
+  findRandomUserNotYou,
   findUserByHandle,
 } from "./postgres";
 import { getListOfIRLTweetsAsString } from "./prompts";
@@ -105,6 +105,10 @@ export const executeIndividualAction = async ({
       await executeSendMoneyToAFriend({ user, tweets });
       break;
 
+    case "someone_buys_something_from_you":
+      await executeSomeoneBuysSomethingFromYou({ user, tweets });
+      break;
+
     case "write_a_haiku":
       await executeWriteAHaiku({ user, tweets, temperature: 0.25 });
       break;
@@ -166,9 +170,7 @@ const executeSendMoneyToAFriend = async ({
   user: RawUser;
   tweets: SavedTweet[];
 }) => {
-  const randomUserToReceiveMoney = await findRandomUserToReceiveMoney(
-    user.handle
-  );
+  const randomUserToReceiveMoney = await findRandomUserNotYou(user.handle);
 
   const userToReceive = await findUserByHandle(randomUserToReceiveMoney);
   if (!userToReceive) {
@@ -203,14 +205,21 @@ const executeSendMoneyToAFriend = async ({
       ")"
   );
 
-  await sendMoneyFromJaviToYu();
-  // const amount = ethers.parseUnits("100", 18);
+  // await sendMoneyFromJaviToYu();
 
-  // await sendMoneyFromWalletAToWalletB({
-  //   walletA: thisUserWallet,
-  //   walletB: userToReveiveWallet,
-  //   amount,
-  // });
+  // const wallet = await getWalletByHandle("javitoshi");
+  // const wallet2 = await getWalletByHandle("mad4yu");
+
+  // console.log({ wallet });
+  // console.log({ wallet2 });
+
+  const amount = ethers.parseUnits("100", 18);
+
+  await sendMoneyFromWalletAToWalletB({
+    walletA: thisUserWallet,
+    walletB: userToReveiveWallet,
+    amount,
+  });
 
   return false;
 };
@@ -857,6 +866,160 @@ ${getListOfIRLTweetsAsString({
     image_url: trophyImage,
     created_at: new Date(),
     action_type: "win_an_award",
+    action_id: newActionId,
+  };
+
+  await saveNewSmolTweet(newSmolTweet);
+
+  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  return theTweet;
+};
+
+const executeSomeoneBuysSomethingFromYou = async ({
+  user,
+  tweets,
+}: {
+  user: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  const buyerUserHandle = await findRandomUserNotYou(user.handle);
+  if (!buyerUserHandle) {
+    await postErrorToDiscord(
+      `🔴 buyerUserHandle is null for user ${user.handle}`
+    );
+    return;
+  }
+  const buyerUser = await findUserByHandle(buyerUserHandle);
+  if (!buyerUser) {
+    await postErrorToDiscord(`🔴 buyerUser is null for user ${user.handle}`);
+    return;
+  }
+
+  const theMessages = [
+    {
+      role: "system",
+      content: `You are an amazing storyteller for an AI clone emulation universe, where the "users" are ai clones based on twitter profiles, and have money in web3 and do things onchain.
+
+Based on this character profile and recent tweets, now in this moment of the story, another player buys something from the character.
+
+So please come up with some cool item or service the character will sell, and the reasoning behind why they will sell it.
+
+The character will compose a tweet about the item/service they just sold to the other user, to share the news with the rest of the characters in the story.
+
+Reply in JSON format: 
+{
+  "item_name": "", // the name of the item/service the user sold
+  "item_price": <number>, // the price of the item/service the user sold in $USD
+  "content": "", // the tweet content about the item/service the user sold, can be in markdown format
+  "reasoning": "" // the reasoning behind the game character's feelings and thoughts that caused that feeling
+}
+  
+<Important>Do not use hashtags in the tweet.</Important>`,
+    },
+    {
+      role: "user",
+      content: `Full character profile (the user who sells the item/service):
+${JSON.stringify(user)}
+
+## Recent publications from the user who sells the item/service:
+${getListOfIRLTweetsAsString({
+  handle: user.handle,
+  userIRLTweets: tweets,
+})}
+
+
+## Buyer user profile:
+${JSON.stringify(buyerUser)}
+
+
+<Important>Do not use hashtags or emojis in the tweet. Try to be creative, original and a bit random. Also try to use the same tone and style of the user's previous tweets.</Important>`,
+    },
+  ] as CoreMessage[];
+
+  const responseFromGemini = await askGeminiThinking({
+    messages: theMessages,
+    temperature: 0.8,
+  });
+
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating learn something new");
+
+  const cleanedResponse = responseFromGemini
+    .replace(/```json\n/g, "")
+    .replace(/\n```/g, "");
+
+  const theTweet = JSON.parse(cleanedResponse).content;
+  console.log("🔴 theTweet", theTweet);
+  const reasoning = JSON.parse(cleanedResponse).reasoning;
+  console.log("🔴 reasoning", reasoning);
+  const itemName = JSON.parse(cleanedResponse).item_name;
+  console.log("🔴 itemName", itemName);
+  const itemPrice = JSON.parse(cleanedResponse).item_price;
+  console.log("🔴 itemPrice", itemPrice);
+
+  // move the money now to the user!!!
+
+  const userWallet = await getWalletByHandle(user.handle);
+  if (!userWallet) {
+    await postErrorToDiscord(`🔴 userWallet is null for user ${user.handle}`);
+    return;
+  }
+  const buyerUserWallet = await getWalletByHandle(buyerUser.handle);
+  if (!buyerUserWallet) {
+    await postErrorToDiscord(
+      `🔴 buyerUserWallet is null for user ${buyerUser.handle}`
+    );
+    return;
+  }
+
+  const amount = ethers.parseUnits(itemPrice.toString(), 18);
+
+  await sendMoneyFromWalletAToWalletB({
+    walletA: buyerUserWallet,
+    walletB: userWallet,
+    amount,
+  });
+
+  // // create the action_event
+  const newActionEvent = {
+    top_level_type: "individual",
+    action_type: "someone_buys_something_from_you",
+    from_handle: user.handle,
+    main_output: JSON.stringify({
+      tweet: theTweet,
+      item_name: itemName,
+      item_price: itemPrice,
+    }),
+    story_context: reasoning,
+    to_handle: buyerUser.handle,
+    extra_data: null, // ! igual quito esto?
+    created_at: new Date(),
+  } as ActionEvent;
+
+  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  const newActionId = await saveNewActionEvent(newActionEvent);
+  if (!newActionId) {
+    await postErrorToDiscord(
+      `🔴 Error in executeLearnSomethingNew: newActionId is null for user ${user.handle}`
+    );
+    return;
+  }
+
+  await processActionImpact({
+    action: newActionEvent,
+    actionId: newActionId,
+    profile: user,
+    tweets: tweets,
+  });
+
+  const newSmolTweet = {
+    handle: user.handle,
+    content: theTweet,
+    link: null,
+    created_at: new Date(),
+    action_type: "someone_buys_something_from_you",
     action_id: newActionId,
   };
 

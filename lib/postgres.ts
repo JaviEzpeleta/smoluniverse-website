@@ -569,7 +569,7 @@ export const getSmolTweetById = async (tweetId: string) => {
   return res.rows[0];
 };
 
-export const findRandomUserToReceiveMoney = async (handle: string) => {
+export const findRandomUserNotYou = async (handle: string) => {
   const res = await executeQuery(
     `SELECT handle FROM sim_users WHERE handle != $1 ORDER BY RANDOM() LIMIT 1`,
     [handle]
