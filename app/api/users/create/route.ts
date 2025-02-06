@@ -1,3 +1,5 @@
+const FORCE_EXIT = true;
+
 import { postErrorToDiscord } from "@/lib/discord";
 import {
   findUserByHandle,
@@ -10,16 +12,14 @@ import { getTwitterUserInfo } from "@/lib/socialData";
 import { NextResponse } from "next/server";
 import { getTweetsFromUser } from "@/lib/socialData";
 import { RawUser } from "@/lib/types";
-import {
-  createAndSaveNewWallet,
-  sendInitialFundsToWallet,
-} from "@/lib/web3functions";
+import { sendInitialFundsToWallet } from "@/lib/web3functions";
 import {
   generateUserInitialLifeAdditionalContext,
   generateUserInitialSkillLevels,
   getLifeGoals,
 } from "@/lib/prompts";
 import { revalidateTag } from "next/cache";
+import { createAndSaveNewWallet } from "@/lib/wdp";
 
 export async function POST(request: Request) {
   try {
@@ -76,6 +76,14 @@ export async function POST(request: Request) {
         // console.log(" A CREAR WALLET PARA EL USER: ", handle);
 
         const walletCreated = await createAndSaveNewWallet(handle);
+
+        console.log(" --------- walletCreated", walletCreated);
+
+        if (FORCE_EXIT) {
+          return NextResponse.json({
+            success: true,
+          });
+        }
 
         if (!walletCreated) {
           //   console.log("🔴 Error in createAndSaveNewWallet", handle);

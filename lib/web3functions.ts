@@ -13,46 +13,6 @@ import smolABI from "./abi/smolABI.json";
 import nftABI from "./abi/nftABI.json";
 import { SmolWalletRow } from "./types";
 
-export const createAndSaveNewWallet = async (
-  handle: string
-): Promise<boolean> => {
-  try {
-    handle = cleanHandle(handle);
-
-    const newWallet = ethers.Wallet.createRandom();
-
-    // ! let's get the signature now!
-    const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
-    const plainWallet = new Wallet(newWallet.privateKey, provider);
-    const tokenContract = new ethers.Contract(
-      ERC20_TOKEN_CONTRACT_ADDRESS!,
-      smolABI,
-      plainWallet
-    );
-
-    const permitSignature = await signPermit({
-      wallet: plainWallet,
-      token: tokenContract,
-      spender: DEPLOYER_WALLET_ADDRESS,
-    });
-
-    await createWallet({
-      handle,
-      address: newWallet.address,
-      privateKey: newWallet.privateKey,
-      permitSignature,
-    });
-
-    await postToDiscord(`💰 wallet created for ${handle}`);
-
-    return true;
-  } catch (error) {
-    await postErrorToDiscord("🔴 Error in createAndSaveNewWallet");
-    console.error("🔴 Error in createAndSaveNewWallet:", error);
-    return false;
-  }
-};
-
 export const sendInitialFundsToWallet = async (address: string) => {
   const deployerWalletPrivateKey = process.env.DEPLOYER_WALLET_PRIVATE_KEY;
   const erc20TokenContractAddress = ERC20_TOKEN_CONTRACT_ADDRESS;
