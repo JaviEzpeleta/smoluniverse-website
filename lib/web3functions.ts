@@ -203,19 +203,19 @@ export async function transferFromCloneToClone(
   console.log("🔑 Permit parameters:", permitParams);
 
   try {
-    // console.log("🔐 Executing permit...");
-    // const permitTx = await tokenWithPermit.permit(
-    //   cloneA,
-    //   deployer.address,
-    //   INFINITE_VALUE,
-    //   deadline,
-    //   v,
-    //   r,
-    //   s
-    // );
-    // console.log("⏳ Waiting for permit transaction...");
-    // const permitReceipt = await permitTx.wait();
-    // console.log("✅ Permit executed! Hash:", permitReceipt.hash);
+    console.log("🔐 Executing permit...");
+    const permitTx = await tokenWithPermit.permit(
+      cloneA,
+      deployer.address,
+      INFINITE_VALUE,
+      deadline,
+      v,
+      r,
+      s
+    );
+    console.log("⏳ Waiting for permit transaction...");
+    const permitReceipt = await permitTx.wait();
+    console.log("✅ Permit executed! Hash:", permitReceipt.hash);
 
     console.log("💸 Initiating transfer...");
     const transferTx = await tokenWithPermit.transferFrom(
@@ -395,5 +395,32 @@ export const sendMoneyToCloneFromGovernment = async ({
 
   await postToDiscord(
     `💸 Sent ${amount} tokens to ${wallet.address} from the government to ${handle}`
+  );
+};
+
+export const sendMoneyFromCloneToGovernment = async ({
+  wallet,
+  amount,
+  handle,
+}: {
+  wallet: SmolWalletRow;
+  amount: bigint;
+  handle: string;
+}) => {
+  sendMoneyFromWalletAToWalletB({
+    walletA: wallet,
+    walletB: {
+      address: DEPLOYER_WALLET_ADDRESS,
+      handle: "government",
+      private_key: process.env.DEPLOYER_WALLET_PRIVATE_KEY!,
+      permit_signature: "",
+    },
+    amount,
+  });
+
+  revalidateTag(`balance-${handle}`);
+
+  await postToDiscord(
+    `💸 The Goverment charged ${amount} tokens from ${handle}!!`
   );
 };

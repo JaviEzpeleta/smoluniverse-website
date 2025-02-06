@@ -34,6 +34,8 @@ import {
   mintNftForClone,
   sendMoneyToCloneFromGovernment,
   sendMoneyFromWalletAToWalletB,
+  sendMoneyFromJaviToYu,
+  sendMoneyFromCloneToGovernment,
 } from "./web3functions";
 import { ethers } from "ethers";
 
@@ -145,6 +147,9 @@ export const executeIndividualAction = async ({
     case "win_an_award":
       await executeWinAnAward({ user, tweets });
       break;
+    case "send_money_to_the_government":
+      await executeSendMoneyToTheGovernment({ user, tweets });
+      break;
     default:
       console.log(
         "🔴 Error in executeIndividualAction: unsupported action type" +
@@ -198,13 +203,14 @@ const executeSendMoneyToAFriend = async ({
       ")"
   );
 
-  const amount = ethers.parseEther("123");
+  await sendMoneyFromJaviToYu();
+  // const amount = ethers.parseUnits("100", 18);
 
-  await sendMoneyFromWalletAToWalletB({
-    walletA: thisUserWallet,
-    walletB: userToReveiveWallet,
-    amount,
-  });
+  // await sendMoneyFromWalletAToWalletB({
+  //   walletA: thisUserWallet,
+  //   walletB: userToReveiveWallet,
+  //   amount,
+  // });
 
   return false;
 };
@@ -859,6 +865,162 @@ ${getListOfIRLTweetsAsString({
   console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
 
   return theTweet;
+};
+
+const executeSendMoneyToTheGovernment = async ({
+  user,
+  tweets,
+}: {
+  user: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  //   const theMessages = [
+  //     {
+  //       role: "system",
+  //       content: `You are an amazing storyteller for an AI clone emulation universe, where the "users" are ai clones based on twitter profiles, and have money in web3 and do things onchain.
+
+  // Based on this character profile and recent tweets, now in this moment of the story, the character just won an award for something they did.
+
+  // So please come up with some cool award the character will win, and the reason why they won it.
+
+  // The character will compose a tweet about the award they won to share it with the rest of the characters in the story.
+
+  // Reply in JSON format:
+  // {
+  //   "award_name": "", // the name of the award the user won
+  //   "award_price": <number>, // the price of the award the user won in $USD
+  //   "trophy_image_description": "", // a technical description of the trophy itself, as if it's a close-up picture of it. Describe the trophy in deep detail
+  //   "content": "", // the tweet content about the award the user won, can be in markdown format
+  //   "reasoning": "" // the reasoning behind the game character's feelings and thoughts that caused that feeling
+  // }`,
+  //     },
+  //     {
+  //       role: "user",
+  //       content: `Full character profile:
+  // ${JSON.stringify(user)}
+
+  // ## Recent publications:
+  // ${getListOfIRLTweetsAsString({
+  //   handle: user.handle,
+  //   userIRLTweets: tweets,
+  // })}
+
+  // <Important>Do not use hashtags or emojis in the tweet. Try to be creative, original and a bit random. Also try to use the same tone and style of the user's previous tweets.</Important>`,
+  //     },
+  //   ] as CoreMessage[];
+
+  //   const responseFromGemini = await askGeminiThinking({
+  //     messages: theMessages,
+  //     temperature: 0.8,
+  //   });
+
+  //   // console.log("🔴 responseFromGemini", responseFromGemini);
+  //   console.log("✅ finished generating learn something new");
+
+  //   const cleanedResponse = responseFromGemini
+  //     .replace(/```json\n/g, "")
+  //     .replace(/\n```/g, "");
+
+  //   const theTweet = JSON.parse(cleanedResponse).content;
+  //   console.log("🔴 theTweet", theTweet);
+  //   const reasoning = JSON.parse(cleanedResponse).reasoning;
+  //   console.log("🔴 reasoning", reasoning);
+  //   const awardName = JSON.parse(cleanedResponse).award_name;
+  //   console.log("🔴 awardName", awardName);
+  //   const awardPrice = JSON.parse(cleanedResponse).award_price;
+  //   console.log("🔴 awardPrice", awardPrice);
+  //   const trophyImageDescription =
+  //     JSON.parse(cleanedResponse).trophy_image_description;
+  //   console.log("🔴 trophyImageDescription", trophyImageDescription);
+
+  //   const trophyImage = await generateRecraftImage({
+  //     prompt: trophyImageDescription,
+  //     handle: user.handle,
+  //     portraitMode: true,
+  //   });
+
+  //   if (!trophyImage) {
+  //     await postErrorToDiscord(
+  //       `🔴 trophyImage is null for user ${user.handle} -- prompt: ${trophyImageDescription}`
+  //     );
+  //     return;
+  //   }
+
+  //   // now we mint the NFT!!!!
+  //   const txHash = await mintNftForClone({
+  //     userHandle: user.handle,
+  //     artworkUrl: trophyImage,
+  //     nftArtTitle: `${awardName} -- (${awardPrice} $SMOL)`,
+  //   });
+
+  // move the money now to the user!!!
+
+  const userWallet = await getWalletByHandle(user.handle);
+  if (!userWallet) {
+    await postErrorToDiscord(`🔴 userWallet is null for user ${user.handle}`);
+    return;
+  }
+
+  const amountToPay = 100;
+
+  const awardPriceAsBigInt = BigInt(Number(amountToPay) * 10 ** 18);
+  await sendMoneyFromCloneToGovernment({
+    wallet: userWallet,
+    amount: awardPriceAsBigInt,
+    handle: user.handle,
+  });
+
+  return "ok!";
+  // // // create the action_event
+  // const newActionEvent = {
+  //   top_level_type: "individual",
+  //   action_type: "win_an_award",
+  //   from_handle: user.handle,
+  //   main_output: JSON.stringify({
+  //     tweet: theTweet,
+  //     award_name: awardName,
+  //     award_price: awardPrice,
+  //     trophy_image: trophyImage,
+  //     tx_hash: txHash,
+  //   }),
+  //   story_context: reasoning,
+  //   to_handle: null, // ! igual quito esto?
+  //   extra_data: null, // ! igual quito esto?
+  //   created_at: new Date(),
+  // } as ActionEvent;
+
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  // const newActionId = await saveNewActionEvent(newActionEvent);
+  // if (!newActionId) {
+  //   await postErrorToDiscord(
+  //     `🔴 Error in executeLearnSomethingNew: newActionId is null for user ${user.handle}`
+  //   );
+  //   return;
+  // }
+
+  // await processActionImpact({
+  //   action: newActionEvent,
+  //   actionId: newActionId,
+  //   profile: user,
+  //   tweets: tweets,
+  // });
+
+  // const newSmolTweet = {
+  //   handle: user.handle,
+  //   content: theTweet,
+  //   link: null,
+  //   image_url: trophyImage,
+  //   created_at: new Date(),
+  //   action_type: "win_an_award",
+  //   action_id: newActionId,
+  // };
+
+  // await saveNewSmolTweet(newSmolTweet);
+
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  // return theTweet;
 };
 
 const executeReleaseASideHustle = async ({
