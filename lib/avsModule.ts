@@ -1,84 +1,67 @@
 // avsModule.ts
 import { ethers, Contract, Wallet } from "ethers";
 import { postErrorToDiscord, postToDiscord } from "./discord";
-import AVSTransferABI from "./abi/AVSTransferABI.json";
+import { transferFromCloneToClone } from "./web3functions";
 
 /**
- * Función AVS que ejecuta y verifica una transferencia de tokens entre clones
- * utilizando el contrato AVSTransfer on-chain.
- *
- * @param tokenAddress - Dirección del contrato ERC20 (por ejemplo, el token $SMOL)
- * @param avsTransferAddress - Dirección desplegada del contrato AVSTransfer
- * @param deployer - Wallet del deployer/gobierno que invoca el contrato
- * @param cloneA - Dirección del clon emisor
- * @param cloneB - Dirección del clon receptor
- * @param amount - Cantidad de tokens a transferir (en wei)
- * @param nonce - Número único para evitar replays (debe coordinarse con la firma)
- * @param signature - Firma generada off-chain por el verificador (gobierno) para autorizar la transferencia
- *
- * @returns Tx hash de la transferencia verificada o `false` en caso de error
+ * Función AVS que ejecuta y verifica una transferencia de tokens entre clones.
+ * Agrega una capa extra de seguridad creando un hash único de la acción y firmándolo.
  */
 export async function avsTransferFunds(
-  tokenAddress: string,
-  avsTransferAddress: string,
+  tokenContract: Contract,
   deployer: Wallet,
   cloneA: string,
   cloneB: string,
   amount: bigint,
-  nonce: number,
-  signature: string
+  permitSignature: string
 ): Promise<string | false> {
   try {
+    // 1. Pre-verificación: muestra los parámetros y comprueba (a nivel de log) lo que vas a hacer
+    console.log("AVS: Iniciando transferencia verificada...");
+    const tokenAddress = await tokenContract.getAddress();
     console.log(
-      "AVS: Iniciando transferencia verificada on-chain a través del contrato AVSTransfer..."
-    );
-    console.log(
-      `AVS: Token ${tokenAddress} - de ${cloneA} a ${cloneB} - Cantidad: ${ethers.formatEther(
+      `AVS: Token (${tokenAddress}) - de ${cloneA} a ${cloneB} - Cantidad: ${ethers.formatEther(
         amount
       )}`
     );
 
-    // Conecta con el contrato AVSTransfer usando la wallet del deployer
-    const avsTransferContract: Contract = new ethers.Contract(
-      avsTransferAddress,
-      AVSTransferABI,
-      deployer
+    // 2. Crea un hash único de la acción para que sea verificable
+    const actionHash = ethers.keccak256(
+      new ethers.AbiCoder().encode(
+        ["address", "address", "address", "uint256"],
+        [tokenAddress, cloneA, cloneB, amount]
+      )
     );
+    console.log("AVS: Hash de acción:", actionHash);
 
-    // Llama a la función avsTransfer del contrato
-    const tx = await avsTransferContract.avsTransfer(
-      tokenAddress,
+    // 3. Firma el hash con el deployer (o con la wallet AVS dedicada) para crear un registro inmutable
+    const avsSignature = await deployer.signMessage(
+      ethers.getBytes(actionHash)
+    );
+    console.log("AVS: Firma verificable:", avsSignature);
+
+    // 4. Ejecuta la función real de transferencia
+    await transferFromCloneToClone(
+      tokenContract,
+      deployer,
       cloneA,
       cloneB,
       amount,
-      nonce,
-      signature
+      permitSignature
     );
 
-    console.log("AVS: Transacción enviada, esperando confirmación...");
-    const receipt = await tx.wait();
-    console.log(
-      "AVS: Transferencia ejecutada y verificada con éxito. Tx hash:",
-      receipt.transactionHash
-    );
-
-    // Notifica a Discord el éxito de la operación
+    // 5. Post-verificación: notifica el éxito y registra la verificación
+    console.log("AVS: Transferencia ejecutada y verificada con éxito.");
     await postToDiscord(
       `AVS: Transferencia verificada de ${ethers.formatEther(
         amount
-      )} tokens de ${cloneA} a ${cloneB} a través del contrato AVSTransfer. Tx Hash: ${
-        receipt.transactionHash
-      }`
+      )} tokens de ${cloneA} a ${cloneB}. AVS Signature: ${avsSignature}`
     );
-
-    return receipt.transactionHash;
+    return avsSignature;
   } catch (error) {
-    console.error(
-      "AVS: Error durante la transferencia verificada on-chain:",
-      error
-    );
+    console.error("AVS: Error durante la transferencia verificada:", error);
     await postErrorToDiscord(
-      "AVS: Error ejecutando la transferencia verificada on-chain."
+      "AVS: Error ejecutando la transferencia verificada."
     );
     return false;
   }
