@@ -14,6 +14,8 @@ import {
   saveNewLifeContextChange,
   updateUserLifeContext,
   getWalletByHandle,
+  findRandomUserToReceiveMoney,
+  findUserByHandle,
 } from "./postgres";
 import { getListOfIRLTweetsAsString } from "./prompts";
 import { generateRecraftImage, generateVoiceNoteAudioFile } from "./replicate";
@@ -33,6 +35,7 @@ import {
   sendMoneyToCloneFromGovernment,
   sendMoneyFromWalletAToWalletB,
 } from "./web3functions";
+import { ethers } from "ethers";
 
 export const createNewRandomEvent = async () => {
   // ! RANDOMNESS DISABLED FOR NOW!
@@ -95,6 +98,11 @@ export const executeIndividualAction = async ({
     case "tweet_an_idea":
       await executeTweetAnIdea({ user, tweets });
       break;
+
+    case "send_money_to_a_friend":
+      await executeSendMoneyToAFriend({ user, tweets });
+      break;
+
     case "write_a_haiku":
       await executeWriteAHaiku({ user, tweets, temperature: 0.25 });
       break;
@@ -144,6 +152,61 @@ export const executeIndividualAction = async ({
       );
     //   await postErrorToDiscord("🔴 Error in executeIndividualAction: unsupported action type" + action_type);
   }
+};
+
+const executeSendMoneyToAFriend = async ({
+  user,
+  tweets,
+}: {
+  user: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  const randomUserToReceiveMoney = await findRandomUserToReceiveMoney(
+    user.handle
+  );
+
+  const userToReceive = await findUserByHandle(randomUserToReceiveMoney);
+  if (!userToReceive) {
+    await postErrorToDiscord(
+      `🔴 Error in executeSendMoneyToAFriend: userToReceive is null for user ${user.handle}`
+    );
+    return;
+  }
+  const userToReveiveWallet = await getWalletByHandle(userToReceive.handle);
+  if (!userToReveiveWallet) {
+    await postErrorToDiscord(
+      `🔴 Error in executeSendMoneyToAFriend: userToReveiveWallet is null for user ${user.handle}`
+    );
+    return;
+  }
+
+  const thisUserWallet = await getWalletByHandle(user.handle);
+  if (!thisUserWallet) {
+    await postErrorToDiscord(
+      `🔴 Error in executeSendMoneyToAFriend: thisUserWallet is null for user ${user.handle}`
+    );
+    return;
+  }
+
+  console.log(
+    "ok voy a mandar dinero de " +
+      thisUserWallet.address +
+      " a " +
+      userToReceive.handle +
+      " (" +
+      userToReveiveWallet.address +
+      ")"
+  );
+
+  const amount = ethers.parseEther("123");
+
+  await sendMoneyFromWalletAToWalletB({
+    walletA: thisUserWallet,
+    walletB: userToReveiveWallet,
+    amount,
+  });
+
+  return false;
 };
 
 const executeTweetAnIdea = async ({

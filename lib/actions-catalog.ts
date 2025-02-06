@@ -83,6 +83,12 @@ export const ACTIONS_OBJECT = [
     emoji: "🏆",
     color: "amber",
   },
+  {
+    code: "send_money_to_a_friend",
+    name: "Send Money to a Friend",
+    emoji: "💰",
+    color: "emerald",
+  },
   // {
   //   code: "create_a_new_pfp",
   //   name: "Create a New PFP",

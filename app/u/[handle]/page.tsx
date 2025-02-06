@@ -36,9 +36,9 @@ const UserProfilePage = async ({
     skills = JSON.parse(user.skills);
   }
 
-  console.log("user.skills");
-  console.log("user.skills");
-  console.log(user.skills);
+  // console.log("user.skills");
+  // console.log("user.skills");
+  // console.log(user.skills);
 
   const lifeContext = JSON.parse(user.life_context);
   const wallet = await getWalletByHandle(handle);
