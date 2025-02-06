@@ -170,41 +170,34 @@ export async function transferFromCloneToClone(
   cloneA: string,
   cloneB: string,
   amount: bigint,
-  signature: string,
+  privateKeyA: string,
   deadline: bigint = ethers.MaxUint256
 ): Promise<void> {
   console.log("🚀 Starting transfer between clones...");
-  console.log("📍 From:", cloneA);
-  console.log("🎯 To:", cloneB);
-  console.log("💰 Amount:", ethers.formatEther(amount), "tokens");
 
-  const tokenAddress = await token.getAddress();
-  console.log("🪙 Token address:", tokenAddress);
+  // Create wallet for cloneA using its private key
+  const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+  const walletA = new Wallet(privateKeyA, provider);
 
-  // const permitABI = [
-  //   "function permit(address owner, address spender, uint256 value, uint256 deadline, uint8 v, bytes32 r, bytes32 s)",
-  //   "function transferFrom(address from, address to, uint256 amount) returns (bool)",
-  // ];
-
-  const tokenWithPermit = new ethers.Contract(tokenAddress, smolABI, deployer);
-
-  console.log("✍️ Signature received:", signature);
-  const { v, r, s } = ethers.Signature.from(signature);
-  console.log("📝 Decoded signature - v:", v, "r:", r, "s:", s);
-
-  const permitParams = {
-    owner: cloneA,
+  console.log("🔴 signPermit");
+  // Generate fresh permit signature
+  const signature = await signPermit({
+    wallet: walletA,
+    token,
     spender: deployer.address,
-    amount: amount.toString(),
-    deadline: deadline.toString(),
-    v,
-    r,
-    s,
-  };
-  console.log("🔑 Permit parameters:", permitParams);
+  });
+
+  console.log("🔴 signature", signature);
+  // Rest of the function remains the same
+  const tokenWithPermit = new ethers.Contract(
+    await token.getAddress(),
+    smolABI,
+    deployer
+  );
+  const { v, r, s } = ethers.Signature.from(signature);
 
   try {
-    console.log("🔐 Executing permit...");
+    console.log("🔴 permitTx CALLING NOW");
     const permitTx = await tokenWithPermit.permit(
       cloneA,
       deployer.address,
@@ -214,22 +207,24 @@ export async function transferFromCloneToClone(
       r,
       s
     );
-    console.log("⏳ Waiting for permit transaction...");
-    const permitReceipt = await permitTx.wait();
-    console.log("✅ Permit executed! Hash:", permitReceipt.hash);
+    // console.log("🔴 permitTx", permitTx);
+    console.log("🔴 permitTx WAITING");
+    await permitTx.wait();
 
-    console.log("💸 Initiating transfer...");
+    console.log("🔴 permitTx WAITING DONE");
+
+    console.log("🔴 transferTx CALLING NOW");
     const transferTx = await tokenWithPermit.transferFrom(
       cloneA,
       cloneB,
       amount
     );
-    console.log("⏳ Waiting for transfer transaction...");
-    const transferReceipt = await transferTx.wait();
-    console.log("🎉 Transfer completed! Hash:", transferReceipt.hash);
+
+    console.log("🔴 transferTx WAITING");
+    await transferTx.wait();
+    console.log("🔴 transferTx WAITING DONE");
   } catch (error) {
-    console.error("❌ Transaction failed!");
-    console.error("🔍 Error details:", JSON.stringify(error));
+    console.error("❌ Transaction failed!", error);
     throw error;
   }
 }
@@ -243,22 +238,16 @@ export const sendMoneyFromWalletAToWalletB = async ({
   walletB: SmolWalletRow;
   amount: bigint;
 }) => {
-  const deployerWalletPrivateKey = process.env.DEPLOYER_WALLET_PRIVATE_KEY!;
-
   const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
-  const signer = new ethers.Wallet(deployerWalletPrivateKey, provider);
-
+  const signer = new ethers.Wallet(
+    process.env.DEPLOYER_WALLET_PRIVATE_KEY!,
+    provider
+  );
   const tokenContract = new ethers.Contract(
     ERC20_TOKEN_CONTRACT_ADDRESS,
     smolABI,
     signer
   );
-
-  // const signature = await signPermit({
-  //   wallet: signer,
-  //   token: tokenContract,
-  //   spender: wallet2.address,
-  // });
 
   await transferFromCloneToClone(
     tokenContract,
@@ -266,13 +255,14 @@ export const sendMoneyFromWalletAToWalletB = async ({
     walletA.address,
     walletB.address,
     amount,
-    walletA.permit_signature
+    walletA.private_key
   );
   revalidateTag(`balance-${walletA.handle}`);
   revalidateTag(`balance-${walletB.handle}`);
 
+  const amountInEthers = ethers.formatEther(amount);
   await postToDiscord(
-    `💸 Sent ${amount} tokens from ${walletA.address} to ${walletB.address}`
+    `💸 Sent ${amountInEthers} $SMOL from ${walletA.address} to ${walletB.address}`
   );
 };
 
@@ -421,7 +411,9 @@ export const sendMoneyFromCloneToGovernment = async ({
 
   revalidateTag(`balance-${handle}`);
 
+  const amountInEthers = ethers.formatEther(amount);
+
   await postToDiscord(
-    `💸 The Goverment charged ${amount} tokens from ${handle}!!`
+    `💸 The Goverment charged ${amountInEthers} $SMOL from ${handle}!!`
   );
 };

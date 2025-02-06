@@ -1095,6 +1095,7 @@ Reply in JSON format:
 {
   "item_name": "", // the name of the item/service the user bought
   "item_price": <number>, // the price of the item/service the user bought in $USD
+  "item_image_prompt": "", // the prompt used to generate the image of the item/service the user bought
   "content": "", // the tweet content about the item/service the user bought, can be in markdown format
   "reasoning": "" // the reasoning behind the game character's feelings and thoughts that caused that feeling
 }
@@ -1141,6 +1142,26 @@ ${JSON.stringify(sellerUser)}
   console.log("🔴 itemName", itemName);
   const itemPrice = JSON.parse(cleanedResponse).item_price;
   console.log("🔴 itemPrice", itemPrice);
+  const itemImagePrompt = JSON.parse(cleanedResponse).item_image_prompt;
+  console.log("🔴 itemImagePrompt", itemImagePrompt);
+
+  const itemImageURL = await generateRecraftImage({
+    prompt: itemImagePrompt,
+    handle: user.handle,
+  });
+
+  console.log("🔴 itemImageURL", itemImageURL);
+
+  if (!itemImageURL) {
+    await postErrorToDiscord(`🔴 itemImageURL is null for user ${user.handle}`);
+    return;
+  }
+
+  const txHash = await mintNftForClone({
+    userHandle: user.handle,
+    artworkUrl: itemImageURL,
+    nftArtTitle: `${itemName} -- (${itemPrice} $SMOL)`,
+  });
 
   // move the money now to the user!!!
 
@@ -1157,11 +1178,15 @@ ${JSON.stringify(sellerUser)}
     return;
   }
 
+  await postToDiscord(
+    `Ahora el usuario ${user.handle} compra algo de ${sellerUser.handle} por ${itemPrice} $SMOL`
+  );
+
   const amount = ethers.parseUnits(itemPrice.toString(), 18);
 
   await sendMoneyFromWalletAToWalletB({
-    walletA: sellerUserWallet,
-    walletB: userWallet,
+    walletA: userWallet,
+    walletB: sellerUserWallet,
     amount,
   });
 
@@ -1174,6 +1199,8 @@ ${JSON.stringify(sellerUser)}
       tweet: theTweet,
       item_name: itemName,
       item_price: itemPrice,
+      item_image_url: itemImageURL,
+      tx_hash: txHash,
     }),
     story_context: reasoning,
     to_handle: sellerUser.handle,
@@ -1200,9 +1227,10 @@ ${JSON.stringify(sellerUser)}
   const newSmolTweet = {
     handle: user.handle,
     content: theTweet,
+    image_url: itemImageURL,
     link: null,
     created_at: new Date(),
-    action_type: "someone_buys_something_from_you",
+    action_type: "you_buy_something_from_someone_else",
     action_id: newActionId,
   };
 
