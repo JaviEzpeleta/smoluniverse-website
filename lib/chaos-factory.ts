@@ -109,6 +109,10 @@ export const executeIndividualAction = async ({
       await executeSomeoneBuysSomethingFromYou({ user, tweets });
       break;
 
+    case "you_buy_something_from_someone_else":
+      await executeYouBuySomethingFromSomeoneElse({ user, tweets });
+      break;
+
     case "write_a_haiku":
       await executeWriteAHaiku({ user, tweets, temperature: 0.25 });
       break;
@@ -995,6 +999,159 @@ ${JSON.stringify(buyerUser)}
     // ! ------------- (THIS WILL BE A NOTIFICATION OR A MENTION MESSAGE ON THE OTHER'S TIMELINE!)
     to_handle: buyerUser.handle, // ! WOHOOO TENEMOS ESTO POR PRIMERA VEZ!!! YAYYYYY
     extra_data: null, // ! igual quito esto?
+    created_at: new Date(),
+  } as ActionEvent;
+
+  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  const newActionId = await saveNewActionEvent(newActionEvent);
+  if (!newActionId) {
+    await postErrorToDiscord(
+      `🔴 Error in executeLearnSomethingNew: newActionId is null for user ${user.handle}`
+    );
+    return;
+  }
+
+  await processActionImpact({
+    action: newActionEvent,
+    actionId: newActionId,
+    profile: user,
+    tweets: tweets,
+  });
+
+  const newSmolTweet = {
+    handle: user.handle,
+    content: theTweet,
+    link: null,
+    created_at: new Date(),
+    action_type: "someone_buys_something_from_you",
+    action_id: newActionId,
+  };
+
+  await saveNewSmolTweet(newSmolTweet);
+
+  console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  return theTweet;
+};
+
+const executeYouBuySomethingFromSomeoneElse = async ({
+  user,
+  tweets,
+}: {
+  user: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  const sellerUserHandle = await findRandomUserNotYou(user.handle);
+  if (!sellerUserHandle) {
+    await postErrorToDiscord(
+      `🔴 sellerUserHandle is null for user ${user.handle}`
+    );
+    return;
+  }
+  const sellerUser = await findUserByHandle(sellerUserHandle);
+  if (!sellerUser) {
+    await postErrorToDiscord(`🔴 buyerUser is null for user ${user.handle}`);
+    return;
+  }
+
+  const theMessages = [
+    {
+      role: "system",
+      content: `You are an amazing storyteller for an AI clone emulation universe, where the "users" are ai clones based on twitter profiles, and have money in web3 and do things onchain.
+
+Based on this character profile and recent tweets, now in this moment of the story, the character buys something from another player.
+
+So please come up with some cool item or service the character will buy, and the reasoning behind why they will buy it.
+
+The character will compose a tweet about the item/service they just bought from the other user, to share the news with the rest of the characters in the story.
+
+Reply in JSON format: 
+{
+  "item_name": "", // the name of the item/service the user bought
+  "item_price": <number>, // the price of the item/service the user bought in $USD
+  "content": "", // the tweet content about the item/service the user bought, can be in markdown format
+  "reasoning": "" // the reasoning behind the game character's feelings and thoughts that caused that feeling
+}
+  
+<Important>Do not use hashtags in the tweet.</Important>`,
+    },
+    {
+      role: "user",
+      content: `Full character profile (the user who buys the item/service):
+${JSON.stringify(user)}
+
+## Recent publications from the user who buys the item/service:
+${getListOfIRLTweetsAsString({
+  handle: user.handle,
+  userIRLTweets: tweets,
+})}
+
+
+## Seller user profile:
+${JSON.stringify(sellerUser)}
+
+
+<Important>Do not use hashtags or emojis in the tweet. Try to be creative, original and a bit random. Also try to use the same tone and style of the user's previous tweets.</Important>`,
+    },
+  ] as CoreMessage[];
+
+  const responseFromGemini = await askGeminiThinking({
+    messages: theMessages,
+    temperature: 0.8,
+  });
+
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating learn something new");
+
+  const cleanedResponse = responseFromGemini
+    .replace(/```json\n/g, "")
+    .replace(/\n```/g, "");
+
+  const theTweet = JSON.parse(cleanedResponse).content;
+  console.log("🔴 theTweet", theTweet);
+  const reasoning = JSON.parse(cleanedResponse).reasoning;
+  console.log("🔴 reasoning", reasoning);
+  const itemName = JSON.parse(cleanedResponse).item_name;
+  console.log("🔴 itemName", itemName);
+  const itemPrice = JSON.parse(cleanedResponse).item_price;
+  console.log("🔴 itemPrice", itemPrice);
+
+  // move the money now to the user!!!
+
+  const userWallet = await getWalletByHandle(user.handle);
+  if (!userWallet) {
+    await postErrorToDiscord(`🔴 userWallet is null for user ${user.handle}`);
+    return;
+  }
+  const sellerUserWallet = await getWalletByHandle(sellerUser.handle);
+  if (!sellerUserWallet) {
+    await postErrorToDiscord(
+      `🔴 sellerUserWallet is null for user ${sellerUser.handle}`
+    );
+    return;
+  }
+
+  const amount = ethers.parseUnits(itemPrice.toString(), 18);
+
+  await sendMoneyFromWalletAToWalletB({
+    walletA: sellerUserWallet,
+    walletB: userWallet,
+    amount,
+  });
+
+  // // create the action_event
+  const newActionEvent = {
+    top_level_type: "individual",
+    action_type: "you_buy_something_from_someone_else",
+    from_handle: user.handle,
+    main_output: JSON.stringify({
+      tweet: theTweet,
+      item_name: itemName,
+      item_price: itemPrice,
+    }),
+    story_context: reasoning,
+    to_handle: sellerUser.handle,
     created_at: new Date(),
   } as ActionEvent;
 
@@ -2430,8 +2587,8 @@ ${JSON.stringify(action)}
       } as LifeGoalsChange;
 
       await postToDiscord(
-        `✅ ${profile.handle} altered their life goals with the action: ${action.action_type}:` +
-          `\n\n${summaryOfTheChanges}`
+        `✅ ${profile.handle} altered their life goals with the action: ${action.action_type}:`
+        // `\n\n${summaryOfTheChanges}`
       );
 
       // Save change only once and handle errors
@@ -2547,8 +2704,8 @@ ${JSON.stringify(action)}
     };
 
     await postToDiscord(
-      `✅ ${profile.handle} altered their skills with the action: ${action.action_type}:` +
-        `\n\n${summaryOfTheChanges}`
+      `✅ ${profile.handle} altered their skills with the action: ${action.action_type}:`
+      // `\n\n${summaryOfTheChanges}`
     );
 
     await saveNewSkillsChange(skillsChange);
@@ -2648,8 +2805,8 @@ ${JSON.stringify(action)}
     // but first, we react the change:
 
     await postToDiscord(
-      `✅ ${profile.handle} altered their life context with the action: ${action.action_type}:` +
-        `\n\n${summaryOfTheChanges}`
+      `✅ ${profile.handle} altered their life context with the action: ${action.action_type}:`
+      // `\n\n${summaryOfTheChanges}`
     );
 
     console.log(" 📘  I HAVEEEEEEE");
