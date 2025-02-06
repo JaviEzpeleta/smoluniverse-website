@@ -13,6 +13,8 @@ import smolABI from "./abi/smolABI.json";
 import nftABI from "./abi/nftABI.json";
 import { SmolWalletRow } from "./types";
 
+import { avsTransferFunds } from "./avsModule";
+
 export const createAndSaveNewWallet = async (
   handle: string
 ): Promise<boolean> => {
@@ -243,7 +245,6 @@ export const sendMoneyFromWalletAToWalletB = async ({
   amount: bigint;
 }) => {
   const deployerWalletPrivateKey = process.env.DEPLOYER_WALLET_PRIVATE_KEY!;
-
   const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
   const signer = new ethers.Wallet(deployerWalletPrivateKey, provider);
 
@@ -253,25 +254,27 @@ export const sendMoneyFromWalletAToWalletB = async ({
     signer
   );
 
-  // const signature = await signPermit({
-  //   wallet: signer,
-  //   token: tokenContract,
-  //   spender: wallet2.address,
-  // });
-
-  await transferFromCloneToClone(
+  // Llama a la función AVS que se encarga de verificar y ejecutar la transferencia.
+  const avsSignature = await avsTransferFunds(
     tokenContract,
     signer,
     walletA.address,
     walletB.address,
     amount,
-    walletA.permit_signature
+    walletA.permit_signature // la firma del permiso generada en el proceso de creación de la wallet
   );
+
+  if (!avsSignature) {
+    throw new Error("Error al ejecutar la transferencia verificada.");
+  }
+
+  // Revalida los tags para actualizar caches (si usas Next.js)
   revalidateTag(`balance-${walletA.handle}`);
   revalidateTag(`balance-${walletB.handle}`);
 
+  // Notifica a Discord del éxito de la operación
   await postToDiscord(
-    `💸 Sent ${amount} tokens from ${walletA.address} to ${walletB.address}`
+    `💸 Sent ${amount} tokens from ${walletA.address} to ${walletB.address} with AVS signature: ${avsSignature}`
   );
 };
 
