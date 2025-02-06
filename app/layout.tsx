@@ -9,6 +9,7 @@ import WaitlistModal from "@/components/WaitlistModal";
 import { Suspense } from "react";
 import VisitTracker from "@/components/VisitTracker";
 import LogoImageInitializer from "@/components/LogoImageInitializer";
+import NoiseLayer from "@/components/NoiseLayer";
 
 const grandstander = Grandstander({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
       >
         <div className="max-w-6xl mx-auto">
           <LogoImageInitializer />
+          <NoiseLayer />
           <Suspense fallback={null}>
             <VisitTracker />
           </Suspense>

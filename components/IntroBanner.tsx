@@ -100,8 +100,8 @@ const IntroBanner = () => {
                   <span className="text-indigo-200 text-base">.com</span>
                 </div>
               </BigTitle>
-              <div className="text-xl transition-all duration-700 md:text-4xl">
-                welcome!
+              <div className="text-xs md:text-sm font-semibold transition-all duration-700 italic">
+                an experiment on ai agents + onchain culture
               </div>
             </div>
           </BlurryEntrance>

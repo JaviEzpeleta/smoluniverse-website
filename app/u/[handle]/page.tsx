@@ -65,9 +65,9 @@ const UserProfilePage = async ({
         <ProfilePageJobAndOneLinerBlock lifeContext={lifeContext} />
       </div>
 
-      <div className="pt-6">
+      {/* <div className="pt-6">
         <ProfilePlayground user={user} />
-      </div>
+      </div> */}
 
       <div className="flex flex-col md:flex-row gap-4 w-full my-4">
         <ProfilePageSkillsBlock skills={skills} />
