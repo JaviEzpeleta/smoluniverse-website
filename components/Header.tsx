@@ -40,13 +40,13 @@ const Header = () => {
             href={ERC20TokenContractAddress}
             draggable={false}
             target="_blank"
-            className="active:scale-[98%] active:translate-y-0.5 duration-75 block"
+            className="active:scale-[98%] active:translate-y-0.5 duration-75 block group"
           >
             <div className="bg-zinc-800 hover:bg-zinc-700 hover:text-zinc-50 transition-all duration-150 active:opacity-40 text-zinc-200 font-bold rounded-full p-1.5 pr-3 flex items-center justify-center gap-2">
               <Image
                 src="/images/etherscan-logo.png"
                 alt="Etherscan"
-                className="bg-white rounded-full p-[1px]"
+                className="bg-white rounded-full p-[1px] group-hover:rotate-[360deg] transition-all duration-300 ease-in-out group-hover:scale-[1.1] group-active:scale-[0.9] group-active:rotate-[180deg]"
                 width={26}
                 height={26}
               />
@@ -58,17 +58,19 @@ const Header = () => {
           <Link
             href={"/how-it-works"}
             draggable={false}
-            className="active:scale-[98%] active:translate-y-0.5 duration-75 block"
+            className="active:scale-[98%] active:translate-y-0.5 duration-75 block group"
           >
             <div className="bg-zinc-800 hover:bg-zinc-700 hover:text-zinc-50 transition-all duration-150 active:opacity-40 text-zinc-200 font-bold rounded-full p-1.5 pr-3 flex items-center justify-center gap-2">
               <Image
-                src="/images/etherscan-logo.png"
+                src="/images/question-mark.png"
                 alt="Etherscan"
-                className="bg-white rounded-full p-[1px]"
+                className="bg-indigo-200 rounded-full p-[1px] group-hover:rotate-[360deg] transition-all duration-300 ease-in-out group-hover:scale-[1.1] group-active:scale-[0.9] group-active:rotate-[180deg]"
                 width={26}
                 height={26}
               />
-              <div className="translate-y-0.5">HOW IT WORKS</div>
+              <div className="translate-y-0.5 text-indigo-200">
+                HOW IT WORKS?
+              </div>
             </div>
           </Link>
         </BlurryEntrance>
