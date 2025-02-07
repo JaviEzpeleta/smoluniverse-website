@@ -5,9 +5,8 @@ const FirefliesBackground: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Create scene and set background to black
+    // Create scene (remove background setting)
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
 
     // Set up camera
     const camera = new THREE.PerspectiveCamera(
@@ -19,9 +18,13 @@ const FirefliesBackground: React.FC = () => {
     camera.position.z = 100;
 
     // Set up renderer
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true, // Enable transparency
+    });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setClearColor(0x000000, 0); // Make background transparent
     if (mountRef.current) mountRef.current.appendChild(renderer.domElement);
 
     // Create fireflies particles

@@ -3,6 +3,7 @@
 import FullPageSlider from "@/components/FullPageSlider";
 import { useState, useEffect } from "react";
 import ExamplesCarousel from "@/components/ExamplesCarousel";
+import FirefliesBackground from "@/components/banner/FirefliesBackground";
 
 const ABOUT_STEPS = {
   steps: [
@@ -123,6 +124,9 @@ const HowItWorks = () => {
 
   return (
     <div className="relative flex justify-center">
+      <div className="absolute inset-0 z-20 opacity-20 pointer-events-none">
+        <FirefliesBackground />
+      </div>
       <div className="top-2 absolute w-full bg-zinc-800/40 backdrop-blur-sm p-5 max-w-sm mx-auto rounded-full z-20">
         <div className="flex justify-center">
           {/* {slides.length} */}

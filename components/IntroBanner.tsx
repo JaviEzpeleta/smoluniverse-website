@@ -19,6 +19,14 @@ const IntroBanner = () => {
     setRandomNumber(Math.floor(Math.random() * 5) + 1);
   }, []);
 
+  // when the component renders the first time, please scroll to the top of the pagfe:
+
+  useEffect(() => {
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 80);
+  }, [toast]);
+
   return (
     <div className="overflow-hidden">
       {/* <div className="w-full h-80">
