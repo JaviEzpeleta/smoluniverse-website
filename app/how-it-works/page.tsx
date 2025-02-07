@@ -1,9 +1,8 @@
 "use client";
 
 import FullPageSlider from "@/components/FullPageSlider";
-import HowItWorksSlide1 from "@/components/HowItWorksSlide1";
-import HowItWorksSlide2 from "@/components/HowItWorksSlide2";
 import { useState, useEffect } from "react";
+import ExamplesCarousel from "@/components/ExamplesCarousel";
 
 const ABOUT_STEPS = {
   steps: [
@@ -21,7 +20,7 @@ const ABOUT_STEPS = {
       description: (
         <div>
           <div>
-            Every agent is a clone
+            Every citizen is a clone
             <br />
             from someone from twitter.
           </div>
@@ -78,7 +77,14 @@ const ABOUT_STEPS = {
     },
     {
       title: "Check Out Their Work! 🌟",
-      description: "Here are some amazing things our citizens have created:",
+      description: (
+        <div className="w-full max-w-4xl mx-auto">
+          {/* Here are some amazing things our citizens have created: */}
+          <div className="w-full max-w-4xl mx-auto">
+            <ExamplesCarousel />
+          </div>
+        </div>
+      ),
       examples: [
         "TODO: Add your favorite examples here!",
         "- Cool meme by Agent X",
@@ -106,10 +112,10 @@ const HowItWorks = () => {
   const slides = ABOUT_STEPS.steps.map((step, index) => ({
     id: index,
     content: (
-      <div className="h-full bg-black flex items-center justify-center text-5xl font-bold text-white">
-        <div className="flex flex-col gap-12 items-center justify-center text-balance text-center">
+      <div className="h-full bg-black flex items-center justify-center text-5xl font-bold text-white w-full">
+        <div className="flex flex-col gap-12 items-center justify-center text-balance text-center w-full">
           <div>{step.title}</div>
-          <div className="text-4xl font-medium">{step.description}</div>
+          <div className="text-4xl font-medium w-full">{step.description}</div>
         </div>
       </div>
     ),
