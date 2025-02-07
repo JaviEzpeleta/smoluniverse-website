@@ -1,4 +1,5 @@
 import CreateANewCloneForm from "@/components/CreateANewCloneForm";
+import ExploreLauncher from "@/components/ExploreLauncher";
 import IntroBanner from "@/components/IntroBanner";
 import RecentClones from "@/components/RecentClones";
 import EventsList from "@/components/EventsList";
@@ -44,6 +45,7 @@ export default function Home() {
         <div className="w-full md:w-5/12">
           <div className="flex flex-col gap-4 py-12 sticky top-0">
             <RecentClones />
+            <ExploreLauncher />
             <CreateANewCloneForm />
           </div>
         </div>

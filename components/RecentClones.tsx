@@ -42,7 +42,7 @@ const RecentClones = () => {
         </div>
       </BlurryEntrance>
       <motion.div
-        className="min-h-[100px]"
+        className="min-h-[100px] max-h-[300px] overflow-y-auto"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}

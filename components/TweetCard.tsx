@@ -1,3 +1,5 @@
+"use client";
+
 import { SmolTweetWithUserData } from "@/lib/types";
 import React from "react";
 import CheckMark from "./svg/CheckMark";

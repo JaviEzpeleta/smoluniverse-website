@@ -599,3 +599,17 @@ export const getEventsByHandle = async (handle: string) => {
   );
   return res.rows;
 };
+
+export const getTweetsByActionTypeWithUserData = async (actionType: string) => {
+  const res = await executeQuery(
+    `SELECT 
+      st.*,
+      u.display_name,
+      u.profile_picture
+    FROM sim_smol_tweets st
+    LEFT JOIN sim_users u ON st.handle = u.handle
+    WHERE st.action_type = $1 ORDER BY st.created_at DESC LIMIT 100`,
+    [actionType]
+  );
+  return res.rows;
+};

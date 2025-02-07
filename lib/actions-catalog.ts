@@ -2,6 +2,7 @@ export const ACTIONS_OBJECT = [
   {
     code: "write_a_haiku",
     name: "Write a Haiku",
+    shortName: "haiku",
     asAction: "wrote a haiku",
     emoji: "✍️",
     color: "blue",
@@ -9,6 +10,7 @@ export const ACTIONS_OBJECT = [
   {
     code: "tweet_an_idea",
     name: "Tweet an Idea",
+    shortName: "idea",
     asAction: "tweeted an idea",
     emoji: "💡",
     color: "yellow",
@@ -16,6 +18,7 @@ export const ACTIONS_OBJECT = [
   {
     code: "tweet_a_wojak_meme",
     name: "Tweet a Wojak Meme",
+    shortName: "wojakmeme",
     asAction: "tweeted a Wojak meme",
     emoji: "😎",
     color: "red",
@@ -23,6 +26,7 @@ export const ACTIONS_OBJECT = [
   {
     code: "tweet_a_feeling",
     name: "Tweet a Feeling",
+    shortName: "feeling",
     asAction: "tweeted a feeling",
     emoji: "🙂",
     color: "teal",
@@ -30,6 +34,7 @@ export const ACTIONS_OBJECT = [
   {
     code: "learn_something_new",
     name: "Learn Something New",
+    shortName: "learn",
     asAction: "learned something new",
     emoji: "📚",
     color: "green",
@@ -37,6 +42,7 @@ export const ACTIONS_OBJECT = [
   {
     code: "release_a_side_hustle",
     name: "Release a Side Hustle",
+    shortName: "sidehustle",
     asAction: "released a side hustle + article",
     emoji: "🚀",
     color: "orange",
@@ -44,6 +50,7 @@ export const ACTIONS_OBJECT = [
   {
     code: "travel_to_a_new_place",
     name: "Travel to a New Place",
+    shortName: "travel",
     asAction: "traveled to a new place",
     emoji: "✈️",
     color: "purple",
@@ -51,20 +58,23 @@ export const ACTIONS_OBJECT = [
   {
     code: "create_art_nft",
     name: "Create Art NFT",
+    shortName: "art",
     asAction: "created an art NFT",
     emoji: "🎨",
     color: "emerald",
   },
-  {
-    code: "take_a_selfie",
-    name: "Take a Selfie",
-    asAction: "took a selfie",
-    emoji: "🤳",
-    color: "indigo",
-  },
+  // {
+  //   code: "take_a_selfie",
+  //   name: "Take a Selfie",
+  //   shortName: "selfie",
+  //   asAction: "took a selfie",
+  //   emoji: "🤳",
+  //   color: "indigo",
+  // },
   {
     code: "something_amazing_happens",
     name: "Something Amazing Happens",
+    shortName: "amazing",
     asAction: "experienced something amazing",
     emoji: "✨",
     color: "white",
@@ -72,6 +82,7 @@ export const ACTIONS_OBJECT = [
   {
     code: "something_terrible_happens",
     name: "Something Terrible Happens",
+    shortName: "terrible",
     asAction: "experienced something terrible",
     emoji: "😱",
     color: "black",
@@ -79,6 +90,7 @@ export const ACTIONS_OBJECT = [
   {
     code: "tweet_a_dad_joke",
     name: "Tweet a Dad Joke",
+    shortName: "dadjoke",
     asAction: "tweeted a dad joke",
     emoji: "😂",
     color: "zinc",
@@ -86,6 +98,7 @@ export const ACTIONS_OBJECT = [
   {
     code: "share_a_photo_of_where_you_are",
     name: "Share a Photo of Where You Are",
+    shortName: "photo",
     asAction: "shared a photo",
     emoji: "📸",
     color: "pink",
@@ -93,27 +106,31 @@ export const ACTIONS_OBJECT = [
   {
     code: "win_an_award",
     name: "Win an Award",
+    shortName: "award",
     asAction: "won an award",
     emoji: "🏆",
     color: "amber",
   },
-  {
-    code: "send_money_to_a_friend",
-    name: "Send Money to a Friend",
-    asAction: "sent money to a friend",
-    emoji: "💰",
-    color: "emerald",
-  },
-  {
-    code: "send_money_to_the_government",
-    name: "Send Money to the Government",
-    asAction: "sent money to the government",
-    emoji: "💰",
-    color: "emerald",
-  },
+  // {
+  //   code: "send_money_to_a_friend",
+  //   name: "Send Money to a Friend",
+  //   shortName: "money",
+  //   asAction: "sent money to a friend",
+  //   emoji: "💰",
+  //   color: "emerald",
+  // },
+  // {
+  //   code: "send_money_to_the_government",
+  //   name: "Send Money to the Government",
+  //   shortName: "taxes",
+  //   asAction: "sent money to the government",
+  //   emoji: "💰",
+  //   color: "emerald",
+  // },
   {
     code: "someone_buys_something_from_you",
     name: "Someone Buys Something from You",
+    shortName: "sell",
     asAction: "sold something",
     emoji: "💰",
     color: "emerald",
@@ -121,6 +138,7 @@ export const ACTIONS_OBJECT = [
   {
     code: "you_buy_something_from_someone_else",
     name: "You Buy Something from Someone Else",
+    shortName: "buy",
     asAction: "bought something",
     emoji: "💰",
     color: "emerald",
@@ -128,6 +146,7 @@ export const ACTIONS_OBJECT = [
   {
     code: "tweet_a_pixel_art_nft",
     name: "Tweet a Pixel Art NFT",
+    shortName: "pixelart",
     asAction: "tweeted a pixel art NFT",
     emoji: "🎨",
     color: "emerald",
@@ -135,6 +154,7 @@ export const ACTIONS_OBJECT = [
 ] as {
   code: string;
   name: string;
+  shortName: string;
   asAction: string;
   emoji: string;
   color: string;
