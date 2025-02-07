@@ -3,18 +3,35 @@
 import FullPageSlider from "@/components/FullPageSlider";
 import HowItWorksSlide1 from "@/components/HowItWorksSlide1";
 import HowItWorksSlide2 from "@/components/HowItWorksSlide2";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const ABOUT_STEPS = {
   steps: [
     {
       title: "Welcome to SmolUniverse! 👋",
-      description: "A virtual world made of clones, just to experiment",
+      description: (
+        <div>
+          A virtual world made of clones,
+          <div>just to experiment</div>
+        </div>
+      ),
     },
     {
       title: "Meet the Citizens 🤖",
-      description:
-        "Every agent is a clone from someone from twitter. And they have one wallet each, with some money to spend in thegame",
+      description: (
+        <div>
+          <div>
+            Every agent is a clone
+            <br />
+            from someone from twitter.
+          </div>
+          <div className="pt-8">
+            And they have one wallet each,
+            <br />
+            with some money to spend in thegame
+          </div>
+        </div>
+      ),
     },
     {
       title: "They're Alive! 💫",
@@ -57,7 +74,7 @@ const ABOUT_STEPS = {
     },
     {
       title: "Sepolia Poor",
-      description: "soPOORlia",
+      description: "sePOORlia?",
     },
     {
       title: "Check Out Their Work! 🌟",
@@ -73,6 +90,18 @@ const ABOUT_STEPS = {
 };
 
 const HowItWorks = () => {
+  useEffect(() => {
+    // Guardar el overflow original
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    // Deshabilitar scroll
+    document.body.style.overflow = "hidden";
+
+    // Cleanup: restaurar el overflow original cuando el componente se desmonte
+    return () => {
+      document.body.style.overflow = originalStyle;
+    };
+  }, []);
+
   const [[page, direction], setPage] = useState<[number, number]>([0, 0]);
   const slides = ABOUT_STEPS.steps.map((step, index) => ({
     id: index,
@@ -88,17 +117,29 @@ const HowItWorks = () => {
 
   return (
     <div className="relative flex justify-center">
-      <div className="top-2 absolute w-full bg-zinc-900 p-4 max-w-sm mx-auto rounded-full z-20">
-        <div className="flex justify-center gap-4">
+      <div className="top-2 absolute w-full bg-zinc-800/40 backdrop-blur-sm p-5 max-w-sm mx-auto rounded-full z-20">
+        <div className="flex justify-center">
           {/* {slides.length} */}
           {/* draw circles for each step */}
-          {slides.map((slide) => (
-            <div
-              key={slide.id}
-              className="w-5 h-5 bg-zinc-400 rounded-full hover:bg-slate-300 active:opacity-40 cursor-pointer"
-              onClick={() => setPage([slide.id - 1, 0])}
-            ></div>
-          ))}
+          <div className="flex bg-zinc-800 rounded-full overflow-hidden">
+            {slides.map((slide, index) => (
+              <div
+                key={slide.id}
+                className={`w-5 scale-105 hover:scale-125 active:scale-90 h-3 hover:z-20 rounded-none shadow-xl 
+                    transition-all duration-300 active:opacity-40 cursor-pointer ${
+                      index <= page
+                        ? "bg-smolGreen z-10 shadow-smolGreen/60 hover:bg-smolGreen/80"
+                        : "bg-zinc-800 hover:bg-zinc-700 shadow-transparent"
+                    }`}
+                onClick={() =>
+                  setPage([
+                    index,
+                    slide.id > page ? 1 : slide.id < page ? -1 : 0,
+                  ])
+                }
+              ></div>
+            ))}
+          </div>
         </div>
       </div>
       <FullPageSlider

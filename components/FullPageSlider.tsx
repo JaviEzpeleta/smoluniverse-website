@@ -25,7 +25,7 @@ const FullPageSlider: React.FC<FullPageSliderProps> = ({
 
   const [isAnimating, setIsAnimating] = useState(false);
   const touchStart = useRef<number | null>(null);
-  const touchThreshold = 50; // minimum swipe distance
+  const touchThreshold = 20; // minimum swipe distance
 
   const paginate = useCallback(
     (newDirection: number) => {
@@ -46,7 +46,7 @@ const FullPageSlider: React.FC<FullPageSliderProps> = ({
     (e: React.WheelEvent) => {
       const now = Date.now();
       const scrollThreshold = 50;
-      const timeThreshold = 1000; // 1 segundo entre scrolls
+      const timeThreshold = 500; // 0.5 segundo entre scrolls
 
       if (Math.abs(e.deltaY) < scrollThreshold) return;
       if (
