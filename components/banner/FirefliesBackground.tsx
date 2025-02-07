@@ -25,22 +25,22 @@ const FirefliesBackground: React.FC = () => {
     if (mountRef.current) mountRef.current.appendChild(renderer.domElement);
 
     // Create fireflies particles
-    const particleCount = 200; // You can change this number if you want more or fewer fireflies
+    const particleCount = 200;
     const positions = new Float32Array(particleCount * 3);
     const velocities = new Float32Array(particleCount * 3);
-    const range = 200; // This defines the space range for initial positions
+    const range = 200;
+    const maxSpeed = 0.3; // Maximum speed for the particles
 
     for (let i = 0; i < particleCount; i++) {
       const index = i * 3;
-      // Set random starting positions
       positions[index] = (Math.random() - 0.5) * range;
       positions[index + 1] = (Math.random() - 0.5) * range;
       positions[index + 2] = (Math.random() - 0.5) * range;
 
-      // Set random small velocities
-      velocities[index] = (Math.random() - 0.5) * 0.2;
-      velocities[index + 1] = (Math.random() - 0.5) * 0.2;
-      velocities[index + 2] = (Math.random() - 0.5) * 0.2;
+      // Initialize with random velocities
+      velocities[index] = (Math.random() - 0.5) * maxSpeed;
+      velocities[index + 1] = (Math.random() - 0.5) * maxSpeed;
+      velocities[index + 2] = (Math.random() - 0.5) * maxSpeed;
     }
 
     // Create BufferGeometry and assign positions
@@ -68,21 +68,44 @@ const FirefliesBackground: React.FC = () => {
       // Update particle positions based on their velocities
       for (let i = 0; i < particleCount; i++) {
         const index = i * 3;
+
+        // Randomly change velocities slightly each frame
+        velocities[index] += (Math.random() - 0.5) * 0.01;
+        velocities[index + 1] += (Math.random() - 0.5) * 0.01;
+        velocities[index + 2] += (Math.random() - 0.5) * 0.01;
+
+        // Limit maximum speed
+        velocities[index] = Math.max(
+          Math.min(velocities[index], maxSpeed),
+          -maxSpeed
+        );
+        velocities[index + 1] = Math.max(
+          Math.min(velocities[index + 1], maxSpeed),
+          -maxSpeed
+        );
+        velocities[index + 2] = Math.max(
+          Math.min(velocities[index + 2], maxSpeed),
+          -maxSpeed
+        );
+
         positions[index] += velocities[index];
         positions[index + 1] += velocities[index + 1];
         positions[index + 2] += velocities[index + 2];
 
-        // If a particle goes out of bounds, wrap it around to the other side
-        if (positions[index] > range / 2) positions[index] = -range / 2;
-        else if (positions[index] < -range / 2) positions[index] = range / 2;
-
-        if (positions[index + 1] > range / 2) positions[index + 1] = -range / 2;
-        else if (positions[index + 1] < -range / 2)
-          positions[index + 1] = range / 2;
-
-        if (positions[index + 2] > range / 2) positions[index + 2] = -range / 2;
-        else if (positions[index + 2] < -range / 2)
-          positions[index + 2] = range / 2;
+        // Wrap around boundaries with some padding
+        const padding = 10;
+        if (Math.abs(positions[index]) > range / 2 + padding) {
+          positions[index] =
+            -Math.sign(positions[index]) * (range / 2 + padding);
+        }
+        if (Math.abs(positions[index + 1]) > range / 2 + padding) {
+          positions[index + 1] =
+            -Math.sign(positions[index + 1]) * (range / 2 + padding);
+        }
+        if (Math.abs(positions[index + 2]) > range / 2 + padding) {
+          positions[index + 2] =
+            -Math.sign(positions[index + 2]) * (range / 2 + padding);
+        }
       }
       geometry.attributes.position.needsUpdate = true;
 
