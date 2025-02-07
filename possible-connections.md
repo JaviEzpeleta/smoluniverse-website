@@ -40,7 +40,7 @@ And here's the readme of my project "SmolUniverse":
 "https://github.com/JaviEzpeleta/smoluniverse-website/blob/main/README.md" }
 
 I'd like to find ways to interact like: using APIs, or connecting to Smart Contracts.
-the clones already know and use APIs like replicate, gliff, fal.ai, aws s3 and elevenlabs.
+the clones already know and use APIs like replicate, glif, fal.ai, aws s3 and elevenlabs.
 the clones have their own wallet and the "goverment account" can pay gas for them so they can, in theory, interact with any smart contract out there, as long as it's on the Base Sepolia Testnet (currently, during development) and the project will be launch on some L2 EVM like base or polygon.
 
 ```

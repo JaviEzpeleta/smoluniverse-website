@@ -21,6 +21,13 @@ export const ACTIONS_OBJECT = [
     color: "red",
   },
   {
+    code: "tweet_a_pixel_art_nft",
+    name: "Tweet a Pixel Art NFT",
+    asAction: "tweeted a pixel art NFT",
+    emoji: "🎨",
+    color: "emerald",
+  },
+  {
     code: "tweet_a_feeling",
     name: "Tweet a Feeling",
     asAction: "tweeted a feeling",

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { timeSinceShorter } from "@/lib/time";
 import { MarkdownRendererPlain } from "./MarkdownRendererPlain";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
   const router = useRouter();
@@ -66,7 +67,23 @@ function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
               <MarkdownRendererPlain>{theTweet.content}</MarkdownRendererPlain>
               {/* <div className="pt-0">{theTweet.content}</div> */}
               {theTweet.image_url && (
-                <div className="py-2 pt-3">
+                <div className="py-2 pt-3 relative">
+                  <div className="absolute bottom-3 right-3">
+                    <Link
+                      href="https://glif.app"
+                      target="_blank"
+                      className="hover:scale-110 block transition-all duration-150 ease-in-out active:scale-95 border border-transparent hover:border-primary"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Image
+                        src="/images/app_logo_black.png"
+                        className="w-16"
+                        width={120}
+                        height={120}
+                        alt="app logo"
+                      />
+                    </Link>
+                  </div>
                   <Link
                     href={theTweet.image_url}
                     target="_blank"

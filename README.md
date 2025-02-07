@@ -67,7 +67,7 @@ Testnet during development).
   NFTs. This process may be triggered by actions like winning an award or
   launching a side hustle.
 - **Integration with Image and Language APIs**:  
-  The project integrates with image generation tools (such as Recraft and Gliff)
+  The project integrates with image generation tools (such as Recraft and Glif)
   and language models (Gemini) to create tweets, web articles, images for NFTs,
   selfies, etc.
 
@@ -99,7 +99,7 @@ Testnet during development).
     Ethers.js is used to create wallets, transfer $SMOL tokens, sign permits,
     and mint NFTs.
   - **External Integrations**:  
-    The system leverages Gemini for text generation, Recraft/Gliff for image
+    The system leverages Gemini for text generation, Recraft/Glif for image
     generation, and Discord for notifications.
 
 - **Random Event Processing**:  
