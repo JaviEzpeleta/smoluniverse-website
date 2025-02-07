@@ -47,16 +47,37 @@ const FirefliesBackground: React.FC = () => {
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
 
-    // Create a material that makes the particles glow a bit
+    // Create a material that makes the particles glow like fireflies
     const material = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 2,
+      color: 0xffcf75, // Warm yellow color
+      size: 3, // Slightly larger size
       sizeAttenuation: true,
       transparent: true,
       opacity: 0.8,
       blending: THREE.AdditiveBlending,
+      map: createFireflyTexture(),
       depthWrite: false,
     });
+
+    // Create a circular, glowing texture for the particles
+    function createFireflyTexture() {
+      const canvas = document.createElement("canvas");
+      canvas.width = 32;
+      canvas.height = 32;
+      const context = canvas.getContext("2d");
+      if (!context) return null;
+
+      // Create radial gradient
+      const gradient = context.createRadialGradient(16, 16, 0, 16, 16, 16);
+      gradient.addColorStop(0, "rgba(255, 207, 117, 1)"); // Core: warm yellow
+      gradient.addColorStop(0.3, "rgba(255, 207, 117, 0.5)"); // Mid: fading yellow
+      gradient.addColorStop(1, "rgba(255, 207, 117, 0)"); // Edge: transparent
+
+      context.fillStyle = gradient;
+      context.fillRect(0, 0, 32, 32);
+
+      return new THREE.CanvasTexture(canvas);
+    }
 
     // Create the Points object (our fireflies)
     const particles = new THREE.Points(geometry, material);
