@@ -25,7 +25,7 @@ const IntroBanner = () => {
       </div> */}
       <BlurryEntrance delay={0.1}>
         <div className="border-zinc-400 bg-black min-h-80 md:min-h-60 border-2 overflow-hidden p-4 md:py-8 rounded-2xl flex flex-col items-center justify-center relative">
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 pointer-events-none">
             <FirefliesBackground />
           </div>
           <div className="absolute inset-0">
