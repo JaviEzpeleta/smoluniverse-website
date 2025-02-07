@@ -107,21 +107,23 @@ const IntroBanner = () => {
           </BlurryEntrance>
           <BlurryEntrance delay={0.24}>
             <div className="pt-4 md:pt-8">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  toast({
-                    title: "Video demo coming soon!",
-                  });
-                }}
-              >
-                <div className="flex items-center gap-2 px-6">
-                  <div className="-translate-y-0.5">
-                    <LucidePopcorn />
+              <Link href="/videos/demo3.mp4" target="_blank">
+                <Button
+                  variant="outline"
+                  // onClick={() => {
+                  //   toast({
+                  //     title: "Video demo coming soon!",
+                  //   });
+                  // }}
+                >
+                  <div className="flex items-center gap-2 px-6">
+                    <div className="-translate-y-0.5">
+                      <LucidePopcorn />
+                    </div>
+                    <div>Watch the video demo</div>
                   </div>
-                  <div>Watch the video demo</div>
-                </div>
-              </Button>
+                </Button>
+              </Link>
             </div>
           </BlurryEntrance>
         </div>
