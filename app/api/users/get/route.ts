@@ -10,7 +10,7 @@ export async function POST() {
     for (const user of users) {
       const balance = await getBalanceByHandleCached(user.handle);
       const balanceInEth = ethers.formatEther(balance);
-      console.log(" 💚 💚 💚 💚 💚 💚 💚 BALANCE: ", balanceInEth, user.handle);
+      // console.log(" 💚 💚 💚 💚 💚 💚 💚 BALANCE: ", balanceInEth, user.handle);
 
       user.balance = balanceInEth;
     }
