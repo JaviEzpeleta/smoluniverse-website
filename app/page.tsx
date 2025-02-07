@@ -2,6 +2,42 @@ import CreateANewCloneForm from "@/components/CreateANewCloneForm";
 import IntroBanner from "@/components/IntroBanner";
 import RecentClones from "@/components/RecentClones";
 import EventsList from "@/components/EventsList";
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ handle: string; socialNetwork: string }>;
+}) => {
+  const ogImage = `https://smoluniverse.com/thumbnail.png`;
+
+  const images = [ogImage];
+
+  const appName = "smoluniverse";
+  const theTitle = `Smol Universe`;
+  const theDescription = "an experiment on ai agents + onchain culture";
+
+  return {
+    title: theTitle,
+    description: theDescription,
+    applicationName: appName,
+    referrer: "origin-when-cross-origin",
+    keywords: ["ai", "agents", "onchain", "culture"],
+    authors: [{ name: "Javi", url: "https://javitoshi.com" }],
+    creator: "@javitoshi",
+    publisher: "@javitoshi",
+    metadataBase: new URL("https://smoluniverse.com"),
+    openGraph: {
+      images: images,
+      title: theTitle,
+      description: theDescription,
+      url: `https://smoluniverse.com`,
+      siteName: appName,
+      locale: "en_US",
+      type: "website",
+    },
+  };
+};
+
 export default function Home() {
   return (
     <div className="p-4 py-6">
