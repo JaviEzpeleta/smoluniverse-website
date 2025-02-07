@@ -132,8 +132,9 @@ Return JSON format:
 "one_liner": "", A short description of the character's life. Like a "Bio". ((Current user's bio is: ${
     profile.description
   }. Feel free to adapt it. DO NOT include URLs, just names.)) Max 12 words.
-"relationship_status_code": "", // "single", "married", "married_with_kids"... or other states you feel like it's appropiated
-"location": "" // "Name of the city + an emoji with the country flag."
+"relationship_status_code": "", // "single", "married", "married_with_kids"... but if the character is a brand or product or service, you can leave this empty
+"city_name": "" // Name of the city where the game character lives (if it's not a brand) if the profile is a brand, you can leave this empty
+"country_emoji": "" // Emoji of the country where the game character lives (if it's not a brand) if the profile is a brand, you can leave this empty
 "current_job_title": "", // Can be a full job title + company name. Examples: "💻  Web developer for OpenAI", "🚀 CTO of Gumroad", "🎨 Illustrator for Marvel Comics", "🏗️ Freelancer", or "🫠 Unemployed" if the character doesn't have a job at the moment.
 "weekly_jobs_income": 0, // Fictional salary or sum of all incom sources... maybe between 0-5000 $SMOL (unemployed=0)
 "weekly_jobs_income_explained": "" // Reasoning that explanis the background for the weekly_jobs_income value

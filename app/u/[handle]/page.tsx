@@ -7,6 +7,7 @@ import ProfilePageSkillsBlock from "@/components/ProfilePageSkillsBlock";
 import ProfilePageJobAndOneLinerBlock from "@/components/ProfilePageJobAndOneLinerBlock";
 import ProfilePageLifeGoalsBlock from "@/components/ProfilePageLifeGoalsBlock";
 import ProfilePageTweetsBlock from "@/components/ProfilePageTweetsBlock";
+import ProfilePageEventsBlock from "@/components/ProfilePageEventsBlock";
 import ProfilePlayground from "@/components/ProfilePlayground";
 
 const UserProfilePage = async ({
@@ -65,15 +66,20 @@ const UserProfilePage = async ({
         <ProfilePageJobAndOneLinerBlock lifeContext={lifeContext} />
       </div>
 
-      {/* <div className="pt-6">
+      <div className="pt-6">
         <ProfilePlayground user={user} />
-      </div> */}
+      </div>
 
       <div className="flex flex-col md:flex-row gap-4 w-full my-4">
         <ProfilePageSkillsBlock skills={skills} handle={handle} />
         <ProfilePageLifeGoalsBlock lifeGoals={user.life_goals} />
       </div>
-      <ProfilePageTweetsBlock handle={handle} />
+      <div className="flex flex-col md:flex-row gap-4 w-full my-4 relative">
+        <div className="">
+          <ProfilePageEventsBlock handle={handle} user={user} />
+        </div>
+        <ProfilePageTweetsBlock handle={handle} />
+      </div>
 
       {/* <div>
         <pre>{JSON.stringify(skills, null, 2)}</pre>

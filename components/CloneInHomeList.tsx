@@ -36,8 +36,8 @@ const CloneInHomeList = ({
 
   const lifeContact = JSON.parse(clone.life_context);
 
-  const contryEmoji = extractEmojiFromText(lifeContact.location);
-
+  const contryEmoji = lifeContact.country_emoji;
+  const cityName = lifeContact.city_name;
   const router = useRouter();
 
   return (

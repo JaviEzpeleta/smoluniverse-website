@@ -2,108 +2,126 @@ export const ACTIONS_OBJECT = [
   {
     code: "write_a_haiku",
     name: "Write a Haiku",
+    asAction: "wrote a haiku",
     emoji: "✍️",
     color: "blue",
   },
   {
     code: "tweet_an_idea",
     name: "Tweet an Idea",
+    asAction: "tweeted an idea",
     emoji: "💡",
     color: "yellow",
   },
   {
     code: "tweet_a_wojak_meme",
     name: "Tweet a Wojak Meme",
+    asAction: "tweeted a Wojak meme",
     emoji: "😎",
     color: "red",
   },
   {
     code: "tweet_a_feeling",
     name: "Tweet a Feeling",
+    asAction: "tweeted a feeling",
     emoji: "🙂",
     color: "teal",
   },
   {
     code: "learn_something_new",
     name: "Learn Something New",
+    asAction: "learned something new",
     emoji: "📚",
     color: "green",
   },
   {
     code: "release_a_side_hustle",
     name: "Release a Side Hustle",
+    asAction: "released a side hustle + article",
     emoji: "🚀",
     color: "orange",
   },
   {
     code: "travel_to_a_new_place",
     name: "Travel to a New Place",
+    asAction: "traveled to a new place",
     emoji: "✈️",
     color: "purple",
   },
   {
     code: "create_art_nft",
     name: "Create Art NFT",
+    asAction: "created an art NFT",
     emoji: "🎨",
     color: "emerald",
   },
   {
     code: "take_a_selfie",
     name: "Take a Selfie",
+    asAction: "took a selfie",
     emoji: "🤳",
     color: "indigo",
   },
   {
     code: "something_amazing_happens",
     name: "Something Amazing Happens",
+    asAction: "experienced something amazing",
     emoji: "✨",
     color: "white",
   },
   {
     code: "something_terrible_happens",
     name: "Something Terrible Happens",
+    asAction: "experienced something terrible",
     emoji: "😱",
     color: "black",
   },
   {
     code: "tweet_a_dad_joke",
     name: "Tweet a Dad Joke",
+    asAction: "tweeted a dad joke",
     emoji: "😂",
     color: "zinc",
   },
   {
     code: "share_a_photo_of_where_you_are",
     name: "Share a Photo of Where You Are",
+    asAction: "shared a photo",
     emoji: "📸",
     color: "pink",
   },
   {
     code: "win_an_award",
     name: "Win an Award",
+    asAction: "won an award",
     emoji: "🏆",
     color: "amber",
   },
   {
     code: "send_money_to_a_friend",
     name: "Send Money to a Friend",
+    asAction: "sent money to a friend",
     emoji: "💰",
     color: "emerald",
   },
   {
     code: "send_money_to_the_government",
     name: "Send Money to the Government",
+    asAction: "sent money to the government",
     emoji: "💰",
     color: "emerald",
   },
   {
     code: "someone_buys_something_from_you",
     name: "Someone Buys Something from You",
+    asAction: "sold something",
     emoji: "💰",
     color: "emerald",
   },
   {
     code: "you_buy_something_from_someone_else",
     name: "You Buy Something from Someone Else",
+    asAction: "bought something",
     emoji: "💰",
     color: "emerald",
   },
@@ -113,7 +131,13 @@ export const ACTIONS_OBJECT = [
   //   emoji: "👤",
   //   color: "purple",
   // },
-];
+] as {
+  code: string;
+  name: string;
+  asAction: string;
+  emoji: string;
+  color: string;
+}[];
 
 export const INDIVIDUAL_ACTIONS = [
   // "send_a_voice_note",

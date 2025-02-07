@@ -15,7 +15,7 @@ CREATE TABLE sim_users (
 );
 
 CREATE TABLE sim_action_events (
-  id SERIAL PRIMARY KEY,
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid(),
   from_handle TEXT,
   action_type TEXT NOT NULL,
   main_output TEXT NOT NULL,
@@ -580,6 +580,21 @@ export const findRandomUserNotYou = async (handle: string) => {
 export const getSkillsHistoryByHandle = async (handle: string) => {
   const res = await executeQuery(
     `SELECT * FROM sim_updates_skills WHERE handle = $1`,
+    [handle]
+  );
+  return res.rows;
+};
+
+export const getEventsByHandle = async (handle: string) => {
+  const res = await executeQuery(
+    `
+    SELECT 
+      sae.*,
+      st.id as smol_tweet_id 
+    FROM sim_action_events sae
+    LEFT JOIN sim_smol_tweets st ON st.action_id = sae.id
+    WHERE sae.from_handle = $1 OR sae.to_handle = $1
+  `,
     [handle]
   );
   return res.rows;

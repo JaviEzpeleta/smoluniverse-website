@@ -25,7 +25,7 @@ const ProfilePageTweetsBlock = ({ handle }: { handle: string }) => {
 
   if (tweets.length === 0) {
     return (
-      <div className="bg-zinc-900 rounded-lg p-4 px-6 md:max-w-xl mx-auto w-full">
+      <div className="bg-zinc-900 rounded-lg p-4 px-6 flex-1 mx-auto w-full">
         <BlurryEntrance>
           <MiniTitle>No tweets yet</MiniTitle>
         </BlurryEntrance>
@@ -33,7 +33,7 @@ const ProfilePageTweetsBlock = ({ handle }: { handle: string }) => {
     );
   }
   return (
-    <div className="bg-zinc-900 rounded-lg p-4 px-6 md:max-w-xl mx-auto w-full">
+    <div className="bg-zinc-900 rounded-lg p-4 px-6 flex-1 mx-auto w-full">
       <BlurryEntrance>
         <MiniTitle>Tweets</MiniTitle>
 

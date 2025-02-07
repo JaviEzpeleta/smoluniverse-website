@@ -51,7 +51,7 @@ const ProfileHeaderBlock = ({
         </BlurryEntrance>
         <BlurryEntrance delay={0.3}>
           <div>
-            {lifeContext.location}{" "}
+            {lifeContext.city_name} {lifeContext.country_emoji}{" "}
             <span className="pl-1 opacity-70">
               {lifeContext.relationship_status_code}
             </span>
