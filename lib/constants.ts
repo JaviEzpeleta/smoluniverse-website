@@ -1,3 +1,7 @@
+// opensea NFT collection URL:
+export const OPENSEA_NFT_COLLECTION_URL =
+  "https://testnets.opensea.io/collection/smolsmolnftscollectionteessst-1";
+
 // * deployer wallet address:
 export const DEPLOYER_WALLET_ADDRESS =
   "0x6154CCc7ef29D01A30AA8f51afAB635Ae32d581b";
