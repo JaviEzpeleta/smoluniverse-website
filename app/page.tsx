@@ -3,11 +3,7 @@ import IntroBanner from "@/components/IntroBanner";
 import RecentClones from "@/components/RecentClones";
 import EventsList from "@/components/EventsList";
 
-export const generateMetadata = async ({
-  params,
-}: {
-  params: Promise<{ handle: string; socialNetwork: string }>;
-}) => {
+export const generateMetadata = async () => {
   const ogImage = `https://smoluniverse.com/thumbnail.png`;
 
   const images = [ogImage];
