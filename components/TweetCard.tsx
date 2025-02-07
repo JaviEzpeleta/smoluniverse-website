@@ -68,22 +68,25 @@ function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
               {/* <div className="pt-0">{theTweet.content}</div> */}
               {theTweet.image_url && (
                 <div className="py-2 pt-3 relative">
-                  <div className="absolute bottom-3 right-3">
-                    <Link
-                      href="https://glif.app"
-                      target="_blank"
-                      className="hover:scale-110 block transition-all duration-150 ease-in-out active:scale-95 border border-transparent hover:border-primary"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <Image
-                        src="/images/app_logo_black.png"
-                        className="w-16"
-                        width={120}
-                        height={120}
-                        alt="app logo"
-                      />
-                    </Link>
-                  </div>
+                  {(theTweet.action_type === "tweet_a_wojak_meme" ||
+                    theTweet.action_type === "tweet_a_pixel_art_nft") && (
+                    <div className="absolute bottom-4 left-3">
+                      <Link
+                        href="https://glif.app"
+                        target="_blank"
+                        className="hover:scale-110 block transition-all duration-150 ease-in-out active:scale-95 border border-transparent hover:border-primary rounded-full"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Image
+                          src="/images/app_logo_black.png"
+                          className="w-16"
+                          width={120}
+                          height={120}
+                          alt="app logo"
+                        />
+                      </Link>
+                    </div>
+                  )}
                   <Link
                     href={theTweet.image_url}
                     target="_blank"
