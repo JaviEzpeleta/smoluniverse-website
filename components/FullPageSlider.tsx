@@ -10,11 +10,19 @@ type Slide = {
 
 type FullPageSliderProps = {
   slides: Slide[];
+  page: number;
+  direction: number;
+  setPage: React.Dispatch<React.SetStateAction<[number, number]>>;
 };
 
-const FullPageSlider: React.FC<FullPageSliderProps> = ({ slides }) => {
+const FullPageSlider: React.FC<FullPageSliderProps> = ({
+  slides,
+  page,
+  direction,
+  setPage,
+}) => {
   // [page, direction]: page es el índice actual, direction indica si vas pa' abajo (1) o pa' arriba (-1)
-  const [[page, direction], setPage] = useState<[number, number]>([0, 0]);
+
   const [isAnimating, setIsAnimating] = useState(false);
   const touchStart = useRef<number | null>(null);
   const touchThreshold = 50; // minimum swipe distance
@@ -31,7 +39,7 @@ const FullPageSlider: React.FC<FullPageSliderProps> = ({ slides }) => {
         return [newPage, newDirection];
       });
     },
-    [isAnimating, slides.length]
+    [isAnimating, slides.length, setPage]
   );
 
   const handleWheel = useCallback(
