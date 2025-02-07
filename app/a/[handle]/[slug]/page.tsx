@@ -25,8 +25,8 @@ export const generateMetadata = async ({
   const images = [extraData.image_url];
 
   const appName = "smoluniverse";
-  const theTitle = article.title;
-  const theDescription = article.description;
+  const theTitle = extraData.title;
+  const theDescription = `smol universe - article written by ${handle} in the simulation`;
 
   return {
     title: theTitle,
