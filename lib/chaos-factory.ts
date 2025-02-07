@@ -637,6 +637,7 @@ Something that's interesting and connected to the character's personality and re
 Reply in JSON format: 
 {
   "content": "", // theme for a pixel art digital image
+  "artwork_title": "", // the title of the artwork
   "tweet_content": "", // when the user tweets the meme image, this will be the text that will be displayed next to the image, as an intro or something. Do NOT include any hashtags or emojis.
   "reasoning": "" // the reasoning behind picking this subject for a pixel art digital image
 }`,
@@ -674,10 +675,26 @@ ${getListOfIRLTweetsAsString({
   console.log("🔴 tweetContent", tweetContent);
   const reasoning = JSON.parse(cleanedResponse).reasoning;
   console.log("🔴 reasoning", reasoning);
+  const artworkTitle = JSON.parse(cleanedResponse).artwork_title;
+  console.log("🔴 artworkTitle", artworkTitle);
 
   const glifImage = await generateGlifPixelArt(theContent);
 
+  if (!glifImage) {
+    await postErrorToDiscord(
+      `🔴 Error in executeTweetAPixelArtNft: glifImage is null for user ${user.handle}`
+    );
+    return;
+  }
+
   console.log("🔴 glifImage", glifImage);
+
+  // now we mint the NFT!!!!
+  const txHash = await mintNftForClone({
+    userHandle: user.handle,
+    artworkUrl: glifImage,
+    nftArtTitle: `${artworkTitle}`,
+  });
 
   // create the action_event
   const newActionEvent = {
@@ -687,6 +704,7 @@ ${getListOfIRLTweetsAsString({
     main_output: JSON.stringify({
       tweet: tweetContent,
       image_url: glifImage,
+      tx_hash: txHash,
     }),
     story_context: reasoning,
     to_handle: null,
