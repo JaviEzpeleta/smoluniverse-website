@@ -34,7 +34,7 @@ const Header = () => {
           </Button>
         </Link>
       </BlurryEntrance>
-      <div className="hidden md:block">
+      <div className="hidden md:flex items-center gap-2">
         <BlurryEntrance delay={0.05}>
           <Link
             href={ERC20TokenContractAddress}
@@ -51,6 +51,24 @@ const Header = () => {
                 height={26}
               />
               <div className="translate-y-0.5">$SMOL Contract</div>
+            </div>
+          </Link>
+        </BlurryEntrance>
+        <BlurryEntrance delay={0.05}>
+          <Link
+            href={"/how-it-works"}
+            draggable={false}
+            className="active:scale-[98%] active:translate-y-0.5 duration-75 block"
+          >
+            <div className="bg-zinc-800 hover:bg-zinc-700 hover:text-zinc-50 transition-all duration-150 active:opacity-40 text-zinc-200 font-bold rounded-full p-1.5 pr-3 flex items-center justify-center gap-2">
+              <Image
+                src="/images/etherscan-logo.png"
+                alt="Etherscan"
+                className="bg-white rounded-full p-[1px]"
+                width={26}
+                height={26}
+              />
+              <div className="translate-y-0.5">HOW IT WORKS</div>
             </div>
           </Link>
         </BlurryEntrance>
