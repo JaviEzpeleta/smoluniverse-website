@@ -21,7 +21,7 @@ const IntroBanner = () => {
   return (
     <div className="overflow-hidden">
       <BlurryEntrance delay={0.1}>
-        <div className="border-zinc-400 bg-black min-h-80 md:min-h-60 border-2 overflow-hidden p-4 md:py-8 rounded-2xl flex flex-col items-center justify-center relative">
+        <div className="border-zinc-400 bg-black min-h-80 md:min-h-[400px] border-2 overflow-hidden p-4 md:py-8 rounded-2xl flex flex-col items-center justify-center relative">
           <div className="absolute inset-0">
             <motion.div
               initial={{ opacity: 0, y: 90, rotate: -10, scale: 0.8 }}
@@ -93,15 +93,17 @@ const IntroBanner = () => {
           </div> */}
           <BlurryEntrance delay={0.18}>
             <div className="flex flex-col items-center justify-center">
-              <BigTitle>
+              <div className="text-8xl font-bold">
                 <div className="transition-all duration-1000">
                   <span className="text-yellow-200">smol</span>
                   <span className="text-smolGreen">universe</span>
-                  <span className="text-indigo-200 text-base">.com</span>
+                  <span className="text-indigo-200 text-3xl">.com</span>
                 </div>
-              </BigTitle>
-              <div className="text-xs md:text-sm font-semibold transition-all duration-700 italic">
-                an experiment on ai agents + onchain culture
+              </div>
+              <div className="max-w-xl mx-auto text-balance text-center">
+                <div className="text-xs md:text-3xl font-semibold transition-all duration-700 italic">
+                  an experiment on ai agents + onchain culture
+                </div>
               </div>
             </div>
           </BlurryEntrance>
