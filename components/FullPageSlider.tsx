@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Slide = {
@@ -34,16 +34,29 @@ const FullPageSlider: React.FC<FullPageSliderProps> = ({ slides }) => {
 
   const handleWheel = useCallback(
     (e: React.WheelEvent) => {
+      const now = Date.now();
+      const scrollThreshold = 50;
+      const timeThreshold = 1000; // 1 segundo entre scrolls
+
+      if (Math.abs(e.deltaY) < scrollThreshold) return;
+      if (
+        lastScrollTime.current &&
+        now - lastScrollTime.current < timeThreshold
+      )
+        return;
+
+      lastScrollTime.current = now;
+
       if (e.deltaY > 0 && page < slides.length - 1) {
-        // Scroll pa' abajo
         paginate(1);
       } else if (e.deltaY < 0 && page > 0) {
-        // Scroll pa' arriba
         paginate(-1);
       }
     },
     [page, slides.length, paginate]
   );
+
+  const lastScrollTime = useRef<number | null>(null);
 
   const variants = {
     initial: (direction: number) => ({
@@ -65,7 +78,7 @@ const FullPageSlider: React.FC<FullPageSliderProps> = ({ slides }) => {
   return (
     <div
       onWheel={handleWheel}
-      className="relative h-screen w-full overflow-hidden"
+      className="relative h-[calc(100vh-120px)] w-full overflow-hidden"
     >
       <AnimatePresence
         initial={false}

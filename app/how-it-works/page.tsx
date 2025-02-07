@@ -27,7 +27,11 @@ const HowItWorks = () => {
       ),
     },
   ];
-  return <FullPageSlider slides={slides} />;
+  return (
+    <div className="">
+      <FullPageSlider slides={slides} />
+    </div>
+  );
 };
 
 export default HowItWorks;
