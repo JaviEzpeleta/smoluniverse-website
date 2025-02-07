@@ -1,10 +1,55 @@
-import { findArticleByHandleAndSlug } from "@/lib/postgres";
+import { findArticleByHandleAndSlug, findUserByHandle } from "@/lib/postgres";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
-import MiniTitle from "@/components/MiniTitle";
 import BlurryEntrance from "@/components/BlurryEntrance";
 import MiniAnimatedPriceOfService from "@/components/MiniAnimatedPriceOfService";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ handle: string; slug: string }>;
+}) => {
+  const { handle, slug } = await params;
+
+  const article = await findArticleByHandleAndSlug(handle, slug);
+
+  if (!article) {
+    return {
+      title: "Article not found",
+    };
+  }
+
+  const extraData = JSON.parse(article.extra_data);
+
+  const images = [extraData.image_url];
+
+  const appName = "smoluniverse";
+  const theTitle = article.title;
+  const theDescription = article.description;
+
+  return {
+    title: theTitle,
+    description: theDescription,
+    applicationName: appName,
+    referrer: "origin-when-cross-origin",
+    keywords: ["ai", "agents", "onchain", "culture"],
+    authors: [{ name: "Javi", url: "https://javitoshi.com" }],
+    creator: "@javitoshi",
+    publisher: "@javitoshi",
+    metadataBase: new URL("https://smoluniverse.com"),
+    openGraph: {
+      images: images,
+      title: theTitle,
+      description: theDescription,
+      url: `https://smoluniverse.com/a/${handle}/${slug}`,
+      siteName: appName,
+      locale: "en_US",
+      type: "website",
+    },
+  };
+};
+
 const UserProfilePage = async ({
   params,
 }: {
@@ -16,11 +61,16 @@ const UserProfilePage = async ({
 
   const article = await findArticleByHandleAndSlug(handle, slug);
 
-  // console.log("🔴 article", article);
-
   if (!article) {
     return <div>Article not found</div>;
   }
+
+  const theUser = await findUserByHandle(handle);
+
+  if (!theUser) {
+    return <div>User not found</div>;
+  }
+
   const extraData = JSON.parse(article.extra_data);
 
   const theContent = extraData.content;
@@ -58,6 +108,22 @@ const UserProfilePage = async ({
       </BlurryEntrance>
 
       <BlurryEntrance delay={0.26}>
+        <div className="text-lg sm:text-2xl text-gray-200 pb-6 flex items-center gap-2">
+          written by{" "}
+          <Link
+            href={`/u/${theUser.handle}`}
+            className="underline flex items-center gap-2"
+          >
+            <div>
+              <img
+                src={theUser.profile_picture}
+                alt={theUser.handle}
+                className="w-7 h-7 rounded-full"
+              />
+            </div>
+            <div>{theUser.handle}</div>
+          </Link>
+        </div>
         <MarkdownRenderer>{theContent}</MarkdownRenderer>
       </BlurryEntrance>
 
