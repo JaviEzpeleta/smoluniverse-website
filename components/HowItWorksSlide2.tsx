@@ -6,7 +6,7 @@ import Title from "./Title";
 const HowItWorksSlide2 = () => {
   return (
     <div className="h-full bg-black flex items-center justify-center text-3xl text-white">
-      <BlurryEntrance delay={0.63}>
+      <BlurryEntrance delay={0.33}>
         <Title>welcome to smol universe</Title>
       </BlurryEntrance>
     </div>
