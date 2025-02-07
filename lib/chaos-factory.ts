@@ -1,7 +1,7 @@
 import { ACTIONS_OBJECT, INDIVIDUAL_ACTIONS } from "./actions-catalog";
 import { postErrorToDiscord, postToDiscord } from "./discord";
 import { askGeminiThinking } from "./gemini";
-import { generateGliffWojakMeme } from "./gliff";
+import { generateGlifPixelArt, generateGlifWojakMeme } from "./glif";
 import {
   readIRLTweets,
   getRandomClone,
@@ -121,6 +121,9 @@ export const executeIndividualAction = async ({
       break;
     case "tweet_a_wojak_meme":
       await executeTweetAWojakMeme({ user, tweets });
+      break;
+    case "tweet_a_pixel_art_nft":
+      await executeTweetAPixelArtNft({ user, tweets });
       break;
     case "learn_something_new":
       await executeLearnSomethingNew({ user, tweets });
@@ -572,9 +575,9 @@ ${getListOfIRLTweetsAsString({
   const reasoning = JSON.parse(cleanedResponse).reasoning;
   console.log("🔴 reasoning", reasoning);
 
-  const gliffImage = await generateGliffWojakMeme(theContent);
+  const glifImage = await generateGlifWojakMeme(theContent);
 
-  console.log("🔴 gliffImage", gliffImage);
+  console.log("🔴 glifImage", glifImage);
 
   // create the action_event
   const newActionEvent = {
@@ -583,7 +586,7 @@ ${getListOfIRLTweetsAsString({
     from_handle: user.handle,
     main_output: JSON.stringify({
       tweet: tweetContent,
-      image_url: gliffImage,
+      image_url: glifImage,
     }),
     story_context: reasoning,
     to_handle: null,
@@ -605,9 +608,127 @@ ${getListOfIRLTweetsAsString({
     handle: user.handle,
     content: tweetContent,
     link: null,
-    image_url: gliffImage,
+    image_url: glifImage,
     created_at: new Date(),
     action_type: "tweet_a_wojak_meme",
+    action_id: newActionId,
+  };
+
+  await saveNewSmolTweet(newSmolTweet);
+
+  // console.log("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 newActionEvent", newActionEvent);
+
+  return responseFromGemini;
+};
+
+const executeTweetAPixelArtNft = async ({
+  user,
+  tweets,
+}: {
+  user: RawUser;
+  tweets: SavedTweet[];
+}) => {
+  const theMessages = [
+    {
+      role: "system",
+      content: `You are a story teller for an AI clone emulation universe entertainment app. Based on this character profile and recent tweets, please generate a topic description to creare a pixel art digital image from it. 
+Something that's interesting and connected to the character's personality and recent tweets.
+        
+Reply in JSON format: 
+{
+  "content": "", // theme for a pixel art digital image
+  "artwork_title": "", // the title of the artwork
+  "tweet_content": "", // when the user tweets the meme image, this will be the text that will be displayed next to the image, as an intro or something. Do NOT include any hashtags or emojis.
+  "reasoning": "" // the reasoning behind picking this subject for a pixel art digital image
+}`,
+    },
+    {
+      role: "user",
+      content: `Full character profile:
+${JSON.stringify(user)}
+
+## Recent publications:
+${getListOfIRLTweetsAsString({
+  handle: user.handle,
+  userIRLTweets: tweets,
+})}
+
+<Important>Reply directly with the theme in plain text format, no markdown or other formatting.</Important>`,
+    },
+  ] as CoreMessage[];
+
+  const responseFromGemini = await askGeminiThinking({
+    messages: theMessages,
+    temperature: 0.8,
+  });
+
+  // console.log("🔴 responseFromGemini", responseFromGemini);
+  console.log("✅ finished generating tweet a pixel art NFT");
+
+  const cleanedResponse = responseFromGemini
+    .replace(/```json\n/g, "")
+    .replace(/\n```/g, "");
+
+  const theContent = JSON.parse(cleanedResponse).content;
+  console.log("🔴 theContent", theContent);
+  const tweetContent = JSON.parse(cleanedResponse).tweet_content;
+  console.log("🔴 tweetContent", tweetContent);
+  const reasoning = JSON.parse(cleanedResponse).reasoning;
+  console.log("🔴 reasoning", reasoning);
+  const artworkTitle = JSON.parse(cleanedResponse).artwork_title;
+  console.log("🔴 artworkTitle", artworkTitle);
+
+  const glifImage = await generateGlifPixelArt(theContent);
+
+  if (!glifImage) {
+    await postErrorToDiscord(
+      `🔴 Error in executeTweetAPixelArtNft: glifImage is null for user ${user.handle}`
+    );
+    return;
+  }
+
+  console.log("🔴 glifImage", glifImage);
+
+  // now we mint the NFT!!!!
+  const txHash = await mintNftForClone({
+    userHandle: user.handle,
+    artworkUrl: glifImage,
+    nftArtTitle: `${artworkTitle}`,
+  });
+
+  // create the action_event
+  const newActionEvent = {
+    top_level_type: "individual",
+    action_type: "tweet_a_pixel_art_nft",
+    from_handle: user.handle,
+    main_output: JSON.stringify({
+      tweet: tweetContent,
+      image_url: glifImage,
+      tx_hash: txHash,
+    }),
+    story_context: reasoning,
+    to_handle: null,
+    extra_data: null,
+    created_at: new Date(),
+  } as ActionEvent;
+
+  const newActionId = await saveNewActionEvent(newActionEvent);
+  if (!newActionId) {
+    await postErrorToDiscord(
+      `🔴 Error in executeTweetAPixelArtNft: newActionId is null for user ${user.handle}`
+    );
+    return;
+  }
+
+  // ! ok.. for now.. this will not affect the user's life goals or skills or anything. it's just a meme!!
+
+  const newSmolTweet = {
+    handle: user.handle,
+    content: tweetContent,
+    link: null,
+    image_url: glifImage,
+    created_at: new Date(),
+    action_type: "tweet_a_pixel_art_nft",
     action_id: newActionId,
   };
 

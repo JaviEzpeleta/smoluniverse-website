@@ -100,6 +100,8 @@ export type SmolTweetWithUserData = {
   id?: string;
   handle: string;
   content: string;
+  action_type: string;
+  action_id: string;
   link: string | null;
   image_url: string | null;
   link_preview_img_url: string | null;
