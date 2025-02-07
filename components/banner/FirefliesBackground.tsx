@@ -49,11 +49,11 @@ const FirefliesBackground: React.FC = () => {
 
     // Create a material that makes the particles glow like fireflies
     const material = new THREE.PointsMaterial({
-      color: 0xffcf75, // Warm yellow color
-      size: 3, // Slightly larger size
+      color: 0xfff7d6, // Brighter, whiter-yellow
+      size: 1.5, // Smaller size
       sizeAttenuation: true,
       transparent: true,
-      opacity: 0.8,
+      opacity: 1, // Full opacity for more brightness
       blending: THREE.AdditiveBlending,
       map: createFireflyTexture(),
       depthWrite: false,
@@ -67,11 +67,11 @@ const FirefliesBackground: React.FC = () => {
       const context = canvas.getContext("2d");
       if (!context) return null;
 
-      // Create radial gradient
+      // Create radial gradient with brighter colors
       const gradient = context.createRadialGradient(16, 16, 0, 16, 16, 16);
-      gradient.addColorStop(0, "rgba(255, 207, 117, 1)"); // Core: warm yellow
-      gradient.addColorStop(0.3, "rgba(255, 207, 117, 0.5)"); // Mid: fading yellow
-      gradient.addColorStop(1, "rgba(255, 207, 117, 0)"); // Edge: transparent
+      gradient.addColorStop(0, "rgba(255, 247, 214, 1)"); // Brighter core
+      gradient.addColorStop(0.2, "rgba(255, 247, 214, 0.7)"); // Brighter mid
+      gradient.addColorStop(1, "rgba(255, 247, 214, 0)"); // Edge: transparent
 
       context.fillStyle = gradient;
       context.fillRect(0, 0, 32, 32);
