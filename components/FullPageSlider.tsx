@@ -16,6 +16,8 @@ const FullPageSlider: React.FC<FullPageSliderProps> = ({ slides }) => {
   // [page, direction]: page es el índice actual, direction indica si vas pa' abajo (1) o pa' arriba (-1)
   const [[page, direction], setPage] = useState<[number, number]>([0, 0]);
   const [isAnimating, setIsAnimating] = useState(false);
+  const touchStart = useRef<number | null>(null);
+  const touchThreshold = 50; // minimum swipe distance
 
   const paginate = useCallback(
     (newDirection: number) => {
@@ -58,6 +60,27 @@ const FullPageSlider: React.FC<FullPageSliderProps> = ({ slides }) => {
 
   const lastScrollTime = useRef<number | null>(null);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStart.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStart.current) return;
+
+    const touchEnd = e.changedTouches[0].clientY;
+    const diff = touchStart.current - touchEnd;
+
+    if (Math.abs(diff) < touchThreshold) return;
+
+    if (diff > 0 && page < slides.length - 1) {
+      paginate(1); // Swipe up
+    } else if (diff < 0 && page > 0) {
+      paginate(-1); // Swipe down
+    }
+
+    touchStart.current = null;
+  };
+
   const variants = {
     initial: (direction: number) => ({
       y: direction > 0 ? "100%" : "-100%",
@@ -78,6 +101,8 @@ const FullPageSlider: React.FC<FullPageSliderProps> = ({ slides }) => {
   return (
     <div
       onWheel={handleWheel}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       className="relative h-[calc(100vh-120px)] w-full overflow-hidden"
     >
       <AnimatePresence
@@ -86,6 +111,7 @@ const FullPageSlider: React.FC<FullPageSliderProps> = ({ slides }) => {
         onExitComplete={() => setIsAnimating(false)}
       >
         <motion.div
+          // layoutId={`slide-${page}`}
           key={page}
           custom={direction}
           variants={variants}
