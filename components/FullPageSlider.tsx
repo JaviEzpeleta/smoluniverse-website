@@ -104,6 +104,27 @@ const FullPageSlider: React.FC<FullPageSliderProps> = ({
     }),
   };
 
+  // Add keyboard handler
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (
+        (e.key === "ArrowDown" || e.key === "ArrowRight") &&
+        page < slides.length - 1
+      ) {
+        paginate(1);
+      } else if ((e.key === "ArrowUp" || e.key === "ArrowLeft") && page > 0) {
+        paginate(-1);
+      }
+    },
+    [page, slides.length, paginate]
+  );
+
+  // Add effect to listen for keyboard events
+  React.useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
+
   if (!slides[page]) return null;
 
   return (

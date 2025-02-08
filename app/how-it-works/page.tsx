@@ -8,6 +8,7 @@ import Image from "next/image";
 import FirefliesBackground from "@/components/banner/FirefliesBackground";
 import BigTitle from "@/components/BigTitle";
 import BlurryEntrance from "@/components/BlurryEntrance";
+import Title from "@/components/Title";
 
 const ABOUT_STEPS = {
   steps: [
@@ -102,7 +103,6 @@ const ABOUT_STEPS = {
       ),
     },
     {
-      title: "Skills, goals, and evolution! 💫",
       description: (
         <div className="flex justify-center items-center px-3">
           <div>
@@ -117,7 +117,8 @@ const ABOUT_STEPS = {
             </BlurryEntrance>
           </div>
           <div className="flex-1">
-            <div>
+            <BigTitle>Skills, goals, and evolution! 💫</BigTitle>
+            <div className="pt-12">
               Every character in the game has their own skills (with levels),
               life goals, and general life context.
             </div>
