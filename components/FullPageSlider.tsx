@@ -25,7 +25,7 @@ const FullPageSlider: React.FC<FullPageSliderProps> = ({
 
   const [isAnimating, setIsAnimating] = useState(false);
   const touchStart = useRef<number | null>(null);
-  const touchThreshold = 20; // minimum swipe distance
+  const touchThreshold = 7; // minimum swipe distance
 
   const paginate = useCallback(
     (newDirection: number) => {
@@ -104,6 +104,8 @@ const FullPageSlider: React.FC<FullPageSliderProps> = ({
     }),
   };
 
+  if (!slides[page]) return null;
+
   return (
     <div
       onWheel={handleWheel}
@@ -112,7 +114,7 @@ const FullPageSlider: React.FC<FullPageSliderProps> = ({
       className="relative h-[calc(100vh-120px)] w-full overflow-hidden"
     >
       <AnimatePresence
-        initial={false}
+        // initial={false}
         custom={direction}
         onExitComplete={() => setIsAnimating(false)}
       >

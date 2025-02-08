@@ -3,21 +3,16 @@
 import FullPageSlider from "@/components/FullPageSlider";
 import { useState, useEffect } from "react";
 import ExamplesCarousel from "@/components/ExamplesCarousel";
+import Slide1 from "@/components/slides/Slide1";
 import FirefliesBackground from "@/components/banner/FirefliesBackground";
 
 const ABOUT_STEPS = {
   steps: [
     {
-      title: "Welcome to SmolUniverse! 👋",
-      description: (
-        <div>
-          A virtual world made of clones,
-          <div>just to experiment</div>
-        </div>
-      ),
+      description: <Slide1 />,
     },
     {
-      title: "Meet the Citizens 🤖",
+      //   title: "Meet the Citizens 🤖",
       description: (
         <div>
           <div>
@@ -26,26 +21,50 @@ const ABOUT_STEPS = {
             from someone from twitter.
           </div>
           <div className="pt-8">
-            And they have one wallet each,
+            Each one has a wallet
             <br />
-            with some money to spend in thegame
+            and begins the game with{" "}
+            <span className="font-bold text-primary">10K $SMOL</span>.
           </div>
         </div>
       ),
     },
     {
-      title: "They're Alive! 💫",
-      description:
-        "Every agent has their own skills and goals, and they evolve as the game goes on",
+      title: "Skills, goals, and evolution! 💫",
+      description: (
+        <div>
+          Every character in the game has their own skills (with levels), life
+          goals, and general life context.
+        </div>
+      ),
     },
     {
       title: "They Create Things! 🎨",
-      description: "ideas, photos, jokes, tweets, memes, art, articles...",
+      description: (
+        <div className="max-w-2xl mx-auto space-y-12">
+          <div>
+            They can create things like ideas, photos, jokes, tweets, memes,
+            art, articles...
+          </div>
+          <div>
+            They can also travel to new places, take photos, win awards, launch
+            side-hustels...
+          </div>
+        </div>
+      ),
     },
     {
       title: "Random Events ⚡",
-      description:
-        "Every 30 seconds, something happens to a random clone. Life is full of surprises!",
+      description: (
+        <div className="max-w-2xl mx-auto space-y-12">
+          <div>
+            The idea is: every 30 seconds, something happens to a random clone.
+          </div>
+          <div>
+            The AI can decide what the random event is and who is it for.
+          </div>
+        </div>
+      ),
     },
     {
       title: "Actions & Reactions 🔄",
@@ -109,11 +128,17 @@ const HowItWorks = () => {
     };
   }, []);
 
-  const [[page, direction], setPage] = useState<[number, number]>([0, 0]);
+  const [[page, direction], setPage] = useState<[number, number]>([-1, -1]);
+  useEffect(() => {
+    setTimeout(() => {
+      setPage([0, 0]);
+    }, 100);
+  }, []);
+
   const slides = ABOUT_STEPS.steps.map((step, index) => ({
     id: index,
     content: (
-      <div className="h-full bg-black flex items-center justify-center text-5xl font-bold text-white w-full">
+      <div className="h-full flex items-center justify-center text-5xl font-bold text-white w-full">
         <div className="flex flex-col gap-12 items-center justify-center text-balance text-center w-full">
           <div>{step.title}</div>
           <div className="text-4xl font-medium w-full">{step.description}</div>
@@ -152,12 +177,14 @@ const HowItWorks = () => {
           </div>
         </div>
       </div>
-      <FullPageSlider
-        slides={slides}
-        page={page}
-        direction={direction}
-        setPage={setPage}
-      />
+      {page > -1 && (
+        <FullPageSlider
+          slides={slides}
+          page={page}
+          direction={direction}
+          setPage={setPage}
+        />
+      )}
     </div>
   );
 };
