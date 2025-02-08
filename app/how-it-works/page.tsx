@@ -7,6 +7,7 @@ import Slide1 from "@/components/slides/Slide1";
 import Image from "next/image";
 import FirefliesBackground from "@/components/banner/FirefliesBackground";
 import BigTitle from "@/components/BigTitle";
+import BlurryEntrance from "@/components/BlurryEntrance";
 
 const ABOUT_STEPS = {
   steps: [
@@ -42,19 +43,60 @@ const ABOUT_STEPS = {
       ),
     },
     {
+      description: (
+        <div className="flex justify-center items-center flex-col gap-12">
+          <BlurryEntrance delay={0.11}>
+            <BigTitle>Gemini API is free!</BigTitle>
+          </BlurryEntrance>
+          <BlurryEntrance delay={0.62}>
+            <BigTitle>Sepolia is free!</BigTitle>
+          </BlurryEntrance>
+          <BlurryEntrance delay={1.24}>
+            <BigTitle>Glif is free!</BigTitle>
+          </BlurryEntrance>
+          <BlurryEntrance delay={1.86}>
+            <BigTitle>I have nothing to lose!</BigTitle>
+          </BlurryEntrance>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center flex-col gap-12">
+          <BlurryEntrance delay={0.11}>
+            <BigTitle>HOW IT WORKS</BigTitle>
+          </BlurryEntrance>
+        </div>
+      ),
+    },
+    {
       //   title: "Meet the Citizens 🤖",
       description: (
-        <div>
+        <div className="flex justify-center items-center">
           <div>
-            Every character in the game is a clone
-            <br />
-            from someone from twitter.
+            <BlurryEntrance delay={0.31}>
+              <Image
+                src="/demo-slides/s3.png"
+                alt="Citizens"
+                className="w-80 rounded-4xl"
+                width={1000}
+                height={1000}
+              />
+            </BlurryEntrance>
           </div>
-          <div className="pt-8">
-            Each one has a wallet
-            <br />
-            and begins the game with{" "}
-            <span className="font-bold text-primary">10K $SMOL</span>.
+          <div>
+            <div className="">
+              Every character in the game is a clone
+              <br />
+              from someone from twitter.
+            </div>
+            <div className="pt-8">We read their latest 100 tweets.</div>
+            <div className="pt-8">
+              Each one has a wallet
+              <br />
+              and begins the game with{" "}
+              <span className="font-bold text-primary">10K $SMOL</span>.
+            </div>
           </div>
         </div>
       ),
@@ -62,9 +104,24 @@ const ABOUT_STEPS = {
     {
       title: "Skills, goals, and evolution! 💫",
       description: (
-        <div>
-          Every character in the game has their own skills (with levels), life
-          goals, and general life context.
+        <div className="flex justify-center items-center px-3">
+          <div>
+            <BlurryEntrance delay={0.31}>
+              <Image
+                src="/demo-slides/s4.png"
+                alt="Citizens"
+                className="w-44 sm:w-80 rounded-4xl"
+                width={1000}
+                height={1000}
+              />
+            </BlurryEntrance>
+          </div>
+          <div className="flex-1">
+            <div>
+              Every character in the game has their own skills (with levels),
+              life goals, and general life context.
+            </div>
+          </div>
         </div>
       ),
     },
@@ -180,7 +237,9 @@ const HowItWorks = () => {
       <div className="h-full flex items-center justify-center text-5xl font-bold text-white w-full">
         <div className="flex flex-col gap-12 items-center justify-center text-balance text-center w-full">
           <div>{step.title}</div>
-          <div className="text-4xl font-medium w-full">{step.description}</div>
+          <div className="text-xl md:text-4xl font-medium w-full">
+            {step.description}
+          </div>
         </div>
       </div>
     ),
