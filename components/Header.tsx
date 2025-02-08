@@ -10,7 +10,7 @@ import {
   OPENSEA_NFT_COLLECTION_URL,
 } from "@/lib/constants";
 import useStore from "@/lib/zustandStore";
-import { FaSquareXTwitter, FaXTwitter } from "react-icons/fa6";
+import { FaXTwitter } from "react-icons/fa6";
 
 const Header = () => {
   const { logoImageIndex, setLogoImageIndex } = useStore((state) => state);
@@ -40,16 +40,17 @@ const Header = () => {
         </Link>
       </BlurryEntrance>
       <div className="flex items-center gap-2">
-        <Link
-          href={`/explore/all`}
-          target="_blank"
-          className="bg-zinc-800 hover:bg-zinc-700 text-zinc-100
-          active:opacity-40 group text-xl
-        transition-all duration-100 w-10
+        <BlurryEntrance delay={0.08}>
+          <Link
+            href={`/explore/all`}
+            target="_blank"
+            className="bg-zinc-800 hover:bg-zinc-700 text-zinc-100
+          active:opacity-40 group text-sm sm:text-xl
+        transition-all duration-100 w-8 sm:w-10 h-8 sm:h-10
         p-0.5 rounded-full flex items-center justify-center gap-3 h-10"
-        >
-          <FaXTwitter />
-          {/* <Image
+          >
+            <FaXTwitter />
+            {/* <Image
             src="/images/opensea-logo.svg"
             alt="OpenSea"
             className="bg-white group-hover:scale-[112%] group-hover:rotate-[360deg]
@@ -58,7 +59,8 @@ const Header = () => {
             width={26}
             height={26}
           /> */}
-        </Link>
+          </Link>
+        </BlurryEntrance>
         <div className="hidden md:flex items-center gap-2">
           <BlurryEntrance delay={0.05}>
             <Link

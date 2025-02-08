@@ -73,14 +73,14 @@ const ProfileHeaderMoneyBlock = ({
 
               {/* <BsWallet2 className="text-xl -translate-y-1" /> */}
               <MiniTitle>
-                <span className="text-primary/80 font-mono text-xl font-medium">
-                  $
-                </span>
                 {/* {friendlyNumber(Number(balance))} */}
                 {Number(balance).toLocaleString("en-US", {
                   maximumFractionDigits: 2,
                 })}
-                <span className="text-xl pl-1">SMOL</span>
+                <span className="text-primary/80 font-mono text-xl font-medium pl-0.5">
+                  $
+                </span>
+                <span className="text-xl">SMOL</span>
               </MiniTitle>
             </div>
           </Link>
@@ -92,8 +92,8 @@ const ProfileHeaderMoneyBlock = ({
             <div className="flex items-center gap-2 bg-smolGreen/15 text-smolGreen p-1 pb-0.5 rounded-full px-2 pl-3">
               {/* <div>{lifeContext.relationship_status_code}</div> */}
               <div>
-                + <span className="font-mono text-sm font-medium">$</span>
-                {lifeContext.weekly_jobs_income.toLocaleString()}{" "}
+                +{lifeContext.weekly_jobs_income.toLocaleString()}
+                <span className="font-mono text-sm font-medium">$</span>
                 <span className="text-sm">SMOL/week</span>
               </div>
               <div>
@@ -107,8 +107,8 @@ const ProfileHeaderMoneyBlock = ({
             <div className="flex items-center gap-2 bg-smolRed/15 text-smolRed p-1 pb-0.5 rounded-full px-2 pl-3">
               {/* <div>{lifeContext.relationship_status_code}</div> */}
               <div>
-                - <span className="font-mono text-sm font-medium">$</span>
-                {lifeContext.weekly_life_expenses.toLocaleString()}{" "}
+                -{lifeContext.weekly_life_expenses.toLocaleString()}
+                <span className="font-mono text-sm font-medium">$</span>
                 <span className="text-sm">SMOL/week</span>
               </div>
               <div>

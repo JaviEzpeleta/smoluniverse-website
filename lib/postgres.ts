@@ -585,6 +585,14 @@ export const getSkillsHistoryByHandle = async (handle: string) => {
   return res.rows;
 };
 
+export const getLifeContextHistoryByHandle = async (handle: string) => {
+  const res = await executeQuery(
+    `SELECT * FROM sim_updates_life_context WHERE handle = $1`,
+    [handle]
+  );
+  return res.rows;
+};
+
 export const getEventsByHandle = async (handle: string) => {
   const res = await executeQuery(
     `

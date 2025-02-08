@@ -9,6 +9,7 @@ import ProfilePageLifeGoalsBlock from "@/components/ProfilePageLifeGoalsBlock";
 import ProfilePageTweetsBlock from "@/components/ProfilePageTweetsBlock";
 import ProfilePageEventsBlock from "@/components/ProfilePageEventsBlock";
 import ProfilePlayground from "@/components/ProfilePlayground";
+import { IS_LOCALHOST } from "@/lib/constants";
 
 const UserProfilePage = async ({
   params,
@@ -66,9 +67,11 @@ const UserProfilePage = async ({
         <ProfilePageJobAndOneLinerBlock lifeContext={lifeContext} />
       </div>
 
-      <div className="pt-6">
-        <ProfilePlayground user={user} />
-      </div>
+      {IS_LOCALHOST && (
+        <div className="pt-6">
+          <ProfilePlayground user={user} />
+        </div>
+      )}
 
       <div className="flex flex-col md:flex-row gap-4 w-full my-4">
         <ProfilePageSkillsBlock skills={skills} handle={handle} />

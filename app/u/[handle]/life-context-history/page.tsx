@@ -1,5 +1,8 @@
-import { findUserByHandle, getSkillsHistoryByHandle } from "@/lib/postgres";
-import SkillsHistoryViewer from "@/components/SkillsHistoryViewer";
+import {
+  findUserByHandle,
+  getLifeContextHistoryByHandle,
+} from "@/lib/postgres";
+import SkillsHistoryViewer from "@/components/LifeContextHistoryViewer";
 import BigTitle from "@/components/BigTitle";
 const SkillsHistoryPage = async ({
   params,
@@ -8,7 +11,7 @@ const SkillsHistoryPage = async ({
 }) => {
   const { handle } = await params;
 
-  const events = await getSkillsHistoryByHandle(handle);
+  const events = await getLifeContextHistoryByHandle(handle);
 
   if (!events) {
     return <div>No events found</div>;
@@ -24,7 +27,7 @@ const SkillsHistoryPage = async ({
     <div>
       <div className="py-6">
         <BigTitle>
-          Skills History for @{user.handle} ({events.length})
+          Life Context History for @{user.handle} ({events.length})
         </BigTitle>
         <SkillsHistoryViewer events={events} user={user} />
       </div>

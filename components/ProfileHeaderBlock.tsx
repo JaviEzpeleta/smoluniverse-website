@@ -4,6 +4,7 @@ import { RawUser } from "@/lib/types";
 import BlurryEntrance from "./BlurryEntrance";
 import Title from "./Title";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 const ProfileHeaderBlock = ({
   user,
@@ -50,12 +51,16 @@ const ProfileHeaderBlock = ({
           </Link>
         </BlurryEntrance>
         <BlurryEntrance delay={0.3}>
-          <div>
+          <Link
+            href={`/u/${user.handle}/life-context-history`}
+            className="hover:text-primary transition-all duration-300 active:scale-95 active:opacity-70"
+            // className="text-indigo-400 hover:text-indigo-300 transition-all active:opacity-60"
+          >
             {lifeContext.city_name} {lifeContext.country_emoji}{" "}
             <span className="pl-1 opacity-70">
               {lifeContext.relationship_status_code}
             </span>
-          </div>
+          </Link>
         </BlurryEntrance>
       </div>
     </div>

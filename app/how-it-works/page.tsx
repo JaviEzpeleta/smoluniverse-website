@@ -4,7 +4,9 @@ import FullPageSlider from "@/components/FullPageSlider";
 import { useState, useEffect } from "react";
 import ExamplesCarousel from "@/components/ExamplesCarousel";
 import Slide1 from "@/components/slides/Slide1";
+import Image from "next/image";
 import FirefliesBackground from "@/components/banner/FirefliesBackground";
+import BigTitle from "@/components/BigTitle";
 
 const ABOUT_STEPS = {
   steps: [
@@ -14,9 +16,37 @@ const ABOUT_STEPS = {
     {
       //   title: "Meet the Citizens 🤖",
       description: (
+        <div className="flex justify-center items-center">
+          <Image
+            className="h-80 w-80"
+            src="/demo-slides/s2.png"
+            alt="Citizens"
+            width={1000}
+            height={1000}
+          />
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <BigTitle>Go wild!</BigTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <BigTitle>I can do this!</BigTitle>
+        </div>
+      ),
+    },
+    {
+      //   title: "Meet the Citizens 🤖",
+      description: (
         <div>
           <div>
-            Every citizen is a clone
+            Every character in the game is a clone
             <br />
             from someone from twitter.
           </div>
@@ -43,12 +73,21 @@ const ABOUT_STEPS = {
       description: (
         <div className="max-w-2xl mx-auto space-y-12">
           <div>
-            They can create things like ideas, photos, jokes, tweets, memes,
-            art, articles...
+            They can create things like tweet{" "}
+            <span className="text-primary">ideas</span>,{" "}
+            <span className="text-primary">jokes</span>,{" "}
+            <span className="text-primary">memes</span>,{" "}
+            <span className="text-primary">art</span>,{" "}
+            <span className="text-primary">articles</span>
+            ...
           </div>
           <div>
-            They can also travel to new places, take photos, win awards, launch
-            side-hustels...
+            They can also{" "}
+            <span className="text-primary">travel to new places</span>,{" "}
+            <span className="text-primary">take photos</span>,{" "}
+            <span className="text-primary">win awards</span>,{" "}
+            <span className="text-primary">launch side-hustels</span>
+            ...
           </div>
         </div>
       ),
@@ -58,7 +97,7 @@ const ABOUT_STEPS = {
       description: (
         <div className="max-w-2xl mx-auto space-y-12">
           <div>
-            The idea is: every 30 seconds, something happens to a random clone.
+            The idea is: every 30 seconds, something happens to a character.
           </div>
           <div>
             The AI can decide what the random event is and who is it for.
