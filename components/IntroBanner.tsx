@@ -121,7 +121,7 @@ const IntroBanner = () => {
           </BlurryEntrance>
           <BlurryEntrance delay={0.24}>
             <div className="pt-4 md:pt-8">
-              <Link href="/videos/demo3.mp4" target="_blank">
+              <Link href="/videos/demo-final.mp4" target="_blank">
                 <Button
                   variant="outline"
                   // onClick={() => {
