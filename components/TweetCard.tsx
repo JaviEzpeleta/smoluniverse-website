@@ -52,15 +52,17 @@ function TweetCard({ theTweet }: { theTweet: SmolTweetWithUserData }) {
                   </Link>
                   <CheckMark />
                 </div>
-                <Link
-                  href={`/u/${theTweet.handle}`}
-                  className="active:opacity-60"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div className="font-medium opacity-70 text-sm">
-                    @{theTweet.handle}
-                  </div>
-                </Link>
+                <div className="hidden md:block">
+                  <Link
+                    href={`/u/${theTweet.handle}`}
+                    className="active:opacity-60"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="font-medium opacity-70 text-sm">
+                      @{theTweet.handle}
+                    </div>
+                  </Link>
+                </div>
                 <div className="opacity-70 text-sm">·</div>
                 <div className="opacity-70 text-sm">
                   {timeSinceShorter(new Date(theTweet.created_at).getTime())}

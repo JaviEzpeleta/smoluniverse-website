@@ -24,7 +24,7 @@ const ProfileHeaderMoneyBlock = ({
   nftsOwned: number;
 }) => {
   return (
-    <div className="space-y-2 flex flex-col items-end justify-end">
+    <div className="space-y-2 flex flex-col items-end justify-end md:justify-start">
       <BlurryEntrance delay={0.15}>
         <div className="flex items-center gap-2">
           {nftsOwned > 0 && (
@@ -86,7 +86,7 @@ const ProfileHeaderMoneyBlock = ({
           </Link>
         </div>
       </BlurryEntrance>
-      <div className="flex flex-col items-end gap-2 text-base">
+      <div className="flex flex-col items-center justify-center md:items-end gap-2 text-base mx-auto md:mx-0">
         <BlurryEntrance delay={0.25}>
           <ToolTipped text={lifeContext.weekly_jobs_income_explained}>
             <div className="flex items-center gap-2 bg-smolGreen/15 text-smolGreen p-1 pb-0.5 rounded-full px-2 pl-3">

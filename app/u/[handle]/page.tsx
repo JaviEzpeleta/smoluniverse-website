@@ -54,7 +54,7 @@ const UserProfilePage = async ({
     <div className="p-4">
       {/* <div></div> */}
       <div className="p-4 md:px-6 rounded-xl bg-black shadow-md shadow-zinc-900 border border-zinc-800">
-        <div className="flex justify-between w-full items-center">
+        <div className="flex flex-col md:flex-row justify-between w-full items-center">
           <ProfileHeaderBlock user={user} lifeContext={lifeContext} />
           <ProfileHeaderMoneyBlock
             nftsOwned={nftsOwned}
