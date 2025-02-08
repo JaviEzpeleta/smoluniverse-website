@@ -294,11 +294,11 @@ const ABOUT_STEPS = {
     {
       description: (
         <div className="flex justify-center items-center flex-col gap-12">
-          <BlurryEntrance delay={0.11}>
+          {/* <BlurryEntrance delay={0.11}>
             <BigTitle>no SDKs from the partners, no time :(</BigTitle>
-          </BlurryEntrance>
-          <BlurryEntrance delay={1.2}>
-            <BigTitle>everything is ether.js + hardhat</BigTitle>
+          </BlurryEntrance> */}
+          <BlurryEntrance delay={0.2}>
+            <BigTitle>everything is ethers.js + hardhat</BigTitle>
           </BlurryEntrance>
         </div>
       ),
