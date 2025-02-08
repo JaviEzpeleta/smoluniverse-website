@@ -55,22 +55,32 @@ const UserProfilePage = async ({
     tweet.action_id
   );
 
-  const newLifeContext = JSON.parse(tweetLifeContextEvents.new_life_context);
-  const oldLifeContext = JSON.parse(
-    tweetLifeContextEvents.previous_life_context
-  );
+  const newLifeContext = tweetLifeContextEvents
+    ? JSON.parse(tweetLifeContextEvents.new_life_context)
+    : null;
+  const oldLifeContext = tweetLifeContextEvents
+    ? JSON.parse(tweetLifeContextEvents.previous_life_context)
+    : null;
 
   const tweetSkillsEvents = await getSkillsHistoryByActionId(tweet.action_id);
 
-  const newSkills = JSON.parse(tweetSkillsEvents.new_skills);
-  const oldSkills = JSON.parse(tweetSkillsEvents.previous_skills);
+  const newSkills = tweetSkillsEvents
+    ? JSON.parse(tweetSkillsEvents.new_skills)
+    : null;
+  const oldSkills = tweetSkillsEvents
+    ? JSON.parse(tweetSkillsEvents.previous_skills)
+    : null;
 
   const tweetLifeGoalsEvents = await getLifeGoalsHistoryByActionId(
     tweet.action_id
   );
 
-  const newLifeGoals = tweetLifeGoalsEvents.new_life_goals;
-  const oldLifeGoals = tweetLifeGoalsEvents.previous_life_goals;
+  const newLifeGoals = tweetLifeGoalsEvents
+    ? tweetLifeGoalsEvents.new_life_goals
+    : null;
+  const oldLifeGoals = tweetLifeGoalsEvents
+    ? tweetLifeGoalsEvents.previous_life_goals
+    : null;
 
   return (
     <div className="p-4">
@@ -138,23 +148,29 @@ const UserProfilePage = async ({
       </BlurryEntrance>
 
       <div className="space-y-4">
-        <div className="max-w-md mx-auto bg-zinc-900 p-4 md:px-8 rounded-xl relative">
-          <Title>Life Context changes</Title>
-          <LifeContextToggle
-            oldContext={oldLifeContext}
-            newContext={newLifeContext}
-          />
-        </div>
+        {oldLifeContext && (
+          <div className="max-w-md mx-auto bg-zinc-900 p-4 md:px-8 rounded-xl relative">
+            <Title>Life Context changes</Title>
+            <LifeContextToggle
+              oldContext={oldLifeContext}
+              newContext={newLifeContext}
+            />
+          </div>
+        )}
 
-        <div className="max-w-md mx-auto bg-zinc-900 p-4 md:px-8 rounded-xl relative">
-          <Title>Skill changes</Title>
-          <SkillsToggle oldSkills={oldSkills} newSkills={newSkills} />
-        </div>
+        {oldSkills && (
+          <div className="max-w-md mx-auto bg-zinc-900 p-4 md:px-8 rounded-xl relative">
+            <Title>Skill changes</Title>
+            <SkillsToggle oldSkills={oldSkills} newSkills={newSkills} />
+          </div>
+        )}
 
-        <div className="max-w-md mx-auto bg-zinc-900 p-4 md:px-8 rounded-xl relative">
-          <Title>Life Goals changes</Title>
-          <LifeGoalsToggle oldGoals={oldLifeGoals} newGoals={newLifeGoals} />
-        </div>
+        {oldLifeGoals && (
+          <div className="max-w-md mx-auto bg-zinc-900 p-4 md:px-8 rounded-xl relative">
+            <Title>Life Goals changes</Title>
+            <LifeGoalsToggle oldGoals={oldLifeGoals} newGoals={newLifeGoals} />
+          </div>
+        )}
       </div>
     </div>
   );
