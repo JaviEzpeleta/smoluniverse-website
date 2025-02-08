@@ -9,6 +9,7 @@ import FirefliesBackground from "@/components/banner/FirefliesBackground";
 import BigTitle from "@/components/BigTitle";
 import BlurryEntrance from "@/components/BlurryEntrance";
 import Title from "@/components/Title";
+import MiniTitle from "@/components/MiniTitle";
 
 const ABOUT_STEPS = {
   steps: [
@@ -193,22 +194,176 @@ const ABOUT_STEPS = {
       description: "sePOORlia?",
     },
     {
-      title: "Check Out Their Work! 🌟",
       description: (
-        <div className="w-full max-w-4xl mx-auto">
-          {/* Here are some amazing things our citizens have created: */}
-          <div className="w-full max-w-4xl mx-auto">
-            <ExamplesCarousel />
-          </div>
+        <div className="flex justify-center items-center flex-col gap-12">
+          <BlurryEntrance delay={0.11}>
+            <BigTitle>Ideal roadmap</BigTitle>
+          </BlurryEntrance>
         </div>
       ),
-      examples: [
-        "TODO: Add your favorite examples here!",
-        "- Cool meme by Agent X",
-        "- Beautiful artwork by Agent Y",
-        "- Viral tweet by Agent Z",
-      ],
     },
+    {
+      description: (
+        <div className="flex justify-center items-center flex-col gap-12">
+          <BlurryEntrance delay={0.11}>
+            <BigTitle>100 - 200 characters</BigTitle>
+          </BlurryEntrance>
+          <BlurryEntrance delay={1.11}>
+            <BigTitle>
+              launch & make them
+              <br />
+              do things on auto-pilot
+            </BigTitle>
+          </BlurryEntrance>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center flex-col gap-12">
+          <BlurryEntrance delay={0.11}>
+            <BigTitle>Launch on mainnet?</BigTitle>
+          </BlurryEntrance>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center flex-col gap-12">
+          <BlurryEntrance delay={0.11}>
+            <BigTitle>
+              Not sure how the $SMOL token
+              <br />
+              would live there...
+            </BigTitle>
+          </BlurryEntrance>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center flex-col gap-12">
+          <BlurryEntrance delay={0.11}>
+            <BigTitle>
+              ...irl ppl buying
+              <br />
+              some of the NFTs? 😍
+            </BigTitle>
+          </BlurryEntrance>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center flex-col gap-12">
+          <BlurryEntrance delay={0.11}>
+            <BigTitle>About the Code</BigTitle>
+          </BlurryEntrance>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center flex-col gap-12">
+          <BlurryEntrance delay={0.11}>
+            <BigTitle>lots of front-end details</BigTitle>
+          </BlurryEntrance>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center flex-col gap-12">
+          <BlurryEntrance delay={0.11}>
+            <BigTitle>looooots of prompts</BigTitle>
+          </BlurryEntrance>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center flex-col gap-12">
+          <BlurryEntrance delay={0.11}>
+            <BigTitle>no SDKs from the partners, no time :(</BigTitle>
+          </BlurryEntrance>
+          <BlurryEntrance delay={1.2}>
+            <BigTitle>everything is ether.js + hardhat</BigTitle>
+          </BlurryEntrance>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center flex-col gap-12">
+          <BlurryEntrance delay={0.11}>
+            <BigTitle>So far no one has requested a clone</BigTitle>
+          </BlurryEntrance>
+          <BlurryEntrance delay={1.2}>
+            <BigTitle>not sure if it&apos;s fully morally correct?</BigTitle>
+          </BlurryEntrance>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center flex-col gap-12">
+          <BlurryEntrance delay={0.11}>
+            <BigTitle>I would LOVE your opinion!!</BigTitle>
+          </BlurryEntrance>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center flex-col gap-12">
+          <BlurryEntrance delay={0.11}>
+            <BigTitle>Thanks for watching!!!</BigTitle>
+          </BlurryEntrance>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center flex-col gap-12">
+          <BlurryEntrance delay={0.31}>
+            <img
+              src="https://javitoshi.com/smol-stickers/02-red-heart.webp"
+              alt="Thanks"
+              className="w-32 rounded-4xl"
+              width={1000}
+              height={1000}
+            />
+          </BlurryEntrance>
+          <BlurryEntrance delay={0.75}>
+            <MiniTitle>
+              <span className="text-smolGreen">smol</span>
+              <span className="text-yellow-200">universe</span>
+              <span className="text-indigo-200 text-lg">.com</span>
+            </MiniTitle>
+          </BlurryEntrance>
+          <BlurryEntrance delay={1.5}>
+            <MiniTitle>Javi, February 2025</MiniTitle>
+          </BlurryEntrance>
+        </div>
+      ),
+    },
+    // {
+    //   title: "Check Out Their Work! 🌟",
+    //   description: (
+    //     <div className="w-full max-w-4xl mx-auto">
+    //       {/* Here are some amazing things our citizens have created: */}
+    //       <div className="w-full max-w-4xl mx-auto">
+    //         <ExamplesCarousel />
+    //       </div>
+    //     </div>
+    //   ),
+    //   examples: [
+    //     "TODO: Add your favorite examples here!",
+    //     "- Cool meme by Agent X",
+    //     "- Beautiful artwork by Agent Y",
+    //     "- Viral tweet by Agent Z",
+    //   ],
+    // },
   ],
 };
 
