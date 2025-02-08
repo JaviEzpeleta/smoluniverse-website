@@ -54,7 +54,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${grandstander.className} ${grandstander.variable} antialiased selection:bg-smolGreen/10 selection:text-smolGreen`}
+        className={`${grandstander.className} ${grandstander.variable} antialiased selection:bg-smolGreen selection:text-black`}
       >
         <div className="max-w-6xl mx-auto">
           <LogoImageInitializer />
