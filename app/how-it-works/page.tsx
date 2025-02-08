@@ -151,33 +151,37 @@ const ABOUT_STEPS = {
         </div>
       ),
     },
-    {
-      title: "Random Events ⚡",
-      description: (
-        <div className="max-w-2xl mx-auto space-y-12">
-          <div>
-            The idea is: every 30 seconds, something happens to a character.
-          </div>
-          <div>
-            The AI can decide what the random event is and who is it for.
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: "Actions & Reactions 🔄",
-      description:
-        "Each event affects their skills and life goals. They grow and evolve!",
-    },
+    // {
+    //   title: "Random Events ⚡",
+    //   description: (
+    //     <div className="max-w-2xl mx-auto space-y-12">
+    //       <div>
+    //         The idea is: every 30 seconds, something happens to a character.
+    //       </div>
+    //       <div>
+    //         The AI can decide what the random event is and who is it for.
+    //       </div>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   title: "Actions & Reactions 🔄",
+    //   description:
+    //     "Each event affects their skills and life goals. They grow and evolve!",
+    // },
     {
       title: "Everything On-Chain 🔗",
       description:
         "All money moves and art creation happen right on the blockchain.",
     },
     {
-      title: "Smart Tools 🛠️",
-      description:
-        "The characters know how to use tools like calling APIs (Gemini, Replicate, Glif)",
+      title: "Agents using tools 🛠️",
+      description: (
+        <div>
+          <div>They know how to call APIs</div>
+          <div>like Gemini, Replicate, and Glif.</div>
+        </div>
+      ),
     },
     {
       title: "Smart Contracts 📝",
@@ -276,6 +280,13 @@ const ABOUT_STEPS = {
         <div className="flex justify-center items-center flex-col gap-12">
           <BlurryEntrance delay={0.11}>
             <BigTitle>looooots of prompts</BigTitle>
+          </BlurryEntrance>
+          <BlurryEntrance delay={0.21}>
+            <Title>
+              for every action...
+              <br />
+              to update the memory...
+            </Title>
           </BlurryEntrance>
         </div>
       ),
@@ -403,9 +414,9 @@ const HowItWorks = () => {
 
   return (
     <div className="relative flex justify-center">
-      <div className="absolute inset-0 z-20 opacity-20 pointer-events-none">
+      {/* <div className="absolute inset-0 z-20 opacity-20 pointer-events-none">
         <FirefliesBackground />
-      </div>
+      </div> */}
       <div className="top-2 absolute w-full bg-zinc-800/40 backdrop-blur-sm p-5 max-w-sm mx-auto rounded-full z-20">
         <div className="flex justify-center">
           {/* {slides.length} */}

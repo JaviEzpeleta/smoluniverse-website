@@ -25,7 +25,7 @@ const FullPageSlider: React.FC<FullPageSliderProps> = ({
 
   const [isAnimating, setIsAnimating] = useState(false);
   const touchStart = useRef<number | null>(null);
-  const touchThreshold = 30; // minimum swipe distance
+  const touchThreshold = 60; // minimum swipe distance
 
   const paginate = useCallback(
     (newDirection: number) => {
