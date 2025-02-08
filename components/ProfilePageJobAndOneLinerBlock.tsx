@@ -11,10 +11,12 @@ const ProfilePageJobAndOneLinerBlock = ({
   return (
     <div className="flex gap-2 justify-center flex-col pt-4 px-1">
       <BlurryEntrance>
-        <MiniTitle>{lifeContext.current_job_title}</MiniTitle>
+        <MiniTitle>
+          <div className="text-balance">{lifeContext.current_job_title}</div>
+        </MiniTitle>
       </BlurryEntrance>
       <BlurryEntrance delay={0.1}>
-        <div>{lifeContext.one_liner}</div>
+        <div className="text-balance">{lifeContext.one_liner}</div>
       </BlurryEntrance>
     </div>
   );
