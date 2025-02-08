@@ -1,5 +1,8 @@
 import {
   findUserByHandle,
+  getLifeContextHistoryByActionId,
+  getLifeGoalsHistoryByActionId,
+  getSkillsHistoryByActionId,
   getSmolTweetById,
   getWalletByHandle,
 } from "@/lib/postgres";
@@ -12,6 +15,10 @@ import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { timeSince } from "@/lib/time";
 import BlurryEntrance from "@/components/BlurryEntrance";
 import Link from "next/link";
+import LifeContextToggle from "@/components/LifeContextToggle";
+import SkillsToggle from "@/components/SkillsToggle";
+import LifeGoalsToggle from "@/components/LifeGoalsToggle";
+import Title from "@/components/Title";
 
 const UserProfilePage = async ({
   params,
@@ -35,7 +42,6 @@ const UserProfilePage = async ({
 
   const balanceInWei = await getBalanceByHandleCached(handle);
   const balance = ethers.formatEther(balanceInWei);
-  const skills = JSON.parse(user.skills);
   const lifeContext = JSON.parse(user.life_context);
   const wallet = await getWalletByHandle(handle);
 
@@ -44,6 +50,28 @@ const UserProfilePage = async ({
   }
 
   const nftsOwned = await ownedNFTs(wallet.address);
+
+  const tweetLifeContextEvents = await getLifeContextHistoryByActionId(
+    tweet.action_id
+  );
+
+  const newLifeContext = JSON.parse(tweetLifeContextEvents.new_life_context);
+  const oldLifeContext = JSON.parse(
+    tweetLifeContextEvents.previous_life_context
+  );
+
+  const tweetSkillsEvents = await getSkillsHistoryByActionId(tweet.action_id);
+
+  const newSkills = JSON.parse(tweetSkillsEvents.new_skills);
+  const oldSkills = JSON.parse(tweetSkillsEvents.previous_skills);
+
+  const tweetLifeGoalsEvents = await getLifeGoalsHistoryByActionId(
+    tweet.action_id
+  );
+
+  const newLifeGoals = tweetLifeGoalsEvents.new_life_goals;
+  const oldLifeGoals = tweetLifeGoalsEvents.previous_life_goals;
+
   return (
     <div className="p-4">
       {/* <div></div> */}
@@ -60,8 +88,11 @@ const UserProfilePage = async ({
         <ProfilePageJobAndOneLinerBlock lifeContext={lifeContext} />
       </div>
 
+      {/* <div>
+        <pre>{JSON.stringify(tweetLifeContextEvents, null, 2)}</pre>
+      </div> */}
       <BlurryEntrance delay={0.2}>
-        <div className="flex flex-col md:flex-row gap-4 w-full my-12">
+        <div className="flex flex-col md:flex-row gap-4 w-full mt-12 mb-4">
           <div className="max-w-md mx-auto bg-zinc-900 p-4 md:px-8 rounded-xl relative">
             <div className="text-smolGreen flex justify-end absolute -top-2 -right-2 text-sm rotate-3">
               <BlurryEntrance delay={0.22}>
@@ -105,6 +136,26 @@ const UserProfilePage = async ({
           </div>
         </div>
       </BlurryEntrance>
+
+      <div className="space-y-4">
+        <div className="max-w-md mx-auto bg-zinc-900 p-4 md:px-8 rounded-xl relative">
+          <Title>Life Context changes</Title>
+          <LifeContextToggle
+            oldContext={oldLifeContext}
+            newContext={newLifeContext}
+          />
+        </div>
+
+        <div className="max-w-md mx-auto bg-zinc-900 p-4 md:px-8 rounded-xl relative">
+          <Title>Skill changes</Title>
+          <SkillsToggle oldSkills={oldSkills} newSkills={newSkills} />
+        </div>
+
+        <div className="max-w-md mx-auto bg-zinc-900 p-4 md:px-8 rounded-xl relative">
+          <Title>Life Goals changes</Title>
+          <LifeGoalsToggle oldGoals={oldLifeGoals} newGoals={newLifeGoals} />
+        </div>
+      </div>
     </div>
   );
 };

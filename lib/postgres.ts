@@ -621,3 +621,27 @@ export const getTweetsByActionTypeWithUserData = async (actionType: string) => {
   );
   return res.rows;
 };
+
+export const getLifeContextHistoryByActionId = async (actionId: string) => {
+  const res = await executeQuery(
+    `SELECT * FROM sim_updates_life_context WHERE action_id = $1`,
+    [actionId]
+  );
+  return res.rows[0];
+};
+
+export const getSkillsHistoryByActionId = async (actionId: string) => {
+  const res = await executeQuery(
+    `SELECT * FROM sim_updates_skills WHERE action_id = $1`,
+    [actionId]
+  );
+  return res.rows[0];
+};
+
+export const getLifeGoalsHistoryByActionId = async (actionId: string) => {
+  const res = await executeQuery(
+    `SELECT * FROM sim_updates_life_goals WHERE action_id = $1`,
+    [actionId]
+  );
+  return res.rows[0];
+};
