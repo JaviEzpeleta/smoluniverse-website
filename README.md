@@ -149,3 +149,35 @@ Testnet during development).
    [🔗 Click here to view the smart contracts repository!](https://github.com/JaviEzpeleta/smoluniverse-contracts)
 
 ---
+
+## Open for contributions and feedback!
+
+- **Contributions**: Would you like to contribute to the project? Let's talk!!
+  You can find me on [Twitter](https://x.com/javitoshi).
+
+- **Feedback, ideas, suggestions**:  
+  I would absolutely love to hear your thoughts on this project! Please please
+  [let me know](https://x.com/javitoshi) what you think.
+
+---
+
+## Ideal roadmap / Future plans
+
+- Gather 100 or 200 characters ready to play the game.
+- Then launch the game officially and make it run on autopilot forever.
+- Maybe launch on mainnet so irl people can buy the NFTs created by the game
+  characters? No idea. If you have any ideas, again, please
+  [let me know](https://x.com/javitoshi)!
+
+## Thank you
+
+I had so much fun building this project and interacting with other hackers on
+Discord!
+
+**Thank you [ETHGlobal](https://ethglobal.com//) for this hackathon.**
+
+It's been an incredible week.
+
+Thanks for making this happen!!!! ❤️
+
+_Javi, Februrary 9th, 2025_
