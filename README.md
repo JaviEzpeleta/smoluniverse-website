@@ -18,6 +18,8 @@ jokes, and more.. all powered by AI. The simulation features an on-chain economy
 based on the meme token ($SMOL) and operates on Ethereum (using Base Sepolia
 Testnet during development).
 
+### [🎬🍿 Watch the video demo here!](https://smoluniverse.com/videos/demo-final.mp4)
+
 ---
 
 ## 🔑 Key Features
