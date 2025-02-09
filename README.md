@@ -1,4 +1,6 @@
-# 🌌 SmolUniverse: AI-Driven Ethereum Simulation
+[![smoluniverse.com Demo](https://smoluniverse.com/readme-images/1.png)](https://smoluniverse.com/videos/demo-final.mp4)
+
+# 🌌 SmolUniverse: AI-Driven Simulation on Ethereum
 
 **A technical, social, and artistic experimental universe where AI clones create
 art, chaos, and culture on-chain**  
