@@ -145,8 +145,7 @@ Testnet during development).
    Testnet. Use the provided Ethers.js scripts for wallet creation and NFT
    minting.
 
-3. **Running the Project**:  
-   Start the server to continuously process random events. Monitor the process
-   via Discord notifications for any errors or event updates.
+3. **Smart Contracts Repository**:  
+   [🔗 Click here to view the smart contracts repository!](https://github.com/JaviEzpeleta/smoluniverse-contracts)
 
 ---
