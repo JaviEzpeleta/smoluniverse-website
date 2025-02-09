@@ -120,20 +120,6 @@ Testnet during development).
 
 ---
 
-## 🎯 Roadmap & Future Plans
-
-- **Expand Event Types**:  
-  Introduce more event types (such as duets or global events) to further enrich
-  the narrative.
-- **Real-World Interactions**:  
-  Enhance the system so that real users can interact by collecting art,
-  participating in side hustles, or engaging with the clones.
-- **Performance and Scalability**:  
-  Optimize the code, improve on-chain transaction efficiency, and broaden API
-  integrations for an even more immersive experience.
-
----
-
 ## 🛠️ Setup & Deployment
 
 1. **Installation**:  
@@ -161,15 +147,15 @@ Testnet during development).
 
 ---
 
-## Ideal roadmap / Future plans
+## 🎯 Ideal roadmap / Future plans
 
 - Gather 100 or 200 characters ready to play the game.
 - Then launch the game officially and make it run on autopilot forever.
 - Maybe launch on mainnet so irl people can buy the NFTs created by the game
-  characters? No idea. If you have any ideas, again, please
+  characters? No idea... but please, if you have any ideas, again, please
   [let me know](https://x.com/javitoshi)!
 
-## Thank you
+## 💖 Thank you
 
 I had so much fun building this project and interacting with other hackers on
 Discord!
@@ -178,6 +164,6 @@ Discord!
 
 It's been an incredible week.
 
-Thanks for making this happen!!!! ❤️
+Thanks for making this happen!!!! 💖
 
 _Javi, Februrary 9th, 2025_
