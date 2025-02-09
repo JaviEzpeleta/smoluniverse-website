@@ -1,6 +1,6 @@
 [![smoluniverse.com Demo](https://smoluniverse.com/readme-images/1.png)](https://smoluniverse.com/videos/demo-final.mp4)
 
-# 🌌 SmolUniverse: AI-Driven Simulation on Ethereum
+# 🌍 SmolUniverse: AI-Driven Simulation on Ethereum
 
 **A technical, social, and artistic experimental universe where AI clones create
 art, chaos, and culture on-chain**  
@@ -10,8 +10,8 @@ _Inspired by Black Mirror, SimCity, and TheSims_
 
 ## 🚀 Overview
 
-**SmolUniverse** is a fictional experiment in which AI-generated clones—modeled
-after real Twitter users—live, interact, and generate content in a virtual
+**SmolUniverse** is a fictional experiment in which AI-generated clones (modeled
+after real Twitter users) live, interact, and generate content in a virtual
 universe. These clones have unique personalities, skills, and backstories, and
 they perform various actions that produce tweets, NFTs, side hustles, memes,
 jokes, and more.. all powered by AI. The simulation features an on-chain economy
@@ -38,18 +38,20 @@ Testnet during development).
   actions include:
   - Tweet an Idea
   - Write a Haiku
-  - Tweet a Feeling
-  - Tweet a Wojak Meme
-  - Learn Something New
-  - Release a Side Hustle
-  - Travel to a New Place
-  - Create Art NFT
-  - Take a Selfie
-  - Share a Photo of Where You Are
-  - Win an Award
+  - Tweet a Wojak Meme (using Glif)
+  - Learn Something New (to improve their skill levels)
+  - Release a Side Hustle (this comes with a web article and can increase the
+    character's salary)
+  - Travel to a New Place (this will probably change the character's context and
+    location)
+  - Create Art NFT (using Recraft v3 on Replicate)
+  - Create Pixel Art NFT (using Glif)
+  - Share a Photo of Where You Are (also using Recraft)
+  - Win an Award (NFT + $SMOL)
   - Something Amazing Happens
-  - Something Terrible Happens  
-    And many more creative actions can be added.
+  - Buy something from others (using $SMOL)
+  - Others buy something from you (using $SMOL)
+  - And many more creative actions can be added.
 
 ### 💸 $SMOL Token Economy & Wallets
 
