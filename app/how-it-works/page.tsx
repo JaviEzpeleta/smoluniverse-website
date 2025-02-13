@@ -10,6 +10,7 @@ import BigTitle from "@/components/BigTitle";
 import BlurryEntrance from "@/components/BlurryEntrance";
 import Title from "@/components/Title";
 import MiniTitle from "@/components/MiniTitle";
+import HugeTitle from "@/components/HugeTitle";
 
 const ABOUT_STEPS = {
   steps: [
@@ -21,7 +22,7 @@ const ABOUT_STEPS = {
       description: (
         <div className="flex justify-center items-center">
           <Image
-            className="h-80 w-80"
+            className="h-96 w-96"
             src="/demo-slides/s2.png"
             alt="Citizens"
             width={1000}
@@ -30,10 +31,87 @@ const ABOUT_STEPS = {
         </div>
       ),
     },
+    // {
+    //   //   title: "Meet the Citizens 🤖",
+    //   description: (
+    //     <div className="flex justify-center items-center">
+    //       <Image
+    //         className="h-96 w-96"
+    //         src="/demo-slides/s2a.png"
+    //         alt="Citizens"
+    //         width={1000}
+    //         height={1000}
+    //       />
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   //   title: "Meet the Citizens 🤖",
+    //   description: (
+    //     <div className="flex justify-center items-center">
+    //       <Image
+    //         className="h-96 w-96"
+    //         src="/demo-slides/s2b.png"
+    //         alt="Citizens"
+    //         width={1000}
+    //         height={1000}
+    //       />
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   description: (
+    //     <div className="flex justify-center items-center">
+    //       <HugeTitle>2 main goals:</HugeTitle>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   description: (
+    //     <div className="flex justify-center items-center">
+    //       <HugeTitle>1: HAVE FUN!</HugeTitle>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   description: (
+    //     <div className="flex justify-center items-center">
+    //       <HugeTitle>2: EXPERIMENT!</HugeTitle>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   description: (
+    //     <div className="flex justify-center items-center">
+    //       <HugeTitle>Technical Experiment</HugeTitle>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   description: (
+    //     <div className="flex justify-center items-center">
+    //       <HugeTitle>Artistic Experiment</HugeTitle>
+    //     </div>
+    //   ),
+    // },
     {
       description: (
         <div className="flex justify-center items-center">
-          <BigTitle>Go wild!</BigTitle>
+          <HugeTitle>Have fun!</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>Go Wild!</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>Experiment!</HugeTitle>
         </div>
       ),
     },
@@ -414,9 +492,9 @@ const HowItWorks = () => {
 
   return (
     <div className="relative flex justify-center">
-      <div className="absolute inset-0 z-20 opacity-20 pointer-events-none">
+      {/* <div className="absolute inset-0 z-20 opacity-20 pointer-events-none">
         <FirefliesBackground />
-      </div>
+      </div> */}
       <div className="top-2 absolute w-full bg-zinc-800/40 backdrop-blur-sm p-5 max-w-sm mx-auto rounded-full z-20">
         <div className="flex justify-center">
           {/* {slides.length} */}
