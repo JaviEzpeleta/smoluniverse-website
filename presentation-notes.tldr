@@ -1,0 +1,362 @@
+{
+	"tldrawFileFormatVersion": 1,
+	"schema": {
+		"schemaVersion": 2,
+		"sequences": {
+			"com.tldraw.store": 4,
+			"com.tldraw.asset": 1,
+			"com.tldraw.camera": 1,
+			"com.tldraw.document": 2,
+			"com.tldraw.instance": 25,
+			"com.tldraw.instance_page_state": 5,
+			"com.tldraw.page": 1,
+			"com.tldraw.instance_presence": 6,
+			"com.tldraw.pointer": 1,
+			"com.tldraw.shape": 4,
+			"com.tldraw.asset.bookmark": 2,
+			"com.tldraw.asset.image": 5,
+			"com.tldraw.asset.video": 5,
+			"com.tldraw.shape.group": 0,
+			"com.tldraw.shape.text": 2,
+			"com.tldraw.shape.bookmark": 2,
+			"com.tldraw.shape.draw": 2,
+			"com.tldraw.shape.geo": 9,
+			"com.tldraw.shape.note": 8,
+			"com.tldraw.shape.line": 5,
+			"com.tldraw.shape.frame": 0,
+			"com.tldraw.shape.arrow": 5,
+			"com.tldraw.shape.highlight": 1,
+			"com.tldraw.shape.embed": 4,
+			"com.tldraw.shape.image": 4,
+			"com.tldraw.shape.video": 2,
+			"com.tldraw.binding.arrow": 0
+		}
+	},
+	"records": [
+		{
+			"gridSize": 10,
+			"name": "",
+			"meta": {},
+			"id": "document:document",
+			"typeName": "document"
+		},
+		{
+			"meta": {},
+			"id": "page:page",
+			"name": "Page 1",
+			"index": "a1",
+			"typeName": "page"
+		},
+		{
+			"id": "pointer:pointer",
+			"typeName": "pointer",
+			"x": 779.1064823416407,
+			"y": 536.5544269173175,
+			"lastActivityTimestamp": 1739436595610,
+			"meta": {}
+		},
+		{
+			"followingUserId": null,
+			"opacityForNextShape": 1,
+			"stylesForNextShape": {
+				"tldraw:geo": "rectangle"
+			},
+			"brush": null,
+			"scribbles": [],
+			"cursor": {
+				"type": "default",
+				"rotation": 0
+			},
+			"isFocusMode": false,
+			"exportBackground": true,
+			"isDebugMode": false,
+			"isToolLocked": false,
+			"screenBounds": {
+				"x": 0,
+				"y": 0,
+				"w": 1440,
+				"h": 745
+			},
+			"insets": [
+				false,
+				false,
+				true,
+				false
+			],
+			"zoomBrush": null,
+			"isGridMode": false,
+			"isPenMode": false,
+			"chatMessage": "",
+			"isChatting": false,
+			"highlightedUserIds": [],
+			"isFocused": true,
+			"devicePixelRatio": 2,
+			"isCoarsePointer": false,
+			"isHoveringCanvas": true,
+			"openMenus": [],
+			"isChangingStyle": false,
+			"isReadonly": false,
+			"meta": {},
+			"duplicateProps": null,
+			"id": "instance:instance",
+			"currentPageId": "page:page",
+			"typeName": "instance"
+		},
+		{
+			"editingShapeId": null,
+			"croppingShapeId": null,
+			"selectedShapeIds": [
+				"shape:p6NQel4O15LNn33KOdyyJ"
+			],
+			"hoveredShapeId": "shape:p6NQel4O15LNn33KOdyyJ",
+			"erasingShapeIds": [],
+			"hintingShapeIds": [],
+			"focusedGroupId": null,
+			"meta": {},
+			"id": "instance_page_state:page:page",
+			"pageId": "page:page",
+			"typeName": "instance_page_state"
+		},
+		{
+			"x": -11.866841927566181,
+			"y": 234.9748861804014,
+			"z": 0.5363535681340834,
+			"meta": {},
+			"id": "camera:page:page",
+			"typeName": "camera"
+		},
+		{
+			"x": -111.5919295952227,
+			"y": 39.57062547980183,
+			"rotation": 0,
+			"isLocked": false,
+			"opacity": 1,
+			"meta": {},
+			"id": "shape:Ic051Lsm06iLWh_fZw1t-",
+			"type": "text",
+			"props": {
+				"color": "black",
+				"size": "m",
+				"w": 394.390625,
+				"text": "Main presentation points:\n\n1 - What's the project about\n  + (Motivations / Backstory)\n2 - How it works (DEMO TIME!)\n3 - Challenges\n4 - Future Plans",
+				"font": "draw",
+				"textAlign": "start",
+				"autoSize": true,
+				"scale": 1.5743604909575688
+			},
+			"parentId": "page:page",
+			"index": "a1",
+			"typeName": "shape"
+		},
+		{
+			"x": 886.4713869362934,
+			"y": 151.70864512234974,
+			"rotation": 0,
+			"isLocked": false,
+			"opacity": 1,
+			"meta": {},
+			"id": "shape:C16kA_NmBkgI3eFRX2hBF",
+			"type": "text",
+			"props": {
+				"color": "black",
+				"size": "m",
+				"w": 109.078125,
+				"text": "@handle",
+				"font": "draw",
+				"textAlign": "start",
+				"autoSize": true,
+				"scale": 1.3501326259946949
+			},
+			"parentId": "page:page",
+			"index": "a22xe",
+			"typeName": "shape"
+		},
+		{
+			"x": 858.8034181862934,
+			"y": 141.77505137234974,
+			"rotation": 0,
+			"isLocked": false,
+			"opacity": 1,
+			"meta": {},
+			"id": "shape:GQfT2OUJByhn8hzTBVYWh",
+			"type": "geo",
+			"props": {
+				"w": 204.83984375,
+				"h": 64.91015625,
+				"geo": "rectangle",
+				"color": "black",
+				"labelColor": "black",
+				"fill": "none",
+				"dash": "draw",
+				"size": "m",
+				"font": "draw",
+				"text": "",
+				"align": "middle",
+				"verticalAlign": "middle",
+				"growY": 0,
+				"url": "",
+				"scale": 1
+			},
+			"parentId": "page:page",
+			"index": "a37af",
+			"typeName": "shape"
+		},
+		{
+			"x": 1081.5729494362934,
+			"y": 174.54848887234974,
+			"rotation": 0,
+			"isLocked": false,
+			"opacity": 1,
+			"meta": {},
+			"id": "shape:h3U9CtTQBcsHg9WcZlx8x",
+			"type": "arrow",
+			"props": {
+				"dash": "draw",
+				"size": "m",
+				"fill": "none",
+				"color": "black",
+				"labelColor": "black",
+				"bend": 0,
+				"start": {
+					"x": 0,
+					"y": 0
+				},
+				"end": {
+					"x": 134.4510032153907,
+					"y": 8.881784197001252e-16
+				},
+				"arrowheadStart": "none",
+				"arrowheadEnd": "arrow",
+				"text": "",
+				"labelPosition": 0.5,
+				"font": "draw",
+				"scale": 1
+			},
+			"parentId": "page:page",
+			"index": "a44hT",
+			"typeName": "shape"
+		},
+		{
+			"x": 1286.7916994362934,
+			"y": 116.19302012234974,
+			"rotation": 0,
+			"isLocked": false,
+			"opacity": 1,
+			"meta": {},
+			"id": "shape:E_yrgg7QutuT6ZXGqwZdk",
+			"type": "text",
+			"props": {
+				"color": "black",
+				"size": "m",
+				"w": 342.140625,
+				"text": "Read 100 tweets\nCreate profile\nbio, general context, \nexpenses + income\nlife goals\nskills/levels\nNew wallet + initial tokens",
+				"font": "draw",
+				"textAlign": "start",
+				"autoSize": true,
+				"scale": 1
+			},
+			"parentId": "page:page",
+			"index": "a51PI",
+			"typeName": "shape"
+		},
+		{
+			"x": 980.8271419961848,
+			"y": -6.348084758145397,
+			"rotation": 0,
+			"isLocked": false,
+			"opacity": 1,
+			"meta": {},
+			"id": "shape:tQkozVF1I8cAZPr1ws9Ye",
+			"type": "text",
+			"props": {
+				"color": "black",
+				"size": "m",
+				"w": 231.859375,
+				"text": "🐣 USER CREATION",
+				"font": "draw",
+				"textAlign": "middle",
+				"autoSize": true,
+				"scale": 1.881973322510196
+			},
+			"parentId": "page:page",
+			"index": "a68aS",
+			"typeName": "shape"
+		},
+		{
+			"x": 762.3251641167019,
+			"y": -90.64962581157587,
+			"rotation": 0,
+			"isLocked": false,
+			"opacity": 1,
+			"meta": {},
+			"id": "shape:3wjCVqxtEWt__aa-9s2rN",
+			"type": "geo",
+			"props": {
+				"w": 915.86328125,
+				"h": 516.2421875,
+				"geo": "rectangle",
+				"color": "black",
+				"labelColor": "black",
+				"fill": "none",
+				"dash": "draw",
+				"size": "m",
+				"font": "draw",
+				"text": "",
+				"align": "middle",
+				"verticalAlign": "middle",
+				"growY": 0,
+				"url": "",
+				"scale": 1
+			},
+			"parentId": "page:page",
+			"index": "a75Mk",
+			"typeName": "shape"
+		},
+		{
+			"x": 628.8087881749095,
+			"y": 532.8543037075577,
+			"rotation": 0,
+			"isLocked": false,
+			"opacity": 1,
+			"meta": {},
+			"id": "shape:p6NQel4O15LNn33KOdyyJ",
+			"type": "text",
+			"props": {
+				"color": "black",
+				"size": "m",
+				"w": 494.40027299006135,
+				"text": "👨‍🎨 CREATE SOME ART",
+				"font": "draw",
+				"textAlign": "middle",
+				"autoSize": true,
+				"scale": 3.1255339583608053
+			},
+			"parentId": "page:page",
+			"index": "a94gM",
+			"typeName": "shape"
+		},
+		{
+			"x": 344.84630568407215,
+			"y": 675.5627031777531,
+			"rotation": 0,
+			"isLocked": false,
+			"opacity": 1,
+			"meta": {},
+			"id": "shape:SvNwFQhg4ElJ4bz5vgk0U",
+			"type": "text",
+			"props": {
+				"color": "black",
+				"size": "m",
+				"w": 996.0234375,
+				"text": "Context Input: full smol profile + irl tweets + previous game activity\nOutput: tweet, image prompt, image title\nThen:\n  - generate image itself\n  - government account mints the piece and transfer owneship to clone's wallet\n  - round of updates: the action impacts life context, life goals, skills",
+				"font": "draw",
+				"textAlign": "start",
+				"autoSize": true,
+				"scale": 1.474053167191424
+			},
+			"parentId": "page:page",
+			"index": "aA5FO",
+			"typeName": "shape"
+		}
+	]
+}
