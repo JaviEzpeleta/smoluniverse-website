@@ -48,84 +48,6 @@
 			"typeName": "page"
 		},
 		{
-			"id": "pointer:pointer",
-			"typeName": "pointer",
-			"x": 779.1064823416407,
-			"y": 536.5544269173175,
-			"lastActivityTimestamp": 1739436595610,
-			"meta": {}
-		},
-		{
-			"followingUserId": null,
-			"opacityForNextShape": 1,
-			"stylesForNextShape": {
-				"tldraw:geo": "rectangle"
-			},
-			"brush": null,
-			"scribbles": [],
-			"cursor": {
-				"type": "default",
-				"rotation": 0
-			},
-			"isFocusMode": false,
-			"exportBackground": true,
-			"isDebugMode": false,
-			"isToolLocked": false,
-			"screenBounds": {
-				"x": 0,
-				"y": 0,
-				"w": 1440,
-				"h": 745
-			},
-			"insets": [
-				false,
-				false,
-				true,
-				false
-			],
-			"zoomBrush": null,
-			"isGridMode": false,
-			"isPenMode": false,
-			"chatMessage": "",
-			"isChatting": false,
-			"highlightedUserIds": [],
-			"isFocused": true,
-			"devicePixelRatio": 2,
-			"isCoarsePointer": false,
-			"isHoveringCanvas": true,
-			"openMenus": [],
-			"isChangingStyle": false,
-			"isReadonly": false,
-			"meta": {},
-			"duplicateProps": null,
-			"id": "instance:instance",
-			"currentPageId": "page:page",
-			"typeName": "instance"
-		},
-		{
-			"editingShapeId": null,
-			"croppingShapeId": null,
-			"selectedShapeIds": [
-				"shape:p6NQel4O15LNn33KOdyyJ"
-			],
-			"hoveredShapeId": "shape:p6NQel4O15LNn33KOdyyJ",
-			"erasingShapeIds": [],
-			"hintingShapeIds": [],
-			"focusedGroupId": null,
-			"meta": {},
-			"id": "instance_page_state:page:page",
-			"pageId": "page:page",
-			"typeName": "instance_page_state"
-		},
-		{
-			"x": -11.866841927566181,
-			"y": 234.9748861804014,
-			"z": 0.5363535681340834,
-			"meta": {},
-			"id": "camera:page:page",
-			"typeName": "camera"
-		},
-		{
 			"x": -111.5919295952227,
 			"y": 39.57062547980183,
 			"rotation": 0,
@@ -248,8 +170,8 @@
 			"props": {
 				"color": "black",
 				"size": "m",
-				"w": 342.140625,
-				"text": "Read 100 tweets\nCreate profile\nbio, general context, \nexpenses + income\nlife goals\nskills/levels\nNew wallet + initial tokens",
+				"w": 291.8359375,
+				"text": "Read 100 tweets\nthen, the db users row:\n- bio, general context, \n- expenses + income\n- life goals\n- skills/levels\n- wallet + initial $$",
 				"font": "draw",
 				"textAlign": "start",
 				"autoSize": true,
@@ -357,6 +279,82 @@
 			"parentId": "page:page",
 			"index": "aA5FO",
 			"typeName": "shape"
+		},
+		{
+			"id": "pointer:pointer",
+			"typeName": "pointer",
+			"x": 1483.2336113285924,
+			"y": 166.18306742783966,
+			"lastActivityTimestamp": 1739482323531,
+			"meta": {}
+		},
+		{
+			"followingUserId": null,
+			"opacityForNextShape": 1,
+			"stylesForNextShape": {},
+			"brush": null,
+			"scribbles": [],
+			"cursor": {
+				"type": "default",
+				"rotation": 0
+			},
+			"isFocusMode": false,
+			"exportBackground": true,
+			"isDebugMode": false,
+			"isToolLocked": false,
+			"screenBounds": {
+				"x": 0,
+				"y": 0,
+				"w": 1228,
+				"h": 723
+			},
+			"insets": [
+				false,
+				false,
+				true,
+				false
+			],
+			"zoomBrush": null,
+			"isGridMode": false,
+			"isPenMode": false,
+			"chatMessage": "",
+			"isChatting": false,
+			"highlightedUserIds": [],
+			"isFocused": true,
+			"devicePixelRatio": 2,
+			"isCoarsePointer": false,
+			"isHoveringCanvas": true,
+			"openMenus": [],
+			"isChangingStyle": false,
+			"isReadonly": false,
+			"meta": {},
+			"duplicateProps": null,
+			"id": "instance:instance",
+			"currentPageId": "page:page",
+			"typeName": "instance"
+		},
+		{
+			"editingShapeId": "shape:E_yrgg7QutuT6ZXGqwZdk",
+			"croppingShapeId": null,
+			"selectedShapeIds": [
+				"shape:E_yrgg7QutuT6ZXGqwZdk"
+			],
+			"hoveredShapeId": "shape:E_yrgg7QutuT6ZXGqwZdk",
+			"erasingShapeIds": [],
+			"hintingShapeIds": [],
+			"focusedGroupId": null,
+			"meta": {},
+			"id": "instance_page_state:page:page",
+			"pageId": "page:page",
+			"typeName": "instance_page_state"
+		},
+		{
+			"x": -671.3543181672485,
+			"y": 168.65630058734496,
+			"z": 1.0706159706517637,
+			"meta": {},
+			"id": "camera:page:page",
+			"typeName": "camera"
 		}
 	]
 }

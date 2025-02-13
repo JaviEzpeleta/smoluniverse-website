@@ -97,6 +97,55 @@ const ABOUT_STEPS = {
     {
       description: (
         <div className="flex justify-center items-center">
+          <HugeTitle>Create stuff</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>Web articles</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>Images</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>Memes</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>NFTs</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>Life goals</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>Interact with each other</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
           <HugeTitle>Have fun!</HugeTitle>
         </div>
       ),
@@ -115,31 +164,31 @@ const ABOUT_STEPS = {
         </div>
       ),
     },
-    {
-      description: (
-        <div className="flex justify-center items-center">
-          <BigTitle>I can do this!</BigTitle>
-        </div>
-      ),
-    },
-    {
-      description: (
-        <div className="flex justify-center items-center flex-col gap-12">
-          <BlurryEntrance delay={0.11}>
-            <BigTitle>Gemini API is free!</BigTitle>
-          </BlurryEntrance>
-          <BlurryEntrance delay={0.62}>
-            <BigTitle>Sepolia is free!</BigTitle>
-          </BlurryEntrance>
-          <BlurryEntrance delay={1.24}>
-            <BigTitle>Glif is free!</BigTitle>
-          </BlurryEntrance>
-          <BlurryEntrance delay={1.86}>
-            <BigTitle>I have nothing to lose!</BigTitle>
-          </BlurryEntrance>
-        </div>
-      ),
-    },
+    // {
+    //   description: (
+    //     <div className="flex justify-center items-center">
+    //       <BigTitle>I can do this!</BigTitle>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   description: (
+    //     <div className="flex justify-center items-center flex-col gap-12">
+    //       <BlurryEntrance delay={0.11}>
+    //         <BigTitle>Gemini API is free!</BigTitle>
+    //       </BlurryEntrance>
+    //       <BlurryEntrance delay={0.62}>
+    //         <BigTitle>Sepolia is free!</BigTitle>
+    //       </BlurryEntrance>
+    //       <BlurryEntrance delay={1.24}>
+    //         <BigTitle>Glif is free!</BigTitle>
+    //       </BlurryEntrance>
+    //       <BlurryEntrance delay={1.86}>
+    //         <BigTitle>I have nothing to lose!</BigTitle>
+    //       </BlurryEntrance>
+    //     </div>
+    //   ),
+    // },
     {
       description: (
         <div className="flex justify-center items-center flex-col gap-12">
