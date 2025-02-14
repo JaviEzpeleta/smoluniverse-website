@@ -16,7 +16,7 @@ const IntroBanner = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    setRandomNumber(Math.floor(Math.random() * 5) + 1);
+    setRandomNumber(Math.floor(Math.random() * 4) + 1);
   }, []);
 
   // when the component renders the first time, please scroll to the top of the pagfe:

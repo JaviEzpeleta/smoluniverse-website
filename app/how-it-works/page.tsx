@@ -10,6 +10,7 @@ import BigTitle from "@/components/BigTitle";
 import BlurryEntrance from "@/components/BlurryEntrance";
 import Title from "@/components/Title";
 import MiniTitle from "@/components/MiniTitle";
+import HugeTitle from "@/components/HugeTitle";
 
 const ABOUT_STEPS = {
   steps: [
@@ -21,7 +22,7 @@ const ABOUT_STEPS = {
       description: (
         <div className="flex justify-center items-center">
           <Image
-            className="h-80 w-80"
+            className="h-96 w-96"
             src="/demo-slides/s2.png"
             alt="Citizens"
             width={1000}
@@ -30,43 +31,231 @@ const ABOUT_STEPS = {
         </div>
       ),
     },
+    // {
+    //   //   title: "Meet the Citizens 🤖",
+    //   description: (
+    //     <div className="flex justify-center items-center">
+    //       <Image
+    //         className="h-96 w-96"
+    //         src="/demo-slides/s2a.png"
+    //         alt="Citizens"
+    //         width={1000}
+    //         height={1000}
+    //       />
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   //   title: "Meet the Citizens 🤖",
+    //   description: (
+    //     <div className="flex justify-center items-center">
+    //       <Image
+    //         className="h-96 w-96"
+    //         src="/demo-slides/s2b.png"
+    //         alt="Citizens"
+    //         width={1000}
+    //         height={1000}
+    //       />
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   description: (
+    //     <div className="flex justify-center items-center">
+    //       <HugeTitle>2 main goals:</HugeTitle>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   description: (
+    //     <div className="flex justify-center items-center">
+    //       <HugeTitle>1: HAVE FUN!</HugeTitle>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   description: (
+    //     <div className="flex justify-center items-center">
+    //       <HugeTitle>2: EXPERIMENT!</HugeTitle>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   description: (
+    //     <div className="flex justify-center items-center">
+    //       <HugeTitle>Technical Experiment</HugeTitle>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   description: (
+    //     <div className="flex justify-center items-center">
+    //       <HugeTitle>Artistic Experiment</HugeTitle>
+    //     </div>
+    //   ),
+    // },
     {
       description: (
         <div className="flex justify-center items-center">
-          <BigTitle>Go wild!</BigTitle>
+          <HugeTitle>Create stuff</HugeTitle>
         </div>
       ),
     },
     {
       description: (
         <div className="flex justify-center items-center">
-          <BigTitle>I can do this!</BigTitle>
+          <HugeTitle>Web articles</HugeTitle>
         </div>
       ),
     },
     {
       description: (
-        <div className="flex justify-center items-center flex-col gap-12">
-          <BlurryEntrance delay={0.11}>
-            <BigTitle>Gemini API is free!</BigTitle>
-          </BlurryEntrance>
-          <BlurryEntrance delay={0.62}>
-            <BigTitle>Sepolia is free!</BigTitle>
-          </BlurryEntrance>
-          <BlurryEntrance delay={1.24}>
-            <BigTitle>Glif is free!</BigTitle>
-          </BlurryEntrance>
-          <BlurryEntrance delay={1.86}>
-            <BigTitle>I have nothing to lose!</BigTitle>
-          </BlurryEntrance>
+        <div className="flex justify-center items-center">
+          <HugeTitle>Images</HugeTitle>
         </div>
       ),
     },
     {
       description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>Memes</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>NFTs</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>Life goals</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>a purpose</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>learn something new</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>travel to new places</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>interact with each other</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>financial transactions...</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>GOALS</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>Have fun!</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>Experiment!</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>Looooooots of proooooompts</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>smol frontend details</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>agents using tools, calling external APIs</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>
+            content creation,
+            <br />
+            on-chain activity,
+            <br />
+            economy simulation
+          </HugeTitle>
+        </div>
+      ),
+    },
+    // {
+    //   description: (
+    //     <div className="flex justify-center items-center">
+    //       <BigTitle>I can do this!</BigTitle>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   description: (
+    //     <div className="flex justify-center items-center flex-col gap-12">
+    //       <BlurryEntrance delay={0.11}>
+    //         <BigTitle>Gemini API is free!</BigTitle>
+    //       </BlurryEntrance>
+    //       <BlurryEntrance delay={0.62}>
+    //         <BigTitle>Sepolia is free!</BigTitle>
+    //       </BlurryEntrance>
+    //       <BlurryEntrance delay={1.24}>
+    //         <BigTitle>Glif is free!</BigTitle>
+    //       </BlurryEntrance>
+    //       <BlurryEntrance delay={1.86}>
+    //         <BigTitle>I have nothing to lose!</BigTitle>
+    //       </BlurryEntrance>
+    //     </div>
+    //   ),
+    // },
+    {
+      description: (
         <div className="flex justify-center items-center flex-col gap-12">
-          <BlurryEntrance delay={0.11}>
-            <BigTitle>HOW IT WORKS</BigTitle>
+          <BlurryEntrance delay={0.21}>
+            <HugeTitle>LETS SEE IT IN ACTION!</HugeTitle>
           </BlurryEntrance>
         </div>
       ),
@@ -336,6 +525,7 @@ const ABOUT_STEPS = {
     {
       description: (
         <div className="flex justify-center items-center flex-col gap-12">
+          <HugeTitle>Thank you ETHGlobal!</HugeTitle>
           <BlurryEntrance delay={0.31}>
             <img
               src="https://javitoshi.com/smol-stickers/02-red-heart.webp"
@@ -414,9 +604,9 @@ const HowItWorks = () => {
 
   return (
     <div className="relative flex justify-center">
-      <div className="absolute inset-0 z-20 opacity-20 pointer-events-none">
+      {/* <div className="absolute inset-0 z-20 opacity-20 pointer-events-none">
         <FirefliesBackground />
-      </div>
+      </div> */}
       <div className="top-2 absolute w-full bg-zinc-800/40 backdrop-blur-sm p-5 max-w-sm mx-auto rounded-full z-20">
         <div className="flex justify-center">
           {/* {slides.length} */}

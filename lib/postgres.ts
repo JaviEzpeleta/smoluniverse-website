@@ -602,6 +602,7 @@ export const getEventsByHandle = async (handle: string) => {
     FROM sim_action_events sae
     LEFT JOIN sim_smol_tweets st ON st.action_id = sae.id
     WHERE sae.from_handle = $1 OR sae.to_handle = $1
+    ORDER BY sae.created_at DESC
   `,
     [handle]
   );

@@ -19,6 +19,7 @@ const SkillsHistoryViewer = ({ events, user }: { events: any; user: any }) => {
     setTheStepObject(events[selectedStep]);
   }, [selectedStep, events]);
 
+  // return <div>PEPE</div>
   return (
     <div className="py-6">
       <Title>Changes viewer (debug)</Title>
@@ -27,7 +28,7 @@ const SkillsHistoryViewer = ({ events, user }: { events: any; user: any }) => {
           <div className="bg-zinc-900 rounded-xl p-4 space-y-2">
             {events.map((event: any, index: number) => (
               <div
-                key={event.id}
+                key={index}
                 className="p-2 bg-zinc-950 hover:bg-zinc-950/80 active:scale-95 active:opacity-30 transition-all rounded-lg cursor-pointer"
                 onClick={() => setSelectedStep(index)}
               >

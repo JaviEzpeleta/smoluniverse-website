@@ -42,7 +42,7 @@ const Header = () => {
       <div className="flex items-center gap-2">
         <BlurryEntrance delay={0.08}>
           <Link
-            href={`/explore/all`}
+            href="https://twitter.com/_smoluniverse"
             target="_blank"
             className="bg-zinc-800 hover:bg-zinc-700 text-zinc-100
           active:opacity-40 group text-sm sm:text-xl
