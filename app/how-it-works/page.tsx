@@ -167,14 +167,21 @@ const ABOUT_STEPS = {
     {
       description: (
         <div className="flex justify-center items-center">
-          <HugeTitle>Have fun!</HugeTitle>
+          <HugeTitle>financial transactions...</HugeTitle>
         </div>
       ),
     },
     {
       description: (
         <div className="flex justify-center items-center">
-          <HugeTitle>Go Wild!</HugeTitle>
+          <HugeTitle>GOALS</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>Have fun!</HugeTitle>
         </div>
       ),
     },
