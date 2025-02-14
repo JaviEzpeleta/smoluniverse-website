@@ -139,7 +139,28 @@ const ABOUT_STEPS = {
     {
       description: (
         <div className="flex justify-center items-center">
-          <HugeTitle>Interact with each other</HugeTitle>
+          <HugeTitle>a purpose</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>learn something new</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>travel to new places</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>interact with each other</HugeTitle>
         </div>
       ),
     },
@@ -161,6 +182,40 @@ const ABOUT_STEPS = {
       description: (
         <div className="flex justify-center items-center">
           <HugeTitle>Experiment!</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>Looooooots of proooooompts</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>smol frontend details</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>agents using tools, calling external APIs</HugeTitle>
+        </div>
+      ),
+    },
+    {
+      description: (
+        <div className="flex justify-center items-center">
+          <HugeTitle>
+            content creation,
+            <br />
+            on-chain activity,
+            <br />
+            economy simulation
+          </HugeTitle>
         </div>
       ),
     },
@@ -192,8 +247,8 @@ const ABOUT_STEPS = {
     {
       description: (
         <div className="flex justify-center items-center flex-col gap-12">
-          <BlurryEntrance delay={0.11}>
-            <BigTitle>HOW IT WORKS</BigTitle>
+          <BlurryEntrance delay={0.21}>
+            <HugeTitle>LETS SEE IT IN ACTION!</HugeTitle>
           </BlurryEntrance>
         </div>
       ),
@@ -463,6 +518,7 @@ const ABOUT_STEPS = {
     {
       description: (
         <div className="flex justify-center items-center flex-col gap-12">
+          <HugeTitle>Thank you ETHGlobal!</HugeTitle>
           <BlurryEntrance delay={0.31}>
             <img
               src="https://javitoshi.com/smol-stickers/02-red-heart.webp"

@@ -159,8 +159,8 @@
 			"typeName": "shape"
 		},
 		{
-			"x": 1286.7916994362934,
-			"y": 116.19302012234974,
+			"x": 1286.3502187719314,
+			"y": 68.25770633401012,
 			"rotation": 0,
 			"isLocked": false,
 			"opacity": 1,
@@ -170,8 +170,8 @@
 			"props": {
 				"color": "black",
 				"size": "m",
-				"w": 291.8359375,
-				"text": "Read 100 tweets\nthen, the db users row:\n- bio, general context, \n- expenses + income\n- life goals\n- skills/levels\n- wallet + initial $$",
+				"w": 283.2421875,
+				"text": "Latest 100 tweets\n\nthen:\n\n- bio, general context, \n- expenses + income\n- life goals\n- skills/levels\n- wallet + initial $$",
 				"font": "draw",
 				"textAlign": "start",
 				"autoSize": true,
@@ -283,9 +283,9 @@
 		{
 			"id": "pointer:pointer",
 			"typeName": "pointer",
-			"x": 1483.2336113285924,
-			"y": 166.18306742783966,
-			"lastActivityTimestamp": 1739482323531,
+			"x": 1326.9713477476055,
+			"y": 81.96606995010688,
+			"lastActivityTimestamp": 1739485571430,
 			"meta": {}
 		},
 		{
@@ -305,7 +305,7 @@
 			"screenBounds": {
 				"x": 0,
 				"y": 0,
-				"w": 1228,
+				"w": 1440,
 				"h": 723
 			},
 			"insets": [
